@@ -18,24 +18,20 @@
 package bot;
 import java.util.Scanner;
 
-/**
- * MyBot class
- * 
- * v0: wild try
- * v1: random, valid
- * v2: 
- */
+import wildfour.Wildfour;
+
+
 
 public class BotParser {
     
 	final Scanner scan;
-    final BotStarter bot;
+    final Wildfour bot;
     
     private Field mField;
     public static int mBotId = 0;
 
     
-    public BotParser(BotStarter bot) {
+    public BotParser(Wildfour bot) {
 		this.scan = new Scanner(System.in);
 		this.bot = bot;
 	}

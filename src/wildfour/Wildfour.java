@@ -1,3 +1,4 @@
+package wildfour;
 // // Copyright 2015 theaigames.com (developers@theaigames.com)
 
 //    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,19 +16,17 @@
 //    For the full copyright and license information, please view the LICENSE
 //    file that was distributed with this source code.
 
-package bot;
+
 import java.util.Random;
 
-/**
- * BotStarter class
- * 
- * Magic happens here. You should edit this file, or more specifically
- * the makeTurn() method to make your bot do more than random moves.
- * 
- * @author Jim van Eeden <jim@starapple.nl>, Joost de Meij <joost@starapple.nl>
- */
+import bot.BotParser;
+import bot.Field;
 
-public class BotStarter {	
+/**
+ * Wildfour main class.
+ * 
+ */
+public class Wildfour {	
      Field field;
      int myId;
      
@@ -45,19 +44,27 @@ public class BotStarter {
       * @return The column where the turn was made.
       */
      public int makeTurn() {
-    	 System.out.println(myId + " playing ");
-    	 while (true) {
-    		 int move = new Random().nextInt(7); 
-    		 if (field.isValidMove(move)) {
-    			 System.out.println(myId + " playing " + move);
-    			 return move;
+    	 PlayField field = PlayField.fromBotField(this.field, myId);
+    	 int bestMove = -1;
+    	 double bestScore = -100000.0;
+    	 for (int move=0; move<PlayField.WIDTH; move++) {
+    		 if (field.addDisc(move, PlayField.ME)) {
+    			 double score = field.computeScore ();
+    			 if (score > bestScore) {
+    				 bestMove = move;
+    				 bestScore = score;
+    			 }
+    			 field.removeDisc(move);
     		 }
-    	 } 
+    	 }
+    	 if (bestMove == -1) {
+    		 throw new IllegalStateException("No move found!");
+    	 }
+    	return bestMove;
      }
      
  	public static void main(String[] args) {
- 		System.out.println("wildfour started...");
- 		BotParser parser = new BotParser(new BotStarter());
+ 		BotParser parser = new BotParser(new Wildfour());
  		parser.run();
  	}
  	
