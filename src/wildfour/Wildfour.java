@@ -1,34 +1,27 @@
 package wildfour;
 // // Copyright 2015 theaigames.com (developers@theaigames.com)
 
-//    Licensed under the Apache License, Version 2.0 (the "License");
-//    you may not use this file except in compliance with the License.
-//    You may obtain a copy of the License at
-
-//        http://www.apache.org/licenses/LICENSE-2.0
-
-//    Unless required by applicable law or agreed to in writing, software
-//    distributed under the License is distributed on an "AS IS" BASIS,
-//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//    See the License for the specific language governing permissions and
-//    limitations under the License.
-//	
-//    For the full copyright and license information, please view the LICENSE
-//    file that was distributed with this source code.
-
-
-import java.util.Random;
+import java.lang.reflect.Method;
 
 import bot.BotParser;
 import bot.Field;
+import neural1.Network;
+import neural1.networks.Learn1000;
 
 /**
  * Wildfour main class.
  * 
  */
 public class Wildfour {	
+	
+	private final Evaluator evaluator;
+	
      Field field;
      int myId;
+     
+     public Wildfour (Evaluator evaluator) {
+		this.evaluator = evaluator;
+     }
      
      public void setField(Field f) {
     	 field = f;
@@ -49,7 +42,7 @@ public class Wildfour {
     	 double bestScore = -100000.0;
     	 for (int move=0; move<PlayField.WIDTH; move++) {
     		 if (field.addDisc(move, PlayField.ME)) {
-    			 double score = field.computeScore ();
+    			 double score = evaluator.evaluate(field);
     			 if (score > bestScore) {
     				 bestMove = move;
     				 bestScore = score;
@@ -63,8 +56,17 @@ public class Wildfour {
     	return bestMove;
      }
      
- 	public static void main(String[] args) {
- 		BotParser parser = new BotParser(new Wildfour());
+ 	public static void main(String[] args) throws Exception {
+ 		Network network;
+ 		if (args.length == 1) {
+ 			System.out.println("Loading " + args[0]);
+ 			Class<?> nwclass = Class.forName("neural1.networks." + args[0]);
+ 			Method m = nwclass.getDeclaredMethod("getNetwork", Double.TYPE, Double.TYPE);
+ 			network = (Network) m.invoke(null, 0, 0);
+ 		} else {
+ 			network = Learn1000.getNetwork(0, 0);
+ 		}
+ 		BotParser parser = new BotParser(new Wildfour(new NetworkEvaluator(network)));
  		parser.run();
  	}
  	

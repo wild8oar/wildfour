@@ -1,7 +1,5 @@
 package wildfour;
 
-import java.util.Random;
-
 import bot.Field;
 
 public class PlayField { 
@@ -12,9 +10,7 @@ public class PlayField {
 	
 	public static final int WIDTH = 7;
 	public static final int HEIGHT = 6;
-	
-	private static final Random RAND = new Random();
-	
+		
 	private int[][] field;
 	
 	private PlayField (int[][] field) {
@@ -84,9 +80,22 @@ public class PlayField {
 			System.err.println();
 		}
 	}
-
-	public double computeScore() {
-		return RAND.nextDouble();
+	
+	public double[] encodeAsNetworkInput() {
+		double[] input = new double[84];
+		int c = 0;
+		for (int y=0; y<HEIGHT; y++ ) {
+			for (int x=0; x<WIDTH; x++) {
+				int disc = field[x][y];
+				if (disc == ME) {
+					input[c] = 1;
+				} else if (disc == OTHER) {
+					input[c+1] = 1;
+				}
+				c += 2;
+			}
+		}
+		return input;
 	}
 
 }
