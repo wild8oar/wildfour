@@ -37,11 +37,16 @@ public class PlayField {
 		return new PlayField(grid);
 	}
 	
+	public static PlayField emptyField () {
+		int[][] grid = new int[WIDTH][HEIGHT];
+		return new PlayField(grid);
+	}
+	
 	public boolean addDisc(int column, int disc) {
 		if (column > WIDTH) {
 			throw new IllegalStateException("Illegal column: " + column);
 		}
-		for (int y = HEIGHT-1; y >= 0; y--) { // From bottom column up
+		for (int y = HEIGHT-1; y >= 0; y--) { // From bottom up
 			if (field[column][y] == 0) {
 				field[column][y] = disc;
 				return true;
@@ -54,7 +59,7 @@ public class PlayField {
 		if (column > WIDTH) {
 			throw new IllegalStateException("Illegal column: " + column);
 		}
-		for (int y = HEIGHT-1; y >= 0; y--) { // From bottom column up
+		for (int y = 0; y < HEIGHT; y++) { // From top down
 			if (field[column][y] !=EMPTY) {
 				field[column][y] = EMPTY;
 				return true;
@@ -96,6 +101,21 @@ public class PlayField {
 			}
 		}
 		return input;
+	}
+	
+	public PlayField getInverted () {
+		int[][] grid = new int[WIDTH][HEIGHT];
+		for (int x=0; x<WIDTH; x++) {
+			for (int y=0; y<HEIGHT; y++) {
+				int disc = field[x][y];
+				if (disc == OTHER) {
+					grid[x][y] = ME;
+				} else if (disc == ME) {
+					grid[x][y] = OTHER;
+				}
+			}
+		}
+		return new PlayField(grid);
 	}
 
 }

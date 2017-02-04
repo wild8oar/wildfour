@@ -1,7 +1,7 @@
 /*
  * Created on Fri Feb 03 19:43:33 CET 2017
  * 
- * 
+ * Based on 10000 random games.
  * NUM_HIDDEN = 21;
  * LEARN_RATE = 0.3;
  * MOMENTUM = 0.3;
