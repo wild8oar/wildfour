@@ -19,6 +19,9 @@ public class MaxMinMoveFinder implements MoveFinder {
 		BestMove bestMove = BestMove.none();
 		for (int move=0; move<PlayField.WIDTH; move++) {
 			if (myField.addDisc(move, PlayField.ME)) {
+				if (myField.haveIWon()) {
+					return BestMove.victory(move);
+				}
 				double score = computeScore(myField, searchDepth);
 				if (score > bestMove.score) {
 					bestMove = new BestMove(move, score);

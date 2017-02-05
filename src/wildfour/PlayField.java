@@ -117,5 +117,28 @@ public class PlayField {
 		}
 		return new PlayField(grid);
 	}
+	
+	/**
+	 * @return if player 1 has 4 in a row
+	 */
+	public boolean haveIWon () {
+		// vertical
+		for (int x=0; x<WIDTH; x++) {
+			int n = 0;
+			for (int y=0; y<HEIGHT; y++) {
+				int disc = field[x][y];
+					if (disc == ME) {
+						n++;
+						if (n==4) {
+							return true;
+						}
+					} else {
+						n = 0;
+					}
+			}
+		}
+		// TODO: vertical, diagonal
+		return false;
+	}
 
 }

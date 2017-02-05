@@ -19,6 +19,10 @@ public interface MoveFinder {
 			return new BestMove(-1, -100000);
 		}
 		
+		public static BestMove victory (int move) {
+			return new BestMove(move, 100000);
+		}
+		
 		public boolean isNone () {
 			return move == -1;
 		}

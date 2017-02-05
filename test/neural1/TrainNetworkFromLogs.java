@@ -11,8 +11,8 @@ public class TrainNetworkFromLogs {
 	
 	private static final int NUM_INPUT = 84;
 	private static final int NUM_HIDDEN = 21;
-	private static final double LEARN_RATE = 0.1;
-	private static final double MOMENTUM = 0.1;
+	private static final double LEARN_RATE = 0.3;
+	private static final double MOMENTUM = 0.3;
 	
 	private static final int NUM_ROUNDS = 1000;
 	
@@ -62,7 +62,7 @@ public class TrainNetworkFromLogs {
 	 double e2 = network.computeOutputs(field.encodeAsNetworkInput())[0];
 	 System.out.println("Result: " + e1 + " - " + e2 + "  -> " + e1/e2);
 	 
-   network.writeToClass("Learn02b");
+   network.writeToClass("Learn02c");
   }
 
  

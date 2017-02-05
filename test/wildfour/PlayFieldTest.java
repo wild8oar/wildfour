@@ -61,6 +61,35 @@ public class PlayFieldTest {
 		PlayField.fromBotField(setupTestField(), 1).print();
 	}
 	
+	@Test
+	public void shouldFindVerticalWIn() {
+		PlayField field = PlayField.emptyField();
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(4, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(4, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(4, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(4, 1);
+		Assert.assertTrue(field.haveIWon());
+	}
+	
+	@Test
+	public void shouldNotFindVerticalWIn() {
+		PlayField field = PlayField.emptyField();
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(4, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(4, 2);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(4, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(4, 1);
+		Assert.assertFalse(field.haveIWon());
+	}
+	
+	
 	private Field setupTestField () {
 		Field field = new Field(7,6);
 		field.addDisc(4, 1);
