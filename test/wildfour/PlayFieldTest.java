@@ -62,7 +62,7 @@ public class PlayFieldTest {
 	}
 	
 	@Test
-	public void shouldFindVerticalWIn() {
+	public void shouldFindVerticalWin() {
 		PlayField field = PlayField.emptyField();
 		Assert.assertFalse(field.haveIWon());
 		field.addDisc(4, 1);
@@ -76,7 +76,7 @@ public class PlayFieldTest {
 	}
 	
 	@Test
-	public void shouldNotFindVerticalWIn() {
+	public void shouldNotFindVerticalWin() {
 		PlayField field = PlayField.emptyField();
 		Assert.assertFalse(field.haveIWon());
 		field.addDisc(4, 1);
@@ -89,6 +89,81 @@ public class PlayFieldTest {
 		Assert.assertFalse(field.haveIWon());
 	}
 	
+	@Test
+	public void shouldFindHorizontalWin() {
+		PlayField field = PlayField.emptyField();
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(4, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(2, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(3, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(5, 1);
+		Assert.assertTrue(field.haveIWon());
+	}
+	
+	@Test
+	public void shouldNotFindHorizontalWin() {
+		PlayField field = PlayField.emptyField();
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(4, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(2, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(3, 2);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(5, 1);
+		Assert.assertFalse(field.haveIWon());
+	}
+	
+	@Test
+	public void shouldFindDiagonalFromLeftToToRight() {
+		PlayField field = PlayField.emptyField();
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(1, 2);
+		field.addDisc(1, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(2, 2);
+		field.addDisc(2, 2);
+		field.addDisc(2, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(3, 2);
+		field.addDisc(3, 2);
+		field.addDisc(3, 2);
+		field.addDisc(3, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(4, 2);
+		field.addDisc(4, 2);
+		field.addDisc(4, 2);
+		field.addDisc(4, 2);
+		field.addDisc(4, 1);
+		Assert.assertTrue(field.haveIWon());
+	}
+	
+	@Test
+	public void shouldFindDiagonalFromBottomToToRight() {
+		PlayField field = PlayField.emptyField();
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(3, 2);
+		field.addDisc(3, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(4, 2);
+		field.addDisc(4, 2);
+		field.addDisc(4, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(5, 2);
+		field.addDisc(5, 2);
+		field.addDisc(5, 2);
+		field.addDisc(5, 1);
+		Assert.assertFalse(field.haveIWon());
+		field.addDisc(6, 2);
+		field.addDisc(6, 2);
+		field.addDisc(6, 2);
+		field.addDisc(6, 2);
+		field.addDisc(6, 1);
+		Assert.assertTrue(field.haveIWon());
+	}
 	
 	private Field setupTestField () {
 		Field field = new Field(7,6);

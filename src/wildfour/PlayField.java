@@ -127,17 +127,91 @@ public class PlayField {
 			int n = 0;
 			for (int y=0; y<HEIGHT; y++) {
 				int disc = field[x][y];
-					if (disc == ME) {
-						n++;
-						if (n==4) {
-							return true;
-						}
-					} else {
-						n = 0;
+				if (disc == ME) {
+					n++;
+					if (n==4) {
+						return true;
 					}
+				} else {
+					n = 0;
+				}
 			}
 		}
-		// TODO: vertical, diagonal
+		// horizontal
+		for (int y=0; y<HEIGHT; y++) {
+			int n = 0;
+			for (int x=0; x<WIDTH; x++) {
+				int disc = field[x][y];
+				if (disc == ME) {
+					n++;
+					if (n==4) {
+						return true;
+					}
+				} else {
+					n = 0;
+				}
+			}
+		}
+		// from left to top right
+		for (int y=5; y>2; y--) {
+			int n = 0;
+			for (int x=0; x<y+1; x++) {
+				int disc = field[x][y-x];
+				if (disc == ME) {
+					n++;
+					if (n==4) {
+						return true;
+					}
+				} else {
+					n = 0;
+				}
+			}
+		}
+		// from bottom to top right
+		for (int x=1; x<4; x++) {
+			int n = 0;
+			for (int y=5; y>=x-1; y--) {
+				int disc = field[x-y+5][y];
+				if (disc == ME) {
+					n++;
+					if (n==4) {
+						return true;
+					}
+				} else {
+					n = 0;
+				}
+			}
+		}
+		// from right to top left
+		for (int y=5; y>2; y--) {
+			int n = 0;
+			for (int x=6; x>5-y; x--) {
+				int disc = field[x][x+y-6];
+				if (disc == ME) {
+					n++;
+					if (n==4) {
+						return true;
+					}
+				} else {
+					n = 0;
+				}
+			}
+		}
+		// from bottom to top left
+		for (int x=5; x>2; x--) {
+			int n = 0;
+			for (int y=5; y>=5-x; y--) {
+				int disc = field[x+y-5][y];
+				if (disc == ME) {
+					n++;
+					if (n==4) {
+						return true;
+					}
+				} else {
+					n = 0;
+				}
+			}
+		}
 		return false;
 	}
 

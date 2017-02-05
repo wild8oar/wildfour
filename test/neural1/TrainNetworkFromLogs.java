@@ -16,10 +16,10 @@ public class TrainNetworkFromLogs {
 	
 	private static final int NUM_ROUNDS = 1000;
 	
-	private static final int MAX_MOVES_LEFT = 3;
-	private static final double DECAY = 0.5;
+	private static final int MAX_MOVES_LEFT = 4;
+	private static final double DECAY = 0.8;
 	
-	private static final File LOG_FILE = new File("/home/adrian/aigames/wildfour/logs10000-r2.txt");
+	private static final File LOG_FILE = new File("/home/adrian/aigames/wildfour/logs24000.txt");
 
 	
  public static void main(String args[]) throws IOException  {
@@ -39,7 +39,7 @@ public class TrainNetworkFromLogs {
 			    	  continue;
 			      }
 			      logline = LogLine.parseLine(line);
-			      if (logline.getMovesToEnd() <= MAX_MOVES_LEFT) {
+			      if (logline.getMovesToEnd() <= MAX_MOVES_LEFT && logline.getMovesToEnd() > 0) {
 				      learnForPlayer(1, logline, network);
 				      learnForPlayer(2, logline, network);
 				      nInputs += 2;
@@ -47,12 +47,12 @@ public class TrainNetworkFromLogs {
 			 }
 		 }
 		 double error = network.getError(nInputs);
-		 System.out.println("Round " + round + ", mean_error=" + error);
+		 System.out.println("Round " + round + ", mean_error=" + error + " (" + nInputs + " samples)");
 		 if (error < bestError) {
 			 bestRound = round;
 			 bestError = error;
 		 }
-		 if (round - bestRound > 19 || round > 10000) {
+		 if (round - bestRound > 19 || round > NUM_ROUNDS) {
 			 break;
 		 }
 	 }
@@ -62,7 +62,7 @@ public class TrainNetworkFromLogs {
 	 double e2 = network.computeOutputs(field.encodeAsNetworkInput())[0];
 	 System.out.println("Result: " + e1 + " - " + e2 + "  -> " + e1/e2);
 	 
-   network.writeToClass("Learn02c");
+   network.writeToClass("Learn03b");
   }
 
  
