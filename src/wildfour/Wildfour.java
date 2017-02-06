@@ -19,7 +19,7 @@ public class Wildfour {
 	int myId;
 
 	public Wildfour (Evaluator evaluator) {
-		this.moveFinder = new MaxMinMoveFinder(evaluator, 1);
+		this.moveFinder = new MaxMinMoveFinder(evaluator, 3);
 	}
 
 	public void setField(Field f) {

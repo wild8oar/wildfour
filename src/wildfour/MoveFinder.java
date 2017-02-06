@@ -16,7 +16,7 @@ public interface MoveFinder {
 		}
 		
 		public static BestMove none () {
-			return new BestMove(-1, -100000);
+			return new BestMove(-1, -1000000);
 		}
 		
 		public static BestMove victory (int move) {
