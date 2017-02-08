@@ -10,16 +10,16 @@ import wildfour.PlayField;
 public class TrainNetworkFromLogs {
 	
 	private static final int NUM_INPUT = 84;
-	private static final int NUM_HIDDEN = 21;
-	private static final double LEARN_RATE = 0.3;
-	private static final double MOMENTUM = 0.3;
+	private static final int NUM_HIDDEN = 42;
+	private static final double LEARN_RATE = 0.05;
+	private static final double MOMENTUM = 0.05;
 	
-	private static final int NUM_ROUNDS = 1000;
+	private static final int NUM_ROUNDS = 10000;
 	
-	private static final int MAX_MOVES_LEFT = 4;
-	private static final double DECAY = 0.8;
+	private static final int MAX_MOVES_LEFT = 7;
+	private static final double DECAY = 0.9;
 	
-	private static final File LOG_FILE = new File("/home/adrian/aigames/wildfour/logs24000.txt");
+	private static final File LOG_FILE = new File("/home/adrian/ai/wildfour/wildfour/logs10000-r3.txt");
 
 	
  public static void main(String args[]) throws IOException  {
@@ -62,7 +62,7 @@ public class TrainNetworkFromLogs {
 	 double e2 = network.computeOutputs(field.encodeAsNetworkInput())[0];
 	 System.out.println("Result: " + e1 + " - " + e2 + "  -> " + e1/e2);
 	 
-   network.writeToClass("Learn03b");
+   network.writeToClass("Learn04-42");
   }
 
  
