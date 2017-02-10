@@ -19,8 +19,8 @@ public interface MoveFinder {
 			return new BestMove(-1, -1000000);
 		}
 		
-		public static BestMove victory (int move) {
-			return new BestMove(move, 100000);
+		public static BestMove victory (int move, int depth) {
+			return new BestMove(move, 100000-depth);
 		}
 		
 		public boolean isNone () {

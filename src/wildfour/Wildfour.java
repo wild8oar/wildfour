@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import bot.BotParser;
 import bot.Field;
 import neural1.Network;
-import neural1.networks.Learn03;
+import neural1.networks.Learn01;
 
 /**
  * Wildfour main class.
@@ -19,7 +19,7 @@ public class Wildfour {
 	int myId;
 
 	public Wildfour (Evaluator evaluator) {
-		this.moveFinder = new MaxMinMoveFinder(evaluator, 3);
+		this.moveFinder = new MaxMinMoveFinder(evaluator, 5);
 	}
 
 	public void setField(Field f) {
@@ -48,7 +48,7 @@ public class Wildfour {
 			Method m = nwclass.getDeclaredMethod("getNetwork", Double.TYPE, Double.TYPE);
 			network = (Network) m.invoke(null, 0, 0);
 		} else {
-			network = Learn03.getNetwork(0, 0);
+			network = Learn01.getNetwork(0, 0);
 		}
 		BotParser parser = new BotParser(new Wildfour(new RandomizedNetworkEvaluator(network)));
 		parser.run();

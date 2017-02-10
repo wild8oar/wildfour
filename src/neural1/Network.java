@@ -315,7 +315,7 @@ public class Network {
  }
  
  public void writeToClass (String classname) throws IOException {
-	 File file = new File("/home/adrian/ai/wildfour/wildfour/src/neural1/networks/" + classname + ".java");
+	 File file = new File("/home/adrian/aigames/wildfour/src/neural1/networks/" + classname + ".java");
 	 PrintStream writer = new PrintStream(file);
 	 writer.println("/*\n * Created on " + new Date() + "\n*/");
 	 writer.println("package neural1.networks;\n");
