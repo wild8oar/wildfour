@@ -19,7 +19,7 @@ public class Wildfour {
 	int myId;
 
 	public Wildfour (Evaluator evaluator) {
-		this.moveFinder = new MaxMinMoveFinder(evaluator, 9);
+		this.moveFinder = new MaxMinMoveFinder(evaluator, 10);
 	}
 
 	public void setField(Field f) {
@@ -51,7 +51,7 @@ public class Wildfour {
 			network = Learn01.getNetwork(0, 0);
 		}
 		//BotParser parser = new BotParser(new Wildfour(new RandomizedNetworkEvaluator(network)));
-		BotParser parser = new BotParser(new Wildfour(new CentralEvaluator()));
+		BotParser parser = new BotParser(new Wildfour(new EqualEvaluator()));
 		parser.run();
 	}
 

@@ -13,8 +13,8 @@ public class MaxMinMoveFinderTest {
 	private int nEval;
 	private long start;
 	
-	private static final int MAX_DEPTH = 8;
-	private final Evaluator evaluator = new CentralEvaluator();
+	private static final int MAX_DEPTH = 10;
+	private final Evaluator evaluator = new EqualEvaluator();
 	
 	@Test
 	public void shouldFindWinIn1 () {
@@ -26,6 +26,7 @@ public class MaxMinMoveFinderTest {
 		
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, PlayField.ME), 0);
 		Assert.assertEquals(4, best.move);
+		Assert.assertEquals(10000.0, best.score);
 	}
 	
 	@Test
@@ -37,6 +38,30 @@ public class MaxMinMoveFinderTest {
 		
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, PlayField.ME), 0);
 		Assert.assertEquals(2, best.move);
+		Assert.assertEquals(9998.0, best.score);
+	}
+	
+	@Test
+	public void shouldFindWinIn3 () {
+		MoveFinder finder = new MaxMinMoveFinder(evaluator, MAX_DEPTH);
+		Field field = new Field(7,6);
+		field.addDisc(2, PlayField.OTHER);
+		field.addDisc(4, PlayField.OTHER);
+		field.addDisc(5, PlayField.ME);
+		field.addDisc(2, PlayField.ME);
+		field.addDisc(4, PlayField.OTHER);
+		field.addDisc(5, PlayField.OTHER);
+		field.addDisc(2, PlayField.ME);
+		field.addDisc(4, PlayField.ME);
+		field.addDisc(5, PlayField.ME);
+		field.addDisc(2, PlayField.ME);
+		field.addDisc(4, PlayField.ME);
+		field.addDisc(5, PlayField.ME);
+		field.addDisc(2, PlayField.OTHER);
+
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, PlayField.ME), 0);
+		Assert.assertEquals(3, best.move);
+		Assert.assertEquals(9996.0, best.score);
 	}
 	
 	@Test
@@ -49,6 +74,7 @@ public class MaxMinMoveFinderTest {
 		
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, PlayField.OTHER), 0);
 		Assert.assertEquals(4, best.move);
+		Assert.assertEquals(0.0, best.score);
 	}
 	
 	@Test

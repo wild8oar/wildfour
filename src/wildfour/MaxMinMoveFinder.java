@@ -68,7 +68,7 @@ public class MaxMinMoveFinder implements MoveFinder {
 	
 	private double computeMiniMaxScore (PlayField myField, int move, int depth, double alpha, double beta, int player) {
 		if (myField.hasPlayerWon(player)) {
-			return player == PlayField.ME ? 10000-depth : - (10000-depth);
+			return player == PlayField.ME ? 10000-depth : -(10000-depth);
 		}
 		if (depth == maxDepth) {
 			return evaluator.evaluate(myField, move);
