@@ -152,6 +152,10 @@ public class Network {
  public void setThresholds (double[] thresholds) {
 	this.thresholds = thresholds;
  }
+ 
+ public int getInputCount () {
+	 return inputCount;
+ }
 
 
  /**
@@ -224,7 +228,7 @@ public class Network {
 
 
  /**
-  * Calculate the error for the recogntion just done.
+  * Calculate the error for the recognition just done.
   *
   * @param ideal What the output neurons should have yielded.
   */

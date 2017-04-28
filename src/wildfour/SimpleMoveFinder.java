@@ -17,7 +17,7 @@ public class SimpleMoveFinder implements MoveFinder {
 		BestMove bestMove = BestMove.none();
 		for (int move=0; move<PlayField.WIDTH; move++) {
 			if (myField.addDisc(move, PlayField.ME)) {
-				double score = evaluator.evaluate(myField);
+				double score = evaluator.evaluate(myField, move);
 				if (score > bestMove.score) {
 					bestMove = new BestMove(move, score);
 				}

@@ -11,8 +11,8 @@ public class NetworkEvaluator implements Evaluator {
 	}
 
 	@Override
-	public double evaluate(PlayField field) {
-		return network.computeOutputs(field.encodeAsNetworkInput())[0];
+	public double evaluate(PlayField field, int move) {
+		return network.computeOutputs(field.encodeFieldAsNetworkInput())[0];
 	}
 
 }

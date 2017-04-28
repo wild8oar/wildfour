@@ -8,7 +8,7 @@ public class RandomEvaluator implements Evaluator {
 
 
 	@Override
-	public double evaluate(PlayField field) {
+	public double evaluate(PlayField field, int move) {
 		return RAND.nextDouble();
 	}
 
