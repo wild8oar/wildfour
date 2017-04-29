@@ -11,10 +11,12 @@ public class PlayField {
 	
 	private static final String WIN1 = "1111";
 	private static final String WIN2 = "2222";
-	private static final String OPENTHREE1 = "01110";
-	private static final String OPENTHREE2 = "02220";
-	private static final String ANYTHREE1 = "111";
-	private static final String ANYTHREE2 = "222";
+	private static final String OPENTHREE1 = " 111 ";
+	private static final String OPENTHREE2 = " 222 ";
+	private static final String ANYTHREE1L = " 111";
+	private static final String ANYTHREE1R = "111 ";
+	private static final String ANYTHREE2L = " 222";
+	private static final String ANYTHREE2R = "222 ";
 	
 	
 	
@@ -124,7 +126,7 @@ public class PlayField {
 		return false;
 	}
 	
-	public int getDisc(int column, int row) {
+	public char getDisc(int column, int row) {
 		return field[column][row];
 	}
 	
@@ -169,8 +171,8 @@ public class PlayField {
 		int[] features = new int[4];
 		features[0] = collectedField.contains(OPENTHREE1) ? 1:0;
 		features[1] = collectedField.contains(OPENTHREE2) ? 1:0;
-		features[2] = collectedField.contains(ANYTHREE1) ? 1:0;
-		features[3] = collectedField.contains(ANYTHREE2) ? 1:0;
+		features[2] = collectedField.contains(ANYTHREE1L) || collectedField.contains(ANYTHREE1R) ? 1:0;
+		features[3] = collectedField.contains(ANYTHREE2L) || collectedField.contains(ANYTHREE2R) ? 1:0;
 		return features;
 	}
  
@@ -202,7 +204,7 @@ public class PlayField {
 	}
 
 	private boolean collectedContainsWin (char player) {
-		String toFind = player == ME ? "1111" : "2222";
+		String toFind = player == ME ? WIN1 : WIN2;
 		return collectedField.contains(toFind);
 	}
 	
