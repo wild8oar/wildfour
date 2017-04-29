@@ -1,5 +1,6 @@
 package wildfour;
-
+import static wildfour.PlayField.ME;
+import static wildfour.PlayField.OTHER;
 import java.util.Arrays;
 
 import org.junit.Assert;
@@ -26,8 +27,8 @@ public class PlayFieldTest {
 	@Test
 	public void shouldAddDisc () {
 		PlayField field = PlayField.fromBotField(setupTestField(), 1);
-		boolean res = field.addDisc(2, PlayField.ME);
-		Assert.assertEquals(PlayField.ME, field.getDisc(2,4));
+		boolean res = field.addDisc(2, ME);
+		Assert.assertEquals(ME, field.getDisc(2,4));
 		Assert.assertTrue(res);
 	}
 	
@@ -60,20 +61,20 @@ public class PlayFieldTest {
 
 	@Test
 	public void shouldPrintField() {
-		PlayField.fromBotField(setupTestField(), 1).print();
+		PlayField.fromBotField(setupTestField(), ME).print();
 	}
 	
 	@Test
 	public void shouldFindVerticalWin() {
 		PlayField field = PlayField.emptyField();
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(4, 1);
+		field.addDisc(4, PlayField.ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(4, 1);
+		field.addDisc(4, PlayField.ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(4, 1);
+		field.addDisc(4, PlayField.ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(4, 1);
+		field.addDisc(4, PlayField.ME);
 		Assert.assertTrue(field.hasPlayerWon(PlayField.ME));
 	}
 	
@@ -81,13 +82,13 @@ public class PlayFieldTest {
 	public void shouldNotFindVerticalWin() {
 		PlayField field = PlayField.emptyField();
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(4, 1);
+		field.addDisc(4, PlayField.ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(4, 2);
+		field.addDisc(4, PlayField.OTHER);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(4, 1);
+		field.addDisc(4, PlayField.ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(4, 1);
+		field.addDisc(4, PlayField.ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
 	}
 	
@@ -95,13 +96,13 @@ public class PlayFieldTest {
 	public void shouldFindHorizontalWin() {
 		PlayField field = PlayField.emptyField();
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(4, 1);
+		field.addDisc(4, PlayField.ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(2, 1);
+		field.addDisc(2, PlayField.ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(3, 1);
+		field.addDisc(3, PlayField.ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(5, 1);
+		field.addDisc(5, PlayField.ME);
 		Assert.assertTrue(field.hasPlayerWon(PlayField.ME));
 	}
 	
@@ -109,29 +110,29 @@ public class PlayFieldTest {
 	public void shouldNotFindHorizontalWin() {
 		PlayField field = PlayField.emptyField();
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(4, 1);
+		field.addDisc(4, PlayField.ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(2, 1);
+		field.addDisc(2, PlayField.ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(3, 2);
+		field.addDisc(3, PlayField.OTHER);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(5, 1);
+		field.addDisc(5, PlayField.ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
 	}
 	
 //	@Test
 //	public void shouldEncodeFeatues() {
-//		PlayField field = PlayField.fromBotField(setupTestField(), 1);
-//		field.addDisc(3, 1);
-//		field.addDisc(3, 2);
+//		PlayField field = PlayField.fromBotField(setupTestField(), ME);
+//		field.addDisc(3, ME);
+//		field.addDisc(3, OTHER);
 //		field.print();
 //		double[] feat = field.encodeFeaturesAsNetworkInput();
 //		Assert.assertArrayEquals(new double[] {0.0, 0.0, 0.0, 0.2, 0.0, 0.2, 0.0, 0.0}, feat, 0.0);
-//		field.addDisc(1, 2);
+//		field.addDisc(1, OTHER);
 //		field.print();
 //		feat = field.encodeFeaturesAsNetworkInput();
 //		Assert.assertArrayEquals(new double[] {0.0, 0.0, 0.2, 0.0, 0.0, 0.2, 0.0, 0.0}, feat, 0.0);
-//		field.addDisc(2, 1);
+//		field.addDisc(2, ME);
 //		field.print();
 //		feat = field.encodeFeaturesAsNetworkInput();
 //		System.out.println(Arrays.toString(feat));
@@ -142,23 +143,23 @@ public class PlayFieldTest {
 	public void shouldFindDiagonalFromLeftToToRight() {
 		PlayField field = PlayField.emptyField();
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(1, 2);
-		field.addDisc(1, 1);
+		field.addDisc(1, OTHER);
+		field.addDisc(1, ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(2, 2);
-		field.addDisc(2, 2);
-		field.addDisc(2, 1);
+		field.addDisc(2, OTHER);
+		field.addDisc(2, OTHER);
+		field.addDisc(2, ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(3, 2);
-		field.addDisc(3, 2);
-		field.addDisc(3, 2);
-		field.addDisc(3, 1);
+		field.addDisc(3, OTHER);
+		field.addDisc(3, OTHER);
+		field.addDisc(3, OTHER);
+		field.addDisc(3, ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(4, 2);
-		field.addDisc(4, 2);
-		field.addDisc(4, 2);
-		field.addDisc(4, 2);
-		field.addDisc(4, 1);
+		field.addDisc(4, OTHER);
+		field.addDisc(4, OTHER);
+		field.addDisc(4, OTHER);
+		field.addDisc(4, OTHER);
+		field.addDisc(4, ME);
 		Assert.assertTrue(field.hasPlayerWon(PlayField.ME));
 	}
 	
@@ -166,23 +167,23 @@ public class PlayFieldTest {
 	public void shouldFindDiagonalFromBottomToToRight() {
 		PlayField field = PlayField.emptyField();
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(3, 2);
-		field.addDisc(3, 1);
+		field.addDisc(3, OTHER);
+		field.addDisc(3, ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(4, 2);
-		field.addDisc(4, 2);
-		field.addDisc(4, 1);
+		field.addDisc(4, OTHER);
+		field.addDisc(4, OTHER);
+		field.addDisc(4, ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(5, 2);
-		field.addDisc(5, 2);
-		field.addDisc(5, 2);
-		field.addDisc(5, 1);
+		field.addDisc(5, OTHER);
+		field.addDisc(5, OTHER);
+		field.addDisc(5, OTHER);
+		field.addDisc(5, ME);
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
-		field.addDisc(6, 2);
-		field.addDisc(6, 2);
-		field.addDisc(6, 2);
-		field.addDisc(6, 2);
-		field.addDisc(6, 1);
+		field.addDisc(6, OTHER);
+		field.addDisc(6, OTHER);
+		field.addDisc(6, OTHER);
+		field.addDisc(6, OTHER);
+		field.addDisc(6, ME);
 		Assert.assertTrue(field.hasPlayerWon(PlayField.ME));
 	}
 	
@@ -190,19 +191,19 @@ public class PlayFieldTest {
 //	public void shouldCollectAll() {
 //		PlayField field = PlayField.emptyField();
 //		for (int x=0; x<PlayField.WIDTH; x++) {
-//			field.addDisc(x, 1);
+//			field.addDisc(x, ME);
 //		}
 //		for (int y=1; y<PlayField.HEIGHT; y++) {
-//			field.addDisc(0, 1);
-//			field.addDisc(6, 1);
+//			field.addDisc(0, ME);
+//			field.addDisc(6, ME);
 //		}
 //		for (int x=1; x<PlayField.WIDTH-1; x++) {
 //			for (int y=1; y<PlayField.HEIGHT-1; y++) {
-//				field.addDisc(x, 2);
+//				field.addDisc(x, OTHER);
 //			}
 //		}
 //		for (int x=1; x<PlayField.WIDTH-1; x++) {
-//			field.addDisc(x, 1);
+//			field.addDisc(x, ME);
 //		}
 //		field.print();
 //		int[][] collected = field.collectAll();

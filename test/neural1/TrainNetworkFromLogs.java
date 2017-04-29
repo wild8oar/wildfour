@@ -41,8 +41,8 @@ public class TrainNetworkFromLogs {
 			      logline = LogLine.parseLine(line);
 			      if (logline.getMovesToEnd() > MAX_MOVES_LEFT) {
 			      //if (logline.getMovesToEnd() <= MAX_MOVES_LEFT && logline.getMovesToEnd() > 0) {
-				      learnForPlayer(1, logline, network);
-				      learnForPlayer(2, logline, network);
+				      learnForPlayer(PlayField.ME, logline, network);
+				      learnForPlayer(PlayField.OTHER, logline, network);
 				      nInputs += 2;
 			      }
 			 }
@@ -57,9 +57,9 @@ public class TrainNetworkFromLogs {
 			 break;
 		 }
 	 }
-	 PlayField field = PlayField.fromBotField(logline.getField(), 1);
+	 PlayField field = PlayField.fromBotField(logline.getField(), PlayField.ME);
 	 double e1 =network.computeOutputs(field.encodeFieldAsNetworkInput())[0];
-	 field = PlayField.fromBotField(logline.getField(), 2);
+	 field = PlayField.fromBotField(logline.getField(), PlayField.OTHER);
 	 double e2 = network.computeOutputs(field.encodeFieldAsNetworkInput())[0];
 	 System.out.println("Result: " + e1 + " - " + e2 + "  -> " + e1/e2);
 	 
@@ -67,7 +67,7 @@ public class TrainNetworkFromLogs {
   }
 
  
- private static void learnForPlayer (int player, LogLine line, Network network) {
+ private static void learnForPlayer (char player, LogLine line, Network network) {
 	 PlayField field = PlayField.fromBotField(line.getField(), player);
      double expected = 0.5*Math.pow(DECAY, line.getMovesToEnd());
      expected = line.getWinner() == player ? 0.5+expected : 0.5-expected;

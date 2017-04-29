@@ -1,5 +1,8 @@
 package wildfour;
 
+import static wildfour.PlayField.ME;
+import static wildfour.PlayField.OTHER;
+
 /**
  * Minimax with alpha-beta pruning.
  *
@@ -18,12 +21,12 @@ public class MaxMinMoveFinder implements MoveFinder {
 
 	@Override
 	public BestMove findBestMove(PlayField myField, int searchDepth) {
-		return findMiniMax(myField, searchDepth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, PlayField.ME);
+		return findMiniMax(myField, searchDepth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, ME);
 	}
 	
-	private BestMove findMiniMax (PlayField myField, int searchDepth, double alpha, double beta, int player) {
+	private BestMove findMiniMax (PlayField myField, int searchDepth, double alpha, double beta, char player) {
 		int bestMove = -1;
-		if (player == PlayField.ME) {
+		if (player == ME) {
 			// Maximizing
 			double bestScore = Integer.MIN_VALUE;
 			for (int move: DEFAULT_ORDER) {
@@ -66,14 +69,16 @@ public class MaxMinMoveFinder implements MoveFinder {
 		}
 	}	
 	
-	private double computeMiniMaxScore (PlayField myField, int move, int depth, double alpha, double beta, int player) {
+	private double computeMiniMaxScore (PlayField myField, int move, int depth, double alpha, double beta, char player) {
 		if (myField.hasPlayerWon(player)) {
-			return player == PlayField.ME ? 10000-depth : -(10000-depth);
+			return player == ME ? 10000-depth : -(10000-depth);
 		}
 		if (depth == maxDepth) {
-			return evaluator.evaluate(myField, move);
+			int[] features = myField.getFeatureExistance();
+			return 2*(features[0]-features[1]) + (features[2]-features[3]);
+			//return evaluator.evaluate(myField, move);
 		}
-		return findMiniMax(myField, depth+1, alpha, beta, 3-player).score;		
+		return findMiniMax(myField, depth+1, alpha, beta, player == ME ? OTHER : ME).score;		
 	}
 
 

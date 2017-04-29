@@ -4,19 +4,28 @@ import bot.Field;
 
 public class PlayField { 
 	
-	public static final int EMPTY = 0;
-	public static final int ME = 1;
-	public static final int OTHER = 2;
-	public static final int BORDER = -1;
+	public static final char EMPTY = ' ';
+	public static final char ME = '1';
+	public static final char OTHER = '2';
+	public static final char BORDER = 'X';
+	
+	private static final String WIN1 = "1111";
+	private static final String WIN2 = "2222";
+	private static final String OPENTHREE1 = "01110";
+	private static final String OPENTHREE2 = "02220";
+	private static final String ANYTHREE1 = "111";
+	private static final String ANYTHREE2 = "222";
+	
+	
 	
 	public static final int WIDTH = 7;
 	public static final int HEIGHT = 6;
 		
-	private int[][] field;
+	private char[][] field;
 	
-	int[] collectedField;
+	String collectedField;
 		
-	private PlayField (int[][] field) {
+	private PlayField (char[][] field) {
 		this.field = field;
 		this.collectedField = null;
 	}
@@ -60,8 +69,8 @@ public class PlayField {
 	 * always has ID 1.
 	 */
 	public static PlayField fromBotField (Field botfield, int myId) {
-		final int otherId = 3-myId;
-		int[][] grid = new int[WIDTH][HEIGHT];
+		final int otherId = 3 - myId;
+		char[][] grid = new char[WIDTH][HEIGHT];
 		for (int x=0; x<WIDTH; x++) {
 			for (int y=0; y<HEIGHT; y++) {
 				int disc = botfield.getDisc(x, y);
@@ -69,6 +78,8 @@ public class PlayField {
 					grid[x][y] = ME;
 				} else if (disc == otherId) {
 					grid[x][y] = OTHER;
+				} else {
+					grid[x][y] = EMPTY;
 				}
 			}
 		}
@@ -76,17 +87,22 @@ public class PlayField {
 	}
 	
 	public static PlayField emptyField () {
-		int[][] grid = new int[WIDTH][HEIGHT];
+		char[][] grid = new char[WIDTH][HEIGHT];
+		for (int x=0; x<WIDTH; x++) {
+			for (int y=0; y<HEIGHT; y++) {
+				grid[x][y] = EMPTY;
+			}
+		}
 		return new PlayField(grid);
 	}
 	
-	public boolean addDisc(int column, int disc) {
+	public boolean addDisc(int column, char disc) {
 		if (column > WIDTH) {
 			throw new IllegalStateException("Illegal column: " + column);
 		}
 		this.collectedField = null;
 		for (int y = HEIGHT-1; y >= 0; y--) { // From bottom up
-			if (field[column][y] == 0) {
+			if (field[column][y] == EMPTY) {
 				field[column][y] = disc;
 				return true;
 			}
@@ -115,7 +131,7 @@ public class PlayField {
 	public void print () {
 		for (int y=0; y<HEIGHT; y++ ) {
 			for (int x=0; x<WIDTH; x++) {
-				int disc = field[x][y];
+				char disc = field[x][y];
 				if (disc == EMPTY) {
 					System.err.print(" ");
 				} else {
@@ -143,62 +159,27 @@ public class PlayField {
 		return input;
 	}	
 	
+	@Deprecated
 	public double[] encodeFeaturesAsNetworkInput() {
 		return null;
 	}
-//	public double[] encodeFeaturesAsNetworkInput() {
-//		// (my,other) x (1open,2open) x (2,3) = 8
-//		double[] input = new double[8];
-//		for (int[] row: collectAll()) {
-//			int previous = BORDER;
-//			int current = row[0];
-//			int len = 1;
-//			for (int i=1; i<=row.length; i++) {
-//				int disc = i == row.length ? BORDER: row[i];
-//				if (disc == current) {
-//					len++;
-//				} else {
-//					int index = getIndex(current, len, previous, i >= row.length-1 ? BORDER: row[i+1]);
-//					if (index > -1) {
-//						input[index]++;
-//					}
-//					previous = current;
-//					current = disc;
-//					len = 1;
-//				}
-//			}
-//		}
-//		// normalize (max=5)
-//		for (int i=0; i<input.length; i++) {
-//			input[i] /= 5;
-//			if (input[i] > 1.0) {
-//				input[i] = 1.0;
-//			}
-//		}
-//		return input;
-//	}
-//	
-	private int getIndex(int color, int len, int previous, int next) {
-		//System.out.println("color=" + color + ", len=" + len + ", prev=" + previous + ", next=" + next);
-		if (len < 2 || color == EMPTY || color == BORDER) {
-			return -1;
-		}
-		int open = (previous == EMPTY ? 1:0) + (next == EMPTY ? 1:0);
-		if (open == 0) {
-			return -1;
-		}
-		int index = color == ME ? 0 : 4;
-		index += len == 2 ? 0 : 2;
-		index += open == 1 ? 0 : 1;
-		//System.out.println(" ==> " + index);
-		return index;
+
+	public int[] getFeatureExistance () {
+		collectCollectibles();
+		int[] features = new int[4];
+		features[0] = collectedField.contains(OPENTHREE1) ? 1:0;
+		features[1] = collectedField.contains(OPENTHREE2) ? 1:0;
+		features[2] = collectedField.contains(ANYTHREE1) ? 1:0;
+		features[3] = collectedField.contains(ANYTHREE2) ? 1:0;
+		return features;
 	}
+ 
 
 	public PlayField getInverted () {
-		int[][] grid = new int[WIDTH][HEIGHT];
+		char[][] grid = new char[WIDTH][HEIGHT];
 		for (int x=0; x<WIDTH; x++) {
 			for (int y=0; y<HEIGHT; y++) {
-				int disc = field[x][y];
+				char disc = field[x][y];
 				if (disc == OTHER) {
 					grid[x][y] = ME;
 				} else if (disc == ME) {
@@ -212,45 +193,33 @@ public class PlayField {
 	/**
 	 * @return if player 1 has 4 in a row
 	 */
-	public boolean hasPlayerWon (int player) {
-		if (containsWin(collectAll(), player)) {
+	public boolean hasPlayerWon (char player) {
+		collectCollectibles();
+		if (collectedContainsWin(player)) {
 			return true;
 		}
 		return false;
 	}
 
-	private boolean containsWin (int[] collected, int player) {
-		int n = 0;
-		for (int i=0; i<collected.length; i++) {
-			if (collected[i] == player) {
-				n++;
-				if (n==4) {
-					return true;
-				}
-			} else {
-				n = 0;
-			}
-		}
-		return false;
+	private boolean collectedContainsWin (char player) {
+		String toFind = player == ME ? "1111" : "2222";
+		return collectedField.contains(toFind);
 	}
 	
 	private void collectCollectibles () {
-		collectedField = new int[COLLECTIBLES.length];
+		if (collectedField != null) {
+			return;
+		}
+		char[] collected = new char[COLLECTIBLES.length];
 		for (int i=0; i<COLLECTIBLES.length; i++) {
 			if (COLLECTIBLES[i] == null) {
-				collectedField[i] = PlayField.BORDER;
+				collected[i] = PlayField.BORDER;
 			} else {
-				collectedField[i] = field[COLLECTIBLES[i][0]][COLLECTIBLES[i][1]];
+				collected[i] = field[COLLECTIBLES[i][0]][COLLECTIBLES[i][1]];
 			}
 		}
+		collectedField = new String(collected);
 	}
 	
-	int[] collectAll () {
-		if (collectedField != null) {
-			return collectedField;
-		}
-		collectCollectibles();
-		return collectedField;
-	}
 
 }
