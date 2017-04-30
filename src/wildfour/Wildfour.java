@@ -13,6 +13,7 @@ public class Wildfour {
 
 	Field field;
 	int myId;
+	int round;
 
 	public Wildfour (Evaluator evaluator) {
 		this.moveFinder = new MaxMinMoveFinder(evaluator, 10);
@@ -25,6 +26,10 @@ public class Wildfour {
 	public void setBotId (int id) {
 		myId = id;
 	}
+	
+	public void setRound (int n) {
+		round = n;
+	}
 
 	/**
 	 * Makes a turn. Edit this method to make your bot smarter.
@@ -32,6 +37,9 @@ public class Wildfour {
 	 * @return The column where the turn was made.
 	 */
 	public int makeTurn() {
+		if (round < 5) {
+			return 3;
+		}
 		PlayField field = PlayField.fromBotField(this.field, myId);
 		return moveFinder.findBestMove(field, 0).move;
 	}

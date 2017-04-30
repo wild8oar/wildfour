@@ -1,5 +1,7 @@
 package wildfour;
 
+import java.util.regex.Pattern;
+
 import bot.Field;
 
 public class PlayField { 
@@ -18,21 +20,22 @@ public class PlayField {
 	private static final String ANYTHREE2L = " 222";
 	private static final String ANYTHREE2R = "222 ";
 	
-	
-	
 	public static final int WIDTH = 7;
 	public static final int HEIGHT = 6;
+	private static final int SIZE = WIDTH*HEIGHT+1;
 		
-	private char[][] field;
+	private final char[] field;
 	
-	String collectedField;
+	private static final Pattern ANYTHREE1 = Pattern.compile("( 111|111 )");
+	
+	private String collectedField;
 		
-	private PlayField (char[][] field) {
+	private PlayField (char[] field) {
 		this.field = field;
 		this.collectedField = null;
 	}
 	
-	private static final int[][] COLLECTIBLES = new int[][] {
+	private static final int[] COLLECTIBLES = transform(new int[][] {
 		// horizontal
 		{0,0}, {1,0}, {2,0}, {3,0}, {4,0}, {5,0}, {6,0}, null,
 		{0,1}, {1,1}, {2,1}, {3,1}, {4,1}, {5,1}, {6,1}, null,
@@ -64,37 +67,52 @@ public class PlayField {
 		// right to top left
 		{6,4}, {5,3}, {4,2}, {3,1}, {2,0}, null,
 		{6,3}, {5,2}, {4,1}, {3,0}
-	};
+	});
 	
+	private static int idx (int x, int y) {
+		return 6*x+y;
+	}
+	
+	private static int[] transform (int[][] in) {
+		int[] out = new int[in.length];
+		for (int i=0; i< in.length; i++) {
+			if (in[i] == null) {
+				out[i] = SIZE-1;
+			} else {
+				out[i] = idx(in[i][0], in[i][1]);
+			}
+		}
+		return out;
+	}
 	/**
 	 * Creates a normalized copy of the play field, where my bot 
 	 * always has ID 1.
 	 */
 	public static PlayField fromBotField (Field botfield, int myId) {
 		final int otherId = 3 - myId;
-		char[][] grid = new char[WIDTH][HEIGHT];
+		char[] grid = new char[SIZE];
 		for (int x=0; x<WIDTH; x++) {
 			for (int y=0; y<HEIGHT; y++) {
 				int disc = botfield.getDisc(x, y);
 				if (disc == myId) {
-					grid[x][y] = ME;
+					grid[idx(x,y)] = ME;
 				} else if (disc == otherId) {
-					grid[x][y] = OTHER;
+					grid[idx(x,y)] = OTHER;
 				} else {
-					grid[x][y] = EMPTY;
+					grid[idx(x,y)] = EMPTY;
 				}
 			}
 		}
+		grid[SIZE-1] = BORDER;
 		return new PlayField(grid);
 	}
 	
 	public static PlayField emptyField () {
-		char[][] grid = new char[WIDTH][HEIGHT];
-		for (int x=0; x<WIDTH; x++) {
-			for (int y=0; y<HEIGHT; y++) {
-				grid[x][y] = EMPTY;
-			}
+		char[] grid = new char[SIZE];
+		for (int i=0; i<SIZE-1; i++) {
+			grid[i] = EMPTY;
 		}
+		grid[SIZE-1] = BORDER;
 		return new PlayField(grid);
 	}
 	
@@ -103,9 +121,9 @@ public class PlayField {
 			throw new IllegalStateException("Illegal column: " + column);
 		}
 		this.collectedField = null;
-		for (int y = HEIGHT-1; y >= 0; y--) { // From bottom up
-			if (field[column][y] == EMPTY) {
-				field[column][y] = disc;
+		for (int idx = idx(column, HEIGHT-1); idx >= idx(column, 0); idx--) { // From bottom up
+			if (field[idx] == EMPTY) {
+				field[idx] = disc;
 				return true;
 			}
 		}
@@ -117,9 +135,9 @@ public class PlayField {
 			throw new IllegalStateException("Illegal column: " + column);
 		}
 		this.collectedField = null;
-		for (int y = 0; y < HEIGHT; y++) { // From top down
-			if (field[column][y] !=EMPTY) {
-				field[column][y] = EMPTY;
+		for (int y = idx(column, 0); y <= idx(column, HEIGHT-1); y++) { // From top down
+			if (field[y] !=EMPTY) {
+				field[y] = EMPTY;
 				return true;
 			}
 		}
@@ -127,13 +145,13 @@ public class PlayField {
 	}
 	
 	public char getDisc(int column, int row) {
-		return field[column][row];
+		return field[idx(column,row)];
 	}
 	
 	public void print () {
 		for (int y=0; y<HEIGHT; y++ ) {
 			for (int x=0; x<WIDTH; x++) {
-				char disc = field[x][y];
+				char disc = field[idx(x,y)];
 				if (disc == EMPTY) {
 					System.err.print(" ");
 				} else {
@@ -149,7 +167,7 @@ public class PlayField {
 		int c = 0;
 		for (int y=0; y<HEIGHT; y++ ) {
 			for (int x=0; x<WIDTH; x++) {
-				int disc = field[x][y];
+				int disc = field[idx(x,y)];
 				if (disc == ME) {
 					input[c] = 1;
 				} else if (disc == OTHER) {
@@ -175,17 +193,27 @@ public class PlayField {
 		features[3] = collectedField.contains(ANYTHREE2L) || collectedField.contains(ANYTHREE2R) ? 1:0;
 		return features;
 	}
+	
+	private int countFeatures (String feature) {
+		int n=0;
+		int ix = collectedField.indexOf(feature, 0);
+		while (ix > -1) {
+			n++;
+			ix = collectedField.indexOf(feature, ix+1);
+		}
+		return n;
+	}
  
 
 	public PlayField getInverted () {
-		char[][] grid = new char[WIDTH][HEIGHT];
+		char[] grid = new char[SIZE];
 		for (int x=0; x<WIDTH; x++) {
 			for (int y=0; y<HEIGHT; y++) {
-				char disc = field[x][y];
+				char disc = field[idx(x,y)];
 				if (disc == OTHER) {
-					grid[x][y] = ME;
+					grid[idx(x,y)] = ME;
 				} else if (disc == ME) {
-					grid[x][y] = OTHER;
+					grid[idx(x,y)] = OTHER;
 				}
 			}
 		}
@@ -214,11 +242,7 @@ public class PlayField {
 		}
 		char[] collected = new char[COLLECTIBLES.length];
 		for (int i=0; i<COLLECTIBLES.length; i++) {
-			if (COLLECTIBLES[i] == null) {
-				collected[i] = PlayField.BORDER;
-			} else {
-				collected[i] = field[COLLECTIBLES[i][0]][COLLECTIBLES[i][1]];
-			}
+				collected[i] = field[COLLECTIBLES[i]];
 		}
 		collectedField = new String(collected);
 	}
