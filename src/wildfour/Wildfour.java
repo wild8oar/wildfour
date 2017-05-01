@@ -37,7 +37,7 @@ public class Wildfour {
 	 * @return The column where the turn was made.
 	 */
 	public int makeTurn() {
-		if (round < 5) {
+		if (round < 3) {
 			return 3;
 		}
 		PlayField field = PlayField.fromBotField(this.field, myId);

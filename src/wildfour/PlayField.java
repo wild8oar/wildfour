@@ -1,7 +1,5 @@
 package wildfour;
 
-import java.util.regex.Pattern;
-
 import bot.Field;
 
 public class PlayField { 
@@ -26,14 +24,10 @@ public class PlayField {
 		
 	private final char[] field;
 	
-	private static final Pattern ANYTHREE1 = Pattern.compile("( 111|111 )");
-	
+	private final char[] bigPicture = new char[168];
+	private final int[][] xmap = setupXMap();
 	private String collectedField;
-		
-	private PlayField (char[] field) {
-		this.field = field;
-		this.collectedField = null;
-	}
+	
 	
 	private static final int[] COLLECTIBLES = transform(new int[][] {
 		// horizontal
@@ -69,6 +63,12 @@ public class PlayField {
 		{6,3}, {5,2}, {4,1}, {3,0}
 	});
 	
+	
+	private PlayField (char[] field) {
+		this.field = field;
+		initialCollect();
+	}
+	
 	private static int idx (int x, int y) {
 		return 6*x+y;
 	}
@@ -84,6 +84,26 @@ public class PlayField {
 		}
 		return out;
 	}
+	
+	private static int[][] setupXMap () {
+		int[][] map = new int[SIZE-1][];
+		for (int colli=0; colli<COLLECTIBLES.length; colli++) {
+			int mapi = COLLECTIBLES[colli];
+			if (mapi == SIZE-1) continue;
+			int[] imap = map[mapi];
+			if (imap == null) {
+				map[mapi] = new int[] {colli};
+			} else if (imap.length == 1) {
+				map[mapi] = new int[] {imap[0], colli};
+			} else if (imap.length == 2) {
+				map[mapi] = new int[] {imap[0], imap[1],colli};
+			} else if (imap.length == 3) {
+				map[mapi] = new int[] {imap[0], imap[1], imap[2],colli};
+			}
+		}
+		return map;
+	}
+	
 	/**
 	 * Creates a normalized copy of the play field, where my bot 
 	 * always has ID 1.
@@ -116,28 +136,34 @@ public class PlayField {
 		return new PlayField(grid);
 	}
 	
-	public boolean addDisc(int column, char disc) {
+	public boolean addDisc (int column, char disc) {
 		if (column > WIDTH) {
 			throw new IllegalStateException("Illegal column: " + column);
 		}
-		this.collectedField = null;
 		for (int idx = idx(column, HEIGHT-1); idx >= idx(column, 0); idx--) { // From bottom up
 			if (field[idx] == EMPTY) {
-				field[idx] = disc;
+				setDisc(idx, disc);
 				return true;
 			}
 		}
 		return false;
 	}
 	
+	private void setDisc (int index, char disc) {
+		field[index] = disc;
+		for (int i: xmap[index]) {
+			bigPicture[i] = disc;
+		}
+		this.collectedField = null;	
+	}
+	
 	public boolean removeDisc(int column) {
 		if (column > WIDTH) {
 			throw new IllegalStateException("Illegal column: " + column);
 		}
-		this.collectedField = null;
 		for (int y = idx(column, 0); y <= idx(column, HEIGHT-1); y++) { // From top down
 			if (field[y] !=EMPTY) {
-				field[y] = EMPTY;
+				setDisc(y, EMPTY);
 				return true;
 			}
 		}
@@ -236,15 +262,17 @@ public class PlayField {
 		return collectedField.contains(toFind);
 	}
 	
+	private void initialCollect () {
+		for (int i=0; i<COLLECTIBLES.length; i++) {
+			bigPicture[i] = field[COLLECTIBLES[i]];
+		}
+	}
+	
 	private void collectCollectibles () {
 		if (collectedField != null) {
 			return;
 		}
-		char[] collected = new char[COLLECTIBLES.length];
-		for (int i=0; i<COLLECTIBLES.length; i++) {
-				collected[i] = field[COLLECTIBLES[i]];
-		}
-		collectedField = new String(collected);
+		collectedField = new String(bigPicture);
 	}
 	
 
