@@ -1,5 +1,7 @@
 package wildfour;
 
+import java.util.Arrays;
+
 import bot.Field;
 
 public class PlayField { 
@@ -9,24 +11,20 @@ public class PlayField {
 	public static final char OTHER = '2';
 	public static final char BORDER = 'X';
 	
-	private static final String WIN1 = "1111";
-	private static final String WIN2 = "2222";
-	private static final String OPENTHREE1 = " 111 ";
-	private static final String OPENTHREE2 = " 222 ";
-	private static final String ANYTHREE1L = " 111";
-	private static final String ANYTHREE1R = "111 ";
-	private static final String ANYTHREE2L = " 222";
-	private static final String ANYTHREE2R = "222 ";
+	private static final int ONE = 1;
+	private static final int TWO = 10;
+	private static final int FOUR1 = 4*ONE;
+	private static final int FOUR2 = 4*TWO;
+	private static final int THREE1 = 3*ONE;
+	private static final int THREE2 = 3*TWO;
 	
 	public static final int WIDTH = 7;
 	public static final int HEIGHT = 6;
 	private static final int SIZE = WIDTH*HEIGHT+1;
+	private static final int OUTSIDE = SIZE-1;
 		
 	private final char[] field;
-	
-	private final char[] bigPicture = new char[168];
-	private final int[][] xmap = setupXMap();
-	private String collectedField;
+	private final int[] counts = new int[168];
 	
 	
 	private static final int[] COLLECTIBLES = transform(new int[][] {
@@ -63,6 +61,7 @@ public class PlayField {
 		{6,3}, {5,2}, {4,1}, {3,0}
 	});
 	
+	private static final int[][] countmap = setupCountMap();
 	
 	private PlayField (char[] field) {
 		this.field = field;
@@ -74,10 +73,11 @@ public class PlayField {
 	}
 	
 	private static int[] transform (int[][] in) {
+
 		int[] out = new int[in.length];
 		for (int i=0; i< in.length; i++) {
 			if (in[i] == null) {
-				out[i] = SIZE-1;
+				out[i] = OUTSIDE;
 			} else {
 				out[i] = idx(in[i][0], in[i][1]);
 			}
@@ -85,23 +85,59 @@ public class PlayField {
 		return out;
 	}
 	
-	private static int[][] setupXMap () {
+	private static int[][] setupCountMap () {
 		int[][] map = new int[SIZE-1][];
-		for (int colli=0; colli<COLLECTIBLES.length; colli++) {
-			int mapi = COLLECTIBLES[colli];
-			if (mapi == SIZE-1) continue;
-			int[] imap = map[mapi];
-			if (imap == null) {
-				map[mapi] = new int[] {colli};
-			} else if (imap.length == 1) {
-				map[mapi] = new int[] {imap[0], colli};
-			} else if (imap.length == 2) {
-				map[mapi] = new int[] {imap[0], imap[1],colli};
-			} else if (imap.length == 3) {
-				map[mapi] = new int[] {imap[0], imap[1], imap[2],colli};
-			}
+		int start = 0;
+		int index = 0;
+		while (start < COLLECTIBLES.length-2) {
+			int end = start+3;
+			while (end < COLLECTIBLES.length-1 && COLLECTIBLES[end+1] < OUTSIDE) {end++;};
+			index = addToCountMap(index, map, start, end);
+			start = end+2;
 		}
 		return map;
+	}
+	
+	private static int addToCountMap(int index, int[][] map, int start, int end) {
+		for (int beg=start; beg<end-2; beg++) {
+			for (int x=beg; x<beg+4; x++) {
+				int mapi = COLLECTIBLES[x];
+				map[mapi] = add(map[mapi], index);
+			}
+			index++;
+		}
+		return index;
+	}
+
+	private static int[] add (int[] in, int x) {
+		if (in == null) {
+			return new int[] {x};
+		} else if (in.length == 1) {
+			return new int[] {in[0], x};
+		} else if (in.length == 2) {
+			return new int[] {in[0], in[1], x};
+		} else if (in.length == 3) {
+			return new int[] {in[0], in[1], in[2], x};
+		} else if (in.length == 4) {
+			return new int[] {in[0], in[1], in[2], in[3], x};
+		} else if (in.length == 5) {
+			return new int[] {in[0], in[1], in[2], in[3], in[4], x};
+		} else if (in.length == 6) {
+			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], x};
+		} else if (in.length == 7) {
+			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], in[6], x};
+		} else if (in.length == 8) {
+			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], in[6], in[7], x};
+		} else if (in.length == 9) {
+			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], in[6], in[7], in[8], x};
+		} else if (in.length == 10) {
+			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], in[6], in[7], in[8], in[9], x};
+		} else if (in.length == 11) {
+			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], in[6], in[7], in[8], in[9], in[10], x};
+		} else if (in.length == 12) {
+			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], in[6], in[7], in[8], in[9], in[10], in[11], x};
+		} 
+		throw new IllegalStateException("in array too large: " + in.length);
 	}
 	
 	/**
@@ -151,10 +187,16 @@ public class PlayField {
 	
 	private void setDisc (int index, char disc) {
 		field[index] = disc;
-		for (int i: xmap[index]) {
-			bigPicture[i] = disc;
+		for (int i: countmap[index]) {
+			counts[i] += (disc == ME ? ONE : TWO);
 		}
-		this.collectedField = null;	
+	}
+	
+	private void unsetDisc (int index, char disc) {
+		field[index] = EMPTY;
+		for (int i: countmap[index]) {
+			counts[i] -= (disc == ME ? ONE : TWO);
+		}	
 	}
 	
 	public boolean removeDisc(int column) {
@@ -163,7 +205,7 @@ public class PlayField {
 		}
 		for (int y = idx(column, 0); y <= idx(column, HEIGHT-1); y++) { // From top down
 			if (field[y] !=EMPTY) {
-				setDisc(y, EMPTY);
+				unsetDisc(y, field[y]);
 				return true;
 			}
 		}
@@ -211,25 +253,17 @@ public class PlayField {
 	}
 
 	public int[] getFeatureExistance () {
-		collectCollectibles();
-		int[] features = new int[4];
-		features[0] = collectedField.contains(OPENTHREE1) ? 1:0;
-		features[1] = collectedField.contains(OPENTHREE2) ? 1:0;
-		features[2] = collectedField.contains(ANYTHREE1L) || collectedField.contains(ANYTHREE1R) ? 1:0;
-		features[3] = collectedField.contains(ANYTHREE2L) || collectedField.contains(ANYTHREE2R) ? 1:0;
-		return features;
-	}
-	
-	private int countFeatures (String feature) {
-		int n=0;
-		int ix = collectedField.indexOf(feature, 0);
-		while (ix > -1) {
-			n++;
-			ix = collectedField.indexOf(feature, ix+1);
+		int t1 = 0;
+		int t2 = 0;
+		for (int x: counts) {
+			if (x == THREE1) {
+				t1++;
+			} else if (x == THREE2) {
+				t2++;
+			}
 		}
-		return n;
+		return new int[] {t1, t2};
 	}
- 
 
 	public PlayField getInverted () {
 		char[] grid = new char[SIZE];
@@ -246,34 +280,27 @@ public class PlayField {
 		return new PlayField(grid);
 	}
 	
-	/**
-	 * @return if player 1 has 4 in a row
-	 */
 	public boolean hasPlayerWon (char player) {
-		collectCollectibles();
-		if (collectedContainsWin(player)) {
-			return true;
+		int four = player == ME ? FOUR1 : FOUR2;
+		for (int x: counts) {
+			if (x == four) {
+				return true;
+			}
 		}
 		return false;
 	}
-
-	private boolean collectedContainsWin (char player) {
-		String toFind = player == ME ? WIN1 : WIN2;
-		return collectedField.contains(toFind);
-	}
 	
 	private void initialCollect () {
-		for (int i=0; i<COLLECTIBLES.length; i++) {
-			bigPicture[i] = field[COLLECTIBLES[i]];
+		for (int i=0; i<SIZE-1; i++) {
+			if (field[i] != EMPTY) {
+				for (int x: countmap[i]) {
+					counts[x] += (field[i] == ME ? ONE : TWO);
+				}
+			}
 		}
 	}
 	
-	private void collectCollectibles () {
-		if (collectedField != null) {
-			return;
-		}
-		collectedField = new String(bigPicture);
+	public void printCounts () {
+		System.out.println(Arrays.toString(counts));
 	}
-	
-
 }

@@ -1,7 +1,6 @@
 package wildfour;
 import static wildfour.PlayField.ME;
 import static wildfour.PlayField.OTHER;
-import java.util.Arrays;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -190,31 +189,31 @@ public class PlayFieldTest {
 	@Test
 	public void shouldFindFeatures() {
 		PlayField field = PlayField.emptyField();
-		Assert.assertArrayEquals(new int[] {0, 0, 0, 0}, field.getFeatureExistance());
+		Assert.assertArrayEquals(new int[] {0, 0}, field.getFeatureExistance());
 		field.addDisc(0, ME);
 		field.addDisc(1, ME);
 		field.addDisc(2, ME);
-		Assert.assertArrayEquals(new int[] {0, 0, 1, 0}, field.getFeatureExistance());
+		Assert.assertArrayEquals(new int[] {1, 0}, field.getFeatureExistance());
 		field = PlayField.emptyField();
 		field.addDisc(2, ME);
 		field.addDisc(3, ME);
 		field.addDisc(4, ME);
-		Assert.assertArrayEquals(new int[] {1, 0, 1, 0}, field.getFeatureExistance());
+		Assert.assertArrayEquals(new int[] {2, 0}, field.getFeatureExistance());
 		field = PlayField.emptyField();
 		field.addDisc(4, ME);
 		field.addDisc(5, ME);
 		field.addDisc(6, ME);
-		Assert.assertArrayEquals(new int[] {0, 0, 1, 0}, field.getFeatureExistance());
+		Assert.assertArrayEquals(new int[] {1, 0}, field.getFeatureExistance());
 		field = PlayField.emptyField();
 		field.addDisc(0, OTHER);
 		field.addDisc(1, OTHER);
 		field.addDisc(2, OTHER);
-		Assert.assertArrayEquals(new int[] {0, 0, 0, 1}, field.getFeatureExistance());
+		Assert.assertArrayEquals(new int[] {0, 1}, field.getFeatureExistance());
 		field = PlayField.emptyField();
 		field.addDisc(2, OTHER);
 		field.addDisc(3, OTHER);
 		field.addDisc(4, OTHER);
-		Assert.assertArrayEquals(new int[] {0, 1, 0, 1}, field.getFeatureExistance());
+		Assert.assertArrayEquals(new int[] {0, 2}, field.getFeatureExistance());
 	}
 	
 //	@Test

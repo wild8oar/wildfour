@@ -75,7 +75,7 @@ public class MaxMinMoveFinderTest {
 		
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2), 0);
 		Assert.assertEquals(4, best.move);
-		Assert.assertEquals(-1.0, best.score);
+		Assert.assertEquals(-2.0, best.score);
 	}
 	
 	@Test
