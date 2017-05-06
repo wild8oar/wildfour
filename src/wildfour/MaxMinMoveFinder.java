@@ -10,12 +10,11 @@ import static wildfour.PlayField.OTHER;
 public class MaxMinMoveFinder implements MoveFinder {
 	
 	private static final int[] DEFAULT_ORDER = new int[] {3,2,4,5,1,0,6};
+	private static final int[] ALT_ORDER = new int[] {3,4,2,6,0,1,5};
 	
-	private final Evaluator evaluator;
 	private final int maxDepth;
 
-	public MaxMinMoveFinder(Evaluator evaluator, int maxDepth) {
-		this.evaluator = evaluator;
+	public MaxMinMoveFinder(int maxDepth) {
 		this.maxDepth = maxDepth;
 	}
 
@@ -49,7 +48,7 @@ public class MaxMinMoveFinder implements MoveFinder {
 		} else {
 			// Minimizing
 			double bestScore = Integer.MAX_VALUE;
-			for (int move: DEFAULT_ORDER) {
+			for (int move: ALT_ORDER) {
 				if (myField.addDisc(move, player)) {
 					double score = computeMiniMaxScore(myField, move, searchDepth, alpha, beta, player);
 					myField.removeDisc(move);
@@ -76,7 +75,6 @@ public class MaxMinMoveFinder implements MoveFinder {
 		if (depth == maxDepth) {
 			int[] features = myField.getFeatureExistance();
 			return 2*(features[0]-features[1]) + (features[2]-features[3]);
-			//return evaluator.evaluate(myField, move);
 		}
 		return findMiniMax(myField, depth+1, alpha, beta, player == ME ? OTHER : ME).score;		
 	}

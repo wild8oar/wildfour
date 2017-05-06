@@ -15,15 +15,15 @@ public class MaxMinMoveFinderTest {
 	private long start;
 	
 	private static final int MAX_DEPTH = 10;
-	private final Evaluator evaluator = new EqualEvaluator();
 	
 	@Test
 	public void shouldFindWinIn1 () {
-		MoveFinder finder = new MaxMinMoveFinder(evaluator, MAX_DEPTH);
+		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		field.addDisc(4, 1);
 		field.addDisc(4, 1);
 		field.addDisc(4, 1);
+		field.addDisc(5, 2);
 		
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1), 0);
 		Assert.assertEquals(4, best.move);
@@ -32,7 +32,7 @@ public class MaxMinMoveFinderTest {
 	
 	@Test
 	public void shouldFindWinIn2 () {
-		MoveFinder finder = new MaxMinMoveFinder(evaluator, MAX_DEPTH);
+		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		field.addDisc(3, 1);
 		field.addDisc(4, 1);
@@ -44,7 +44,7 @@ public class MaxMinMoveFinderTest {
 	
 	@Test
 	public void shouldFindWinIn3 () {
-		MoveFinder finder = new MaxMinMoveFinder(evaluator, MAX_DEPTH);
+		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		field.addDisc(2, 2);
 		field.addDisc(4, 2);
@@ -67,7 +67,7 @@ public class MaxMinMoveFinderTest {
 	
 	@Test
 	public void shouldPreventLossIn1 () {
-		MoveFinder finder = new MaxMinMoveFinder(evaluator, MAX_DEPTH);
+		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		field.addDisc(4, 1);
 		field.addDisc(4, 1);
@@ -80,7 +80,7 @@ public class MaxMinMoveFinderTest {
 	
 	@Test
 	public void shouldPreventLossIn2 () {
-		MoveFinder finder = new MaxMinMoveFinder(evaluator, MAX_DEPTH);
+		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		field.addDisc(3, 1);
 		field.addDisc(4, 1);
@@ -91,11 +91,52 @@ public class MaxMinMoveFinderTest {
 	
 	@Test
 	public void shouldJustPlay () {
-		MoveFinder finder = new MaxMinMoveFinder(evaluator, MAX_DEPTH);
+		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		
-		finder.findBestMove(PlayField.fromBotField(field, OTHER), 0);
+		finder.findBestMove(PlayField.fromBotField(field, 2), 0);
 	}
+	
+	@Test
+	public void shouldPlayFast () {
+		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		Field field = new Field(7,6);
+		field.addDisc(3, 1);
+		field.addDisc(3, 2);
+		field.addDisc(4, 1);
+		field.addDisc(2, 2);
+		field.addDisc(6, 1);
+		field.addDisc(5, 2);
+		field.addDisc(4, 1);
+		field.addDisc(4, 2);
+		field.addDisc(6, 1);
+		field.addDisc(3, 2);
+		field.addDisc(6, 1);
+		
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2), 0);
+		Assert.assertEquals(6, best.move);
+	}
+	
+	@Test
+	public void shouldPlayFastMirrored () {
+		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		Field field = new Field(7,6);
+		field.addDisc(3, 1);
+		field.addDisc(3, 2);
+		field.addDisc(2, 1);
+		field.addDisc(4, 2);
+		field.addDisc(0, 1);
+		field.addDisc(1, 2);
+		field.addDisc(2, 1);
+		field.addDisc(2, 2);
+		field.addDisc(0, 1);
+		field.addDisc(3, 2);
+		field.addDisc(0, 1);
+		
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2), 0);
+		Assert.assertEquals(0, best.move);
+	}
+	
 	
 	
 	@Before
@@ -106,16 +147,10 @@ public class MaxMinMoveFinderTest {
 	
 	@After
 	public void done() {
-		System.out.println(nEval + " evaluations in " + (System.currentTimeMillis() - start) + "ms");
+		long time = System.currentTimeMillis() - start;
+		System.out.println(nEval + " evaluations in " + time + "ms");
+		Assert.assertTrue("took too long: " + time, time<1000);
 	}
 	
-	private class EqualEvaluator implements Evaluator {
-
-		@Override
-		public double evaluate(PlayField field, int move) {
-			nEval++;
-			return 0;
-		}
-	}
 
 }
