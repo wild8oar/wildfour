@@ -112,7 +112,6 @@ public class MaxMinMoveFinderTest {
 		field.addDisc(6, 1);
 		field.addDisc(3, 2);
 		field.addDisc(6, 1);
-		
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2), 0);
 		Assert.assertEquals(6, best.move);
 	}

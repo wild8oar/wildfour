@@ -9,7 +9,6 @@ public class PlayField {
 	public static final char EMPTY = ' ';
 	public static final char ME = '1';
 	public static final char OTHER = '2';
-	public static final char BORDER = 'X';
 	
 	private static final int ONE = 1;
 	private static final int TWO = 10;
@@ -20,8 +19,8 @@ public class PlayField {
 	
 	public static final int WIDTH = 7;
 	public static final int HEIGHT = 6;
-	private static final int SIZE = WIDTH*HEIGHT+1;
-	private static final int OUTSIDE = SIZE-1;
+	private static final int SIZE = WIDTH*HEIGHT;
+	private static final int OUTSIDE = -1;
 		
 	private final char[] field;
 	private final int[] counts = new int[168];
@@ -86,12 +85,12 @@ public class PlayField {
 	}
 	
 	private static int[][] setupCountMap () {
-		int[][] map = new int[SIZE-1][];
+		int[][] map = new int[SIZE][];
 		int start = 0;
 		int index = 0;
 		while (start < COLLECTIBLES.length-2) {
 			int end = start+3;
-			while (end < COLLECTIBLES.length-1 && COLLECTIBLES[end+1] < OUTSIDE) {end++;};
+			while (end < COLLECTIBLES.length-1 && COLLECTIBLES[end+1] != OUTSIDE) {end++;};
 			index = addToCountMap(index, map, start, end);
 			start = end+2;
 		}
@@ -159,16 +158,14 @@ public class PlayField {
 				}
 			}
 		}
-		grid[SIZE-1] = BORDER;
 		return new PlayField(grid);
 	}
 	
 	public static PlayField emptyField () {
 		char[] grid = new char[SIZE];
-		for (int i=0; i<SIZE-1; i++) {
+		for (int i=0; i<SIZE; i++) {
 			grid[i] = EMPTY;
 		}
-		grid[SIZE-1] = BORDER;
 		return new PlayField(grid);
 	}
 	
@@ -291,7 +288,7 @@ public class PlayField {
 	}
 	
 	private void initialCollect () {
-		for (int i=0; i<SIZE-1; i++) {
+		for (int i=0; i<SIZE; i++) {
 			if (field[i] != EMPTY) {
 				for (int x: countmap[i]) {
 					counts[x] += (field[i] == ME ? ONE : TWO);

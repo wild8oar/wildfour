@@ -75,6 +75,20 @@ public class PlayFieldTest {
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
 		field.addDisc(4, PlayField.ME);
 		Assert.assertTrue(field.hasPlayerWon(PlayField.ME));
+		
+		field = PlayField.emptyField();
+		field.addDisc(6, PlayField.ME);
+		field.addDisc(6, PlayField.ME);
+		field.addDisc(6, PlayField.ME);
+		field.addDisc(6, PlayField.ME);
+		Assert.assertTrue(field.hasPlayerWon(PlayField.ME));
+		
+		field = PlayField.emptyField();
+		field.addDisc(6, PlayField.OTHER);
+		field.addDisc(6, PlayField.OTHER);
+		field.addDisc(6, PlayField.OTHER);
+		field.addDisc(6, PlayField.OTHER);
+		Assert.assertTrue(field.hasPlayerWon(PlayField.OTHER));
 	}
 	
 	@Test
