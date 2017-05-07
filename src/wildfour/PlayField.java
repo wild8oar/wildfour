@@ -19,126 +19,36 @@ public class PlayField {
 	
 	public static final int WIDTH = 7;
 	public static final int HEIGHT = 6;
-	private static final int SIZE = WIDTH*HEIGHT;
-	private static final int OUTSIDE = -1;
+	public static final int SIZE = WIDTH*HEIGHT;
 		
 	private final char[] field;
-	private final int[] counts = new int[168];
+	private final int[] counts = new int[69];
 	
-	
-	private static final int[] COLLECTIBLES = transform(new int[][] {
-		// horizontal
-		{0,0}, {1,0}, {2,0}, {3,0}, {4,0}, {5,0}, {6,0}, null,
-		{0,1}, {1,1}, {2,1}, {3,1}, {4,1}, {5,1}, {6,1}, null,
-		{0,2}, {1,2}, {2,2}, {3,2}, {4,2}, {5,2}, {6,2}, null,
-		{0,3}, {1,3}, {2,3}, {3,3}, {4,3}, {5,3}, {6,3}, null,
-		{0,4}, {1,4}, {2,4}, {3,4}, {4,4}, {5,4}, {6,4}, null,
-		{0,5}, {1,5}, {2,5}, {3,5}, {4,5}, {5,5}, {6,5}, null,
-		// vertical
-		{0,0}, {0,1}, {0,2}, {0,3}, {0,4}, {0,5}, null,
-		{1,0}, {1,1}, {1,2}, {1,3}, {1,4}, {1,5}, null,
-		{2,0}, {2,1}, {2,2}, {2,3}, {2,4}, {2,5}, null,
-		{3,0}, {3,1}, {3,2}, {3,3}, {3,4}, {3,5}, null,
-		{4,0}, {4,1}, {4,2}, {4,3}, {4,4}, {4,5}, null,
-		{5,0}, {5,1}, {5,2}, {5,3}, {5,4}, {5,5}, null,
-		{6,0}, {6,1}, {6,2}, {6,3}, {6,4}, {6,5}, null,
-		// bottom to top right
-		{0,5}, {1,4}, {2,3}, {3,2}, {4,1}, {5,0}, null,
-		{1,5}, {2,4}, {3,3}, {4,2}, {5,1}, {6,0}, null,
-		{2,5}, {3,4}, {4,3}, {5,2}, {6,1}, null,
-		{3,5}, {4,4}, {5,3}, {6,2}, null,
-		// left to top right
-		{0,4}, {1,3}, {2,2}, {3,1}, {4,0}, null,
-		{0,3}, {1,2}, {2,1}, {3,0}, null,
-		// bottom to top left
-		{6,5}, {5,4}, {4,3}, {3,2}, {2,1}, {1,0}, null,
-		{5,5}, {4,4}, {3,3}, {2,2}, {1,1}, {0,0}, null,
-		{4,5}, {3,4}, {2,3}, {1,2}, {0,1}, null,
-		{3,5}, {2,4}, {1,3}, {0,2}, null,
-		// right to top left
-		{6,4}, {5,3}, {4,2}, {3,1}, {2,0}, null,
-		{6,3}, {5,2}, {4,1}, {3,0}
-	});
-	
-	private static final int[][] countmap = setupCountMap();
+	private static final int[][] countmap = {{0, 24, 62}, {4, 24, 25, 64}, {8, 24, 25, 26, 65}, 
+			{12, 24, 25, 26, 56}, {16, 25, 26, 54}, {20, 26, 45}, {0, 1, 27, 59}, 
+			{4, 5, 27, 28, 61, 62}, {8, 9, 27, 28, 29, 56, 63, 64}, {12, 13, 27, 28, 29, 54, 55, 65}, 
+			{16, 17, 28, 29, 45, 46}, {20, 21, 29, 48}, {0, 1, 2, 30, 67}, {4, 5, 6, 30, 31, 56, 58, 59}, 
+			{8, 9, 10, 30, 31, 32, 54, 55, 60, 61, 62}, {12, 13, 14, 30, 31, 32, 45, 46, 47, 63, 64}, 
+			{16, 17, 18, 31, 32, 48, 49, 65}, {20, 21, 22, 32, 51}, {0, 1, 2, 3, 33, 56, 68}, 
+			{4, 5, 6, 7, 33, 34, 54, 55, 66, 67}, {8, 9, 10, 11, 33, 34, 35, 45, 46, 47, 57, 58, 59}, 
+			{12, 13, 14, 15, 33, 34, 35, 48, 49, 50, 60, 61, 62}, {16, 17, 18, 19, 34, 35, 51, 52, 63, 64}, 
+			{20, 21, 22, 23, 35, 53, 65}, {1, 2, 3, 36, 55}, {5, 6, 7, 36, 37, 46, 47, 68}, 
+			{9, 10, 11, 36, 37, 38, 48, 49, 50, 66, 67}, {13, 14, 15, 36, 37, 38, 51, 52, 57, 58, 59}, 
+			{17, 18, 19, 37, 38, 53, 60, 61}, {21, 22, 23, 38, 63}, {2, 3, 39, 47}, {6, 7, 39, 40, 49, 50}, 
+			{10, 11, 39, 40, 41, 51, 52, 68}, {14, 15, 39, 40, 41, 53, 66, 67}, {18, 19, 40, 41, 57, 58}, 
+			{22, 23, 41, 60}, {3, 42, 50}, {7, 42, 43, 52}, {11, 42, 43, 44, 53}, {15, 42, 43, 44, 68}, 
+			{19, 43, 44, 66}, {23, 44, 57}};
+
 	
 	private PlayField (char[] field) {
 		this.field = field;
 		initialCollect();
 	}
 	
-	private static int idx (int x, int y) {
+	static final int idx (int x, int y) {
 		return 6*x+y;
 	}
-	
-	private static int[] transform (int[][] in) {
-
-		int[] out = new int[in.length];
-		for (int i=0; i< in.length; i++) {
-			if (in[i] == null) {
-				out[i] = OUTSIDE;
-			} else {
-				out[i] = idx(in[i][0], in[i][1]);
-			}
-		}
-		return out;
-	}
-	
-	private static int[][] setupCountMap () {
-		int[][] map = new int[SIZE][];
-		int start = 0;
-		int index = 0;
-		while (start < COLLECTIBLES.length-2) {
-			int end = start+3;
-			while (end < COLLECTIBLES.length-1 && COLLECTIBLES[end+1] != OUTSIDE) {end++;};
-			index = addToCountMap(index, map, start, end);
-			start = end+2;
-		}
-		return map;
-	}
-	
-	private static int addToCountMap(int index, int[][] map, int start, int end) {
-		for (int beg=start; beg<end-2; beg++) {
-			for (int x=beg; x<beg+4; x++) {
-				int mapi = COLLECTIBLES[x];
-				map[mapi] = add(map[mapi], index);
-			}
-			index++;
-		}
-		return index;
-	}
-
-	private static int[] add (int[] in, int x) {
-		if (in == null) {
-			return new int[] {x};
-		} else if (in.length == 1) {
-			return new int[] {in[0], x};
-		} else if (in.length == 2) {
-			return new int[] {in[0], in[1], x};
-		} else if (in.length == 3) {
-			return new int[] {in[0], in[1], in[2], x};
-		} else if (in.length == 4) {
-			return new int[] {in[0], in[1], in[2], in[3], x};
-		} else if (in.length == 5) {
-			return new int[] {in[0], in[1], in[2], in[3], in[4], x};
-		} else if (in.length == 6) {
-			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], x};
-		} else if (in.length == 7) {
-			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], in[6], x};
-		} else if (in.length == 8) {
-			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], in[6], in[7], x};
-		} else if (in.length == 9) {
-			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], in[6], in[7], in[8], x};
-		} else if (in.length == 10) {
-			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], in[6], in[7], in[8], in[9], x};
-		} else if (in.length == 11) {
-			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], in[6], in[7], in[8], in[9], in[10], x};
-		} else if (in.length == 12) {
-			return new int[] {in[0], in[1], in[2], in[3], in[4], in[5], in[6], in[7], in[8], in[9], in[10], in[11], x};
-		} 
-		throw new IllegalStateException("in array too large: " + in.length);
-	}
-	
+		
 	/**
 	 * Creates a normalized copy of the play field, where my bot 
 	 * always has ID 1.
@@ -249,7 +159,7 @@ public class PlayField {
 		return null;
 	}
 
-	public int[] getFeatureExistance () {
+	public int[] countThrees () {
 		int t1 = 0;
 		int t2 = 0;
 		for (int x: counts) {

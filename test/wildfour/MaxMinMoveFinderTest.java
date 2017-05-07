@@ -14,7 +14,7 @@ public class MaxMinMoveFinderTest {
 	private int nEval;
 	private long start;
 	
-	private static final int MAX_DEPTH = 10;
+	private static final int MAX_DEPTH = 11;
 	
 	@Test
 	public void shouldFindWinIn1 () {
@@ -75,7 +75,7 @@ public class MaxMinMoveFinderTest {
 		
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2), 0);
 		Assert.assertEquals(4, best.move);
-		Assert.assertEquals(-2.0, best.score);
+		Assert.assertEquals(-4.0, best.score);
 	}
 	
 	@Test
@@ -148,7 +148,7 @@ public class MaxMinMoveFinderTest {
 	public void done() {
 		long time = System.currentTimeMillis() - start;
 		System.out.println(nEval + " evaluations in " + time + "ms");
-		Assert.assertTrue("took too long: " + time, time<1000);
+		Assert.assertTrue("took too long: " + time, time<1350);
 	}
 	
 

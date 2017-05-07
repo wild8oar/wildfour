@@ -73,7 +73,7 @@ public class MaxMinMoveFinder implements MoveFinder {
 			return player == ME ? 10000-depth : -(10000-depth);
 		}
 		if (depth == maxDepth) {
-			int[] features = myField.getFeatureExistance();
+			int[] features = myField.countThrees();
 			return features[0]-features[1];
 		}
 		return findMiniMax(myField, depth+1, alpha, beta, player == ME ? OTHER : ME).score;		
