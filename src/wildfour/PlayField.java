@@ -23,6 +23,7 @@ public class PlayField {
 		
 	private final char[] field;
 	private final int[] counts = new int[69];
+	private static final int[] topline = {idx(0,0), idx(1,0), idx(2,0), idx(3,0), idx(4,0), idx(5,0), idx(6,0)};
 	
 	private static final int[][] countmap = {{0, 24, 62}, {4, 24, 25, 64}, {8, 24, 25, 26, 65}, 
 			{12, 24, 25, 26, 56}, {16, 25, 26, 54}, {20, 26, 45}, {0, 1, 27, 59}, 
@@ -195,6 +196,15 @@ public class PlayField {
 			}
 		}
 		return false;
+	}
+	
+	public boolean isFull () {
+		for (int i: topline) {
+			if (field[i] == EMPTY) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	private void initialCollect () {

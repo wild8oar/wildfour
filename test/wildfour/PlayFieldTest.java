@@ -133,25 +133,6 @@ public class PlayFieldTest {
 		Assert.assertFalse(field.hasPlayerWon(PlayField.ME));
 	}
 	
-//	@Test
-//	public void shouldEncodeFeatues() {
-//		PlayField field = PlayField.fromBotField(setupTestField(), ME);
-//		field.addDisc(3, ME);
-//		field.addDisc(3, OTHER);
-//		field.print();
-//		double[] feat = field.encodeFeaturesAsNetworkInput();
-//		Assert.assertArrayEquals(new double[] {0.0, 0.0, 0.0, 0.2, 0.0, 0.2, 0.0, 0.0}, feat, 0.0);
-//		field.addDisc(1, OTHER);
-//		field.print();
-//		feat = field.encodeFeaturesAsNetworkInput();
-//		Assert.assertArrayEquals(new double[] {0.0, 0.0, 0.2, 0.0, 0.0, 0.2, 0.0, 0.0}, feat, 0.0);
-//		field.addDisc(2, ME);
-//		field.print();
-//		feat = field.encodeFeaturesAsNetworkInput();
-//		System.out.println(Arrays.toString(feat));
-//		Assert.assertArrayEquals(new double[] {0.4, 0.0, 0.2, 0.0, 0.2, 0.0, 0.0, 0.0}, feat, 0.0);
-//	}
-	
 	@Test
 	public void shouldFindDiagonalFromLeftToToRight() {
 		PlayField field = PlayField.emptyField();
@@ -230,34 +211,26 @@ public class PlayFieldTest {
 		Assert.assertArrayEquals(new int[] {0, 2}, field.countThrees());
 	}
 	
-//	@Test
-//	public void shouldCollectAll() {
-//		PlayField field = PlayField.emptyField();
-//		for (int x=0; x<PlayField.WIDTH; x++) {
-//			field.addDisc(x, ME);
-//		}
-//		for (int y=1; y<PlayField.HEIGHT; y++) {
-//			field.addDisc(0, ME);
-//			field.addDisc(6, ME);
-//		}
-//		for (int x=1; x<PlayField.WIDTH-1; x++) {
-//			for (int y=1; y<PlayField.HEIGHT-1; y++) {
-//				field.addDisc(x, OTHER);
-//			}
-//		}
-//		for (int x=1; x<PlayField.WIDTH-1; x++) {
-//			field.addDisc(x, ME);
-//		}
-//		field.print();
-//		int[][] collected = field.collectAll();
-//		for (int[] row: collected) {
-//			Assert.assertEquals(1, row[0]);
-//			for (int i=1; i<row.length-1; i++) {
-//				Assert.assertNotEquals(0, row[i]);
-//			}
-//			Assert.assertEquals(1, row[row.length-1]);
-//		}
-//	}
+	@Test
+	public void shouldNotBeFull () {
+		PlayField field = PlayField.emptyField();
+		for (int y=0; y<PlayField.HEIGHT; y++) {
+			field.addDisc(0, ME);
+		}
+		Assert.assertFalse(field.isFull());
+	}
+	
+	@Test
+	public void shouldBeFull () {
+		PlayField field = PlayField.emptyField();
+		for (int x=0; x<PlayField.WIDTH; x++) {
+			for (int y=0; y<PlayField.HEIGHT; y++) {
+				field.addDisc(x, ME);
+			}
+		}
+		Assert.assertTrue(field.isFull());
+	}
+
 	
 	
 	private Field setupTestField () {

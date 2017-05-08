@@ -136,7 +136,49 @@ public class MaxMinMoveFinderTest {
 		Assert.assertEquals(0, best.move);
 	}
 	
-	
+	@Test
+	public void shouldPreventLossIfAlmostFull () {
+		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		Field field = new Field(7,6);
+		field.addDisc(3, 1);
+		field.addDisc(4, 2);
+		field.addDisc(3, 1);
+		field.addDisc(3, 2);
+		field.addDisc(3, 1);
+		field.addDisc(4, 2);
+		field.addDisc(4, 1);
+		field.addDisc(4, 2);
+		field.addDisc(1, 1);
+		field.addDisc(1, 2);
+		field.addDisc(1, 1);
+		field.addDisc(3, 2);
+		
+		field.addDisc(3, 1);
+		field.addDisc(5, 2);
+		field.addDisc(2, 1);
+		field.addDisc(0, 2);
+		field.addDisc(2, 1);
+		field.addDisc(4, 2);
+		field.addDisc(4, 1);
+		field.addDisc(0, 2);
+		field.addDisc(5, 1);
+		field.addDisc(6, 2);
+		field.addDisc(5, 1);
+		field.addDisc(5, 2);
+		
+		field.addDisc(5, 1);
+		field.addDisc(5, 2);
+		field.addDisc(0, 1);
+		field.addDisc(0, 2);
+		field.addDisc(0, 1);
+		field.addDisc(1, 2);
+		field.addDisc(1, 1);
+		field.addDisc(2, 2);
+		
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1), 0);
+		Assert.assertEquals(2, best.move);
+	}
+
 	
 	@Before
 	public void start() {

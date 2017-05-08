@@ -72,6 +72,9 @@ public class MaxMinMoveFinder implements MoveFinder {
 		if (myField.hasPlayerWon(player)) {
 			return player == ME ? 10000-depth : -(10000-depth);
 		}
+		if (myField.isFull()) {
+			return 0;
+		}
 		if (depth == maxDepth) {
 			int[] features = myField.countThrees();
 			return features[0]-features[1];
