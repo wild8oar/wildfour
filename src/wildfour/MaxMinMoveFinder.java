@@ -34,7 +34,7 @@ public class MaxMinMoveFinder {
 		System.err.println("Round " + round + " (" + time + "s):  depth = " + maxDepth);
 	}
 
-	public BestMove findBestMove(PlayField myField) {
+	public BestMove findBestMove (PlayField myField) {
 		int bestScore = Integer.MIN_VALUE;
 		int alpha = Integer.MIN_VALUE;
 		int bestMove = -1;
@@ -58,7 +58,13 @@ public class MaxMinMoveFinder {
 		if (bestScore > 9900) {
 			System.err.println("Detected sure win in " + (10000-bestScore));
 		} else if (bestScore < -9900) {
-			System.err.println("Detected sure loss in "+ (bestScore+10000));
+			int n = bestScore + 10000;
+			System.err.println("Detected sure loss in " + n);
+			if (n > 8) {
+				System.err.println("Retry with depth=8");
+				maxDepth = 8;
+				return findBestMove(myField);
+			}
 		}
 		return new BestMove(bestMove, bestScore);
 	}
