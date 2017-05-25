@@ -9,11 +9,12 @@ import bot.Field;
  */
 public class Wildfour {	
 
-	private final MoveFinder moveFinder;
+	private final MaxMinMoveFinder moveFinder;
 
 	Field field;
 	int myId;
 	int round;
+	int time;
 
 	public Wildfour (Evaluator evaluator) {
 		this.moveFinder = new MaxMinMoveFinder(11);
@@ -30,6 +31,10 @@ public class Wildfour {
 	public void setRound (int n) {
 		round = n;
 	}
+	
+	public void setTime (int t) {
+		time = t;
+	}
 
 	/**
 	 * Makes a turn. Edit this method to make your bot smarter.
@@ -41,7 +46,8 @@ public class Wildfour {
 			return 3;
 		}
 		PlayField field = PlayField.fromBotField(this.field, myId);
-		return moveFinder.findBestMove(field, 0).move;
+		moveFinder.updateMaxDepth(round, time);
+		return moveFinder.findBestMove(field).move;
 	}
 
 	public static void main(String[] args) throws Exception {

@@ -3,24 +3,38 @@ package wildfour;
 import static wildfour.PlayField.ME;
 import static wildfour.PlayField.OTHER;
 
+import wildfour.MoveFinder.BestMove;
+
 
 /**
  * Minimax with alpha-beta pruning.
  *
  */
-public class MaxMinMoveFinder implements MoveFinder {
+public class MaxMinMoveFinder {
 	
 	private static final int[] DEFAULT_ORDER = new int[] {3,2,4,5,1,0,6};
 	private static final int[] ALT_ORDER = new int[] {3,4,2,6,0,1,5};
 	
-	private final int maxDepth;
+	private int maxDepth;
 
 	public MaxMinMoveFinder(int maxDepth) {
 		this.maxDepth = maxDepth;
 	}
+	
+	public void updateMaxDepth (int round, int time) {
+		if (time < 1000) {
+			maxDepth = 8;
+		} else if (round < 10){
+			maxDepth = 11;
+		} else if (round < 20){
+			maxDepth = 13;
+		} else {
+			maxDepth = 22;
+		}
+		System.err.println("Round " + round + " (" + time + "s):  depth = " + maxDepth);
+	}
 
-	@Override
-	public BestMove findBestMove(PlayField myField, int searchDepth) {
+	public BestMove findBestMove(PlayField myField) {
 		int bestScore = Integer.MIN_VALUE;
 		int alpha = Integer.MIN_VALUE;
 		int bestMove = -1;
@@ -40,6 +54,11 @@ public class MaxMinMoveFinder implements MoveFinder {
 				}
 				//System.out.println("Move " + move + ": " + score);
 			}
+		}
+		if (bestScore > 9900) {
+			System.err.println("Detected sure win in " + (10000-bestScore));
+		} else if (bestScore < -9900) {
+			System.err.println("Detected sure loss in "+ (bestScore+10000));
 		}
 		return new BestMove(bestMove, bestScore);
 	}

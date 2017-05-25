@@ -23,7 +23,7 @@ public class PlayField {
 		
 	private final char[] field;
 	private final int[] counts = new int[69];
-	private static final int[] topline = {idx(0,0), idx(1,0), idx(2,0), idx(3,0), idx(4,0), idx(5,0), idx(6,0)};
+	private final int[] top = new int[WIDTH];
 	
 	private static final int[][] countmap = {{0, 24, 62}, {4, 24, 25, 64}, {8, 24, 25, 26, 65}, 
 			{12, 24, 25, 26, 56}, {16, 25, 26, 54}, {20, 26, 45}, {0, 1, 27, 59}, 
@@ -44,6 +44,7 @@ public class PlayField {
 	private PlayField (char[] field) {
 		this.field = field;
 		initialCollect();
+		collectTops();
 	}
 	
 	static final int idx (int x, int y) {
@@ -84,13 +85,23 @@ public class PlayField {
 		if (column > WIDTH) {
 			throw new IllegalStateException("Illegal column: " + column);
 		}
-		for (int idx = idx(column, HEIGHT-1); idx >= idx(column, 0); idx--) { // From bottom up
-			if (field[idx] == EMPTY) {
-				setDisc(idx, disc);
-				return true;
+		if (top[column] == 0) {
+			return false;
+		}
+		top[column]--;
+		setDisc(idx(column, top[column]), disc);
+		return true;
+	}
+	
+	private void collectTops () {
+		for (int col=0; col<WIDTH; col++) {
+			for (int y= HEIGHT-1; y >= 0; y--) { // From bottom up
+				if (field[idx(col, y)] == EMPTY) {
+					top[col] = y+1;
+					break;
+				}
 			}
 		}
-		return false;
 	}
 	
 	private void setDisc (int index, char disc) {
@@ -100,24 +111,24 @@ public class PlayField {
 		}
 	}
 	
-	private void unsetDisc (int index, char disc) {
+	private void unsetDisc (int index) {
+		int val = field[index] == ME ? ONE : TWO;
 		field[index] = EMPTY;
 		for (int i: countmap[index]) {
-			counts[i] -= (disc == ME ? ONE : TWO);
+			counts[i] -= val;
 		}	
 	}
 	
-	public boolean removeDisc(int column) {
+	public boolean removeDisc (int column) {
 		if (column > WIDTH) {
 			throw new IllegalStateException("Illegal column: " + column);
 		}
-		for (int y = idx(column, 0); y <= idx(column, HEIGHT-1); y++) { // From top down
-			if (field[y] !=EMPTY) {
-				unsetDisc(y, field[y]);
-				return true;
-			}
+		if (top[column] == HEIGHT) {
+			return false;
 		}
-		return false;
+		unsetDisc(idx(column, top[column]));
+		top[column]++;
+		return true;
 	}
 	
 	public char getDisc(int column, int row) {
@@ -199,8 +210,8 @@ public class PlayField {
 	}
 	
 	public boolean isFull () {
-		for (int i: topline) {
-			if (field[i] == EMPTY) {
+		for (int i: top) {
+			if (i > 0) {
 				return false;
 			}
 		}

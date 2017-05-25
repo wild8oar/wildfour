@@ -2,6 +2,8 @@ package wildfour;
 import static wildfour.PlayField.ME;
 import static wildfour.PlayField.OTHER;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -60,7 +62,8 @@ public class PlayFieldTest {
 
 	@Test
 	public void shouldPrintField() {
-		PlayField.fromBotField(setupTestField(), ME).print();
+		PlayField field = PlayField.fromBotField(setupTestField(), 1);
+		field.print();
 	}
 	
 	@Test

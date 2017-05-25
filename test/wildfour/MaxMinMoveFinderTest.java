@@ -17,33 +17,33 @@ public class MaxMinMoveFinderTest {
 	
 	@Test
 	public void shouldFindWinIn1 () {
-		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		field.addDisc(4, 1);
 		field.addDisc(4, 1);
 		field.addDisc(4, 1);
 		field.addDisc(5, 2);
 		
-		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1), 0);
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1));
 		Assert.assertEquals(4, best.move);
 		Assert.assertEquals(10000.0, best.score);
 	}
 	
 	@Test
 	public void shouldFindWinIn2 () {
-		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		field.addDisc(3, 1);
 		field.addDisc(4, 1);
 		
-		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1), 0);
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1));
 		Assert.assertEquals(2, best.move);
 		Assert.assertEquals(9998.0, best.score);
 	}
 	
 	@Test
 	public void shouldFindWinIn3 () {
-		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		field.addDisc(2, 2);
 		field.addDisc(4, 2);
@@ -59,46 +59,46 @@ public class MaxMinMoveFinderTest {
 		field.addDisc(5, 1);
 		field.addDisc(2, 2);
 
-		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1), 0);
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1));
 		Assert.assertEquals(3, best.move);
 		Assert.assertEquals(9996.0, best.score);
 	}
 	
 	@Test
 	public void shouldPreventLossIn1 () {
-		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		field.addDisc(4, 1);
 		field.addDisc(4, 1);
 		field.addDisc(4, 1);
 		
-		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2), 0);
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2));
 		Assert.assertEquals(4, best.move);
 		Assert.assertEquals(-4.0, best.score);
 	}
 	
 	@Test
 	public void shouldPreventLossIn2 () {
-		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		field.addDisc(3, 1);
 		field.addDisc(4, 1);
 		
-		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2), 0);
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2));
 		Assert.assertEquals(2, best.move);
 	}
 	
 	@Test
 	public void shouldJustPlay () {
-		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		
-		finder.findBestMove(PlayField.fromBotField(field, 2), 0);
+		finder.findBestMove(PlayField.fromBotField(field, 2));
 	}
 	
 	@Test
 	public void shouldPlayFast () {
-		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		field.addDisc(3, 1);
 		field.addDisc(3, 2);
@@ -111,13 +111,13 @@ public class MaxMinMoveFinderTest {
 		field.addDisc(6, 1);
 		field.addDisc(3, 2);
 		field.addDisc(6, 1);
-		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2), 0);
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2));
 		Assert.assertEquals(6, best.move);
 	}
 	
 	@Test
 	public void shouldPlayFastMirrored () {
-		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		field.addDisc(3, 1);
 		field.addDisc(3, 2);
@@ -131,13 +131,13 @@ public class MaxMinMoveFinderTest {
 		field.addDisc(3, 2);
 		field.addDisc(0, 1);
 		
-		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2), 0);
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2));
 		Assert.assertEquals(0, best.move);
 	}
 	
 	@Test
 	public void shouldPreventLossIfAlmostFull () {
-		MoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
 		field.addDisc(3, 1);
 		field.addDisc(4, 2);
@@ -174,7 +174,7 @@ public class MaxMinMoveFinderTest {
 		field.addDisc(1, 1);
 		field.addDisc(2, 2);
 		
-		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1), 0);
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1));
 		Assert.assertEquals(2, best.move);
 	}
 
