@@ -3,6 +3,7 @@ package wildfour;
 import static wildfour.PlayField.ME;
 import static wildfour.PlayField.OTHER;
 
+
 /**
  * Minimax with alpha-beta pruning.
  *
@@ -20,21 +21,39 @@ public class MaxMinMoveFinder implements MoveFinder {
 
 	@Override
 	public BestMove findBestMove(PlayField myField, int searchDepth) {
-		return findMiniMax(myField, searchDepth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, ME);
+		int bestScore = Integer.MIN_VALUE;
+		int alpha = Integer.MIN_VALUE;
+		int bestMove = -1;
+		for (int move: DEFAULT_ORDER) {
+			if (myField.addDisc(move, ME)) {
+				if (myField.hasPlayerWon(ME)) {
+					return new BestMove(move, 10000);
+				}
+				int score = findMiniMax(myField, 1, alpha, Integer.MAX_VALUE, OTHER);
+				myField.removeDisc(move);
+				if (score > alpha) {
+					alpha = score;
+				}
+				if (score > bestScore) {
+					bestScore = score;
+					bestMove = move;
+				}
+				//System.out.println("Move " + move + ": " + score);
+			}
+		}
+		return new BestMove(bestMove, bestScore);
 	}
 	
-	private BestMove findMiniMax (PlayField myField, int searchDepth, double alpha, double beta, char player) {
-		int bestMove = -1;
+	private int findMiniMax (PlayField myField, int searchDepth, int alpha, int beta, char player) {
 		if (player == ME) {
 			// Maximizing
-			double bestScore = Integer.MIN_VALUE;
+			int bestScore = Integer.MIN_VALUE;
 			for (int move: DEFAULT_ORDER) {
 				if (myField.addDisc(move, player)) {
-					double score = computeMiniMaxScore(myField, move, searchDepth, alpha, beta, player);
+					int score = computeMiniMaxScore(myField, searchDepth, alpha, beta, player);
 					myField.removeDisc(move);
 					if (score > bestScore) {
 						bestScore = score;
-						bestMove = move;
 					}
 					if (score > alpha) {
 						alpha = score;
@@ -44,17 +63,16 @@ public class MaxMinMoveFinder implements MoveFinder {
 					}
 				}
 			}
-			return new BestMove(bestMove, bestScore);
+			return bestScore;
 		} else {
 			// Minimizing
-			double bestScore = Integer.MAX_VALUE;
+			int bestScore = Integer.MAX_VALUE;
 			for (int move: ALT_ORDER) {
 				if (myField.addDisc(move, player)) {
-					double score = computeMiniMaxScore(myField, move, searchDepth, alpha, beta, player);
+					int score = computeMiniMaxScore(myField,searchDepth, alpha, beta, player);
 					myField.removeDisc(move);
 					if (score < bestScore) {
 						bestScore = score;
-						bestMove = move;
 					}
 					if (score < beta) {
 						beta = score;
@@ -64,11 +82,11 @@ public class MaxMinMoveFinder implements MoveFinder {
 					}
 				}
 			}
-			return new BestMove(bestMove, bestScore);
+			return bestScore;
 		}
 	}	
 	
-	private double computeMiniMaxScore (PlayField myField, int move, int depth, double alpha, double beta, char player) {
+	private int computeMiniMaxScore (PlayField myField, int depth, int alpha, int beta, char player) {
 		if (myField.hasPlayerWon(player)) {
 			return player == ME ? 10000-depth : -(10000-depth);
 		}
@@ -79,7 +97,7 @@ public class MaxMinMoveFinder implements MoveFinder {
 			int[] features = myField.countThrees();
 			return features[0]-features[1];
 		}
-		return findMiniMax(myField, depth+1, alpha, beta, player == ME ? OTHER : ME).score;		
+		return findMiniMax(myField, depth+1, alpha, beta, player == ME ? OTHER : ME);		
 	}
 
 

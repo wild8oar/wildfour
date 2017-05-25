@@ -1,6 +1,5 @@
 package wildfour;
-import static wildfour.PlayField.ME;
-import static wildfour.PlayField.OTHER;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
