@@ -24,6 +24,7 @@ public class PlayField {
 	private final char[] field;
 	private final int[] counts = new int[69];
 	private final int[] top = new int[WIDTH];
+	private char winner;
 	
 	private static final int[][] countmap = {{0, 24, 62}, {4, 24, 25, 64}, {8, 24, 25, 26, 65}, 
 			{12, 24, 25, 26, 56}, {16, 25, 26, 54}, {20, 26, 45}, {0, 1, 27, 59}, 
@@ -106,8 +107,13 @@ public class PlayField {
 	
 	private void setDisc (int index, char disc) {
 		field[index] = disc;
+		int val = field[index] == ME ? ONE : TWO;
+		int four = field[index] == ME ? FOUR1 : FOUR2;
 		for (int i: countmap[index]) {
-			counts[i] += (disc == ME ? ONE : TWO);
+			counts[i] += val;
+			if (counts[i] == four) {
+				winner = disc;
+			}
 		}
 	}
 	
@@ -116,7 +122,8 @@ public class PlayField {
 		field[index] = EMPTY;
 		for (int i: countmap[index]) {
 			counts[i] -= val;
-		}	
+		}
+		winner = 0;
 	}
 	
 	public boolean removeDisc (int column) {
@@ -200,13 +207,7 @@ public class PlayField {
 	}
 	
 	public boolean hasPlayerWon (char player) {
-		int four = player == ME ? FOUR1 : FOUR2;
-		for (int x: counts) {
-			if (x == four) {
-				return true;
-			}
-		}
-		return false;
+		return winner == player;
 	}
 	
 	public boolean isFull () {

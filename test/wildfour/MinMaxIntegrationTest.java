@@ -20,7 +20,7 @@ public class MinMaxIntegrationTest {
 			BestMove move = finder.findBestMove(PlayField.fromBotField(field, player));
 			long time = System.currentTimeMillis() - start;
 			System.out.println("found move in " + time + "ms");
-			Assert.assertTrue(time<1500);
+			Assert.assertTrue(time<1300);
 			field.addDisc(move.move, player);
 			//PlayField.fromBotField(field, 1).print();
 			round++;
