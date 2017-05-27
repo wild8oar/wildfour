@@ -16,7 +16,7 @@ public class MinMaxIntegrationTest {
 		int player = 2;
 		while (!field.isFull()) {
 			long start = System.currentTimeMillis();
-			finder.updateMaxDepth(round, 10000);
+			finder.updateMaxDepth(round, 7500);
 			BestMove move = finder.findBestMove(PlayField.fromBotField(field, player));
 			long time = System.currentTimeMillis() - start;
 			System.out.println("found move in " + time + "ms");

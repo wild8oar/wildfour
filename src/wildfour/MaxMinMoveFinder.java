@@ -15,26 +15,29 @@ public class MaxMinMoveFinder {
 	private static final int[] DEFAULT_ORDER = new int[] {3,2,4,5,1,0,6};
 	private static final int[] ALT_ORDER = new int[] {3,4,2,6,0,1,5};
 	
-	private int maxDepth;
+	private int maxDepth = 11;
+	private int time = 10000;
 
 	public MaxMinMoveFinder(int maxDepth) {
 		this.maxDepth = maxDepth;
 	}
 	
 	public void updateMaxDepth (int round, int time) {
+		this.time = time;
 		if (time < 1000) {
 			maxDepth = 8;
-		} else if (round < 10){
-			maxDepth = 11;
-		} else if (round < 18){
+		} else if (round < 18 && time > 8000){
 			maxDepth = 13;
-		} else {
+		} else if (round >= 18 && time > 8000){
 			maxDepth = 42;
+		} else {
+			maxDepth = 11; // default
 		}
 		System.err.println("Round " + round + " (" + time + "s):  depth = " + maxDepth);
 	}
 
 	public BestMove findBestMove (PlayField myField) {
+		long deadline = System.currentTimeMillis() + time - 500;
 		int bestScore = Integer.MIN_VALUE;
 		int alpha = Integer.MIN_VALUE;
 		int bestMove = -1;
@@ -44,15 +47,23 @@ public class MaxMinMoveFinder {
 					return new BestMove(move, 10000);
 				}
 				int score = findMiniMax(myField, 1, alpha, Integer.MAX_VALUE, OTHER);
-				myField.removeDisc(move);
 				if (score > alpha) {
 					alpha = score;
 				}
+				if (score == 0) {
+					int[] features = myField.countThrees();
+					score = features[0] - features[1];
+				}
+				myField.removeDisc(move);
 				if (score > bestScore) {
 					bestScore = score;
 					bestMove = move;
 				}
-				//System.out.println("Move " + move + ": " + score);
+			}
+			if (System.currentTimeMillis() > deadline) {
+				maxDepth = 2;
+				deadline = deadline + 500;
+				System.err.println("Time emergency, reducing depth to 2");
 			}
 		}
 		if (bestScore > 9900) {
@@ -113,8 +124,7 @@ public class MaxMinMoveFinder {
 			return 0;
 		}
 		if (depth == maxDepth) {
-			int[] features = myField.countThrees();
-			return features[0]-features[1];
+			return 0;
 		}
 		return findMiniMax(myField, depth+1, alpha, beta, player == ME ? OTHER : ME);		
 	}
