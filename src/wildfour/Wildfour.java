@@ -1,5 +1,7 @@
 package wildfour;
 
+import java.util.Optional;
+
 import bot.BotParser;
 import bot.Field;
 
@@ -42,10 +44,12 @@ public class Wildfour {
 	 * @return The column where the turn was made.
 	 */
 	public int makeTurn() {
-		if (round < 3) {
-			return 3;
-		}
 		PlayField field = PlayField.fromBotField(this.field, myId);
+		Optional<Integer> precomputed = MappedEvaluator.findMove(field);
+		if (precomputed.isPresent()) {
+			System.err.println("Round " + round + ": using precomputed move");
+			return precomputed.get();
+		}
 		moveFinder.updateMaxDepth(round, time);
 		return moveFinder.findBestMove(field).move;
 	}

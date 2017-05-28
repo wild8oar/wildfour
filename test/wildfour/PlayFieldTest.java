@@ -40,13 +40,35 @@ public class PlayFieldTest {
 			boolean res = field.addDisc(1, PlayField.ME);
 			Assert.assertTrue(res);
 		}
-		boolean res = field.addDisc(1, PlayField.ME);
+		boolean res = field.addDisc(1, ME);
 		Assert.assertFalse(res);
 	}
 	
 	@Test
 	public void shouldRemoveDisc () {
 		PlayField field = PlayField.fromBotField(setupTestField(), 1);
+		boolean res = field.removeDisc(2);
+		Assert.assertEquals(PlayField.EMPTY, field.getDisc(2,5));
+		Assert.assertTrue(res);
+	}
+	
+	@Test
+	public void shouldRemoveFromTop () {
+		PlayField field = PlayField.emptyField();
+		for (int i=0; i<PlayField.HEIGHT; i++) {
+			field.addDisc(2, ME);
+		}
+		Assert.assertEquals(ME, field.getDisc(2,0));
+		boolean res = field.removeDisc(2);
+		Assert.assertEquals(PlayField.EMPTY, field.getDisc(2,0));
+		Assert.assertTrue(res);
+	}
+	
+	@Test
+	public void shouldRemoveFromBottom () {
+		PlayField field = PlayField.emptyField();
+		field.addDisc(2, ME);
+		Assert.assertEquals(ME, field.getDisc(2,5));
 		boolean res = field.removeDisc(2);
 		Assert.assertEquals(PlayField.EMPTY, field.getDisc(2,5));
 		Assert.assertTrue(res);

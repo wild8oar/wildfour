@@ -1,12 +1,12 @@
 package wildfour;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import bot.Field;
-import junit.framework.Assert;
 import wildfour.MoveFinder.BestMove;
 
 public class MaxMinMoveFinderTest {
@@ -14,7 +14,7 @@ public class MaxMinMoveFinderTest {
 	private int nEval;
 	private long start;
 	
-	private static final int MAX_DEPTH = 11;
+	private static final int MAX_DEPTH = 12;
 	
 	@Test
 	public void shouldFindWinIn1 () {
@@ -27,7 +27,7 @@ public class MaxMinMoveFinderTest {
 		
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1));
 		Assert.assertEquals(4, best.move);
-		Assert.assertEquals(10000.0, best.score);
+		Assert.assertEquals(10000.0, best.score, 0.01);
 	}
 	
 	@Test
@@ -39,7 +39,7 @@ public class MaxMinMoveFinderTest {
 		
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1));
 		Assert.assertEquals(2, best.move);
-		Assert.assertEquals(9998.0, best.score);
+		Assert.assertEquals(9998.0, best.score, 0.01);
 	}
 	
 	@Test
@@ -62,7 +62,7 @@ public class MaxMinMoveFinderTest {
 
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1));
 		Assert.assertEquals(3, best.move);
-		Assert.assertEquals(9996.0, best.score);
+		Assert.assertEquals(9996.0, best.score, 0.01);
 	}
 	
 	@Test @Ignore
@@ -74,7 +74,7 @@ public class MaxMinMoveFinderTest {
 
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1));
 		Assert.assertEquals(1, best.move);
-		Assert.assertEquals(1.0, best.score);
+		Assert.assertEquals(1.0, best.score, 0.01);
 	}
 	
 	@Test
@@ -87,7 +87,7 @@ public class MaxMinMoveFinderTest {
 
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2));
 		Assert.assertEquals(1, best.move);
-		Assert.assertEquals(0.0, best.score);
+		Assert.assertEquals(0.0, best.score, 0.01);
 	}
 	
 	@Test

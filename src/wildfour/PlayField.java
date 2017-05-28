@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import bot.Field;
 
-public class PlayField { 
+public final class PlayField { 
 	
 	public static final char EMPTY = ' ';
 	public static final char ME = '1';
@@ -107,8 +107,8 @@ public class PlayField {
 	
 	private void setDisc (int index, char disc) {
 		field[index] = disc;
-		int val = field[index] == ME ? ONE : TWO;
-		int four = field[index] == ME ? FOUR1 : FOUR2;
+		int val = disc == ME ? ONE : TWO;
+		int four = disc == ME ? FOUR1 : FOUR2;
 		for (int i: countmap[index]) {
 			counts[i] += val;
 			if (counts[i] == four) {
@@ -193,14 +193,14 @@ public class PlayField {
 
 	public PlayField getInverted () {
 		char[] grid = new char[SIZE];
-		for (int x=0; x<WIDTH; x++) {
-			for (int y=0; y<HEIGHT; y++) {
-				char disc = field[idx(x,y)];
-				if (disc == OTHER) {
-					grid[idx(x,y)] = ME;
-				} else if (disc == ME) {
-					grid[idx(x,y)] = OTHER;
-				}
+		for (int i=0; i<SIZE; i++) {
+			char disc = field[i];
+			if (disc == OTHER) {
+				grid[i] = ME;
+			} else if (disc == ME) {
+				grid[i] = OTHER;
+			} else {
+				grid[i] = EMPTY;
 			}
 		}
 		return new PlayField(grid);
@@ -232,4 +232,5 @@ public class PlayField {
 	public void printCounts () {
 		System.out.println(Arrays.toString(counts));
 	}
+
 }
