@@ -2,6 +2,7 @@ package wildfour;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import bot.Field;
@@ -64,7 +65,7 @@ public class MaxMinMoveFinderTest {
 		Assert.assertEquals(9996.0, best.score);
 	}
 	
-	@Test
+	@Test @Ignore
 	public void shouldMake3 () {
 		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
@@ -80,12 +81,12 @@ public class MaxMinMoveFinderTest {
 	public void shouldPreventLossIn1 () {
 		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
-		field.addDisc(4, 1);
-		field.addDisc(4, 1);
-		field.addDisc(4, 1);
+		field.addDisc(1, 1);
+		field.addDisc(1, 1);
+		field.addDisc(1, 1);
 
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2));
-		Assert.assertEquals(4, best.move);
+		Assert.assertEquals(1, best.move);
 		Assert.assertEquals(0.0, best.score);
 	}
 	
@@ -93,11 +94,11 @@ public class MaxMinMoveFinderTest {
 	public void shouldPreventLossIn2 () {
 		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 		Field field = new Field(7,6);
-		field.addDisc(3, 1);
-		field.addDisc(4, 1);
+		field.addDisc(1, 1);
+		field.addDisc(2, 1);
 		
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2));
-		Assert.assertEquals(2, best.move);
+		Assert.assertEquals(3, best.move);
 	}
 	
 	@Test
@@ -189,6 +190,59 @@ public class MaxMinMoveFinderTest {
 		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 1));
 		Assert.assertEquals(2, best.move);
 	}
+	
+	
+	@Test
+	public void shouldNotBeStupid () {
+		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		Field field = new Field(7,6);
+		field.addDisc(3, 1);
+		field.addDisc(3, 2);
+		field.addDisc(3, 1);
+		field.addDisc(3, 2);
+		field.addDisc(3, 1);
+		field.addDisc(3, 2);
+		
+		field.addDisc(2, 1);
+		field.addDisc(4, 2);
+		field.addDisc(4, 1);
+		field.addDisc(2, 2);
+		field.addDisc(4, 1);
+		field.addDisc(2, 2);
+		
+		field.addDisc(2, 1);
+		field.addDisc(5, 2);
+		field.addDisc(0, 1);
+		field.addDisc(1, 2);
+		field.addDisc(0, 1);
+		
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2));
+		Assert.assertNotSame(1, best.move);
+	}
+	
+	@Test
+	public void shouldNotBeStupid2 () {
+		MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
+		Field field = new Field(7,6);
+		field.addDisc(3, 1);
+		field.addDisc(3, 2);
+		field.addDisc(3, 1);
+		field.addDisc(3, 2);
+		field.addDisc(3, 1);
+		field.addDisc(3, 2);
+		
+		field.addDisc(4, 1);
+		field.addDisc(2, 2);
+		field.addDisc(2, 1);
+		field.addDisc(2, 2);
+		field.addDisc(2, 1);
+		
+		PlayField.fromBotField(field, 1);
+		
+		BestMove best = finder.findBestMove(PlayField.fromBotField(field, 2));
+		Assert.assertEquals(4, best.move);
+	}
+
 
 	
 	@Before

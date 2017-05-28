@@ -147,12 +147,12 @@ public class PlayField {
 			for (int x=0; x<WIDTH; x++) {
 				char disc = field[idx(x,y)];
 				if (disc == EMPTY) {
-					System.err.print(" ");
+					System.out.print(" ");
 				} else {
-					System.err.print(disc);
+					System.out.print(disc);
 				}
 			}
-			System.err.println();
+			System.out.println();
 		}
 	}
 	

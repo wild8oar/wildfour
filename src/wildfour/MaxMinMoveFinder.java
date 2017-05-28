@@ -16,28 +16,25 @@ public class MaxMinMoveFinder {
 	private static final int[] ALT_ORDER = new int[] {3,4,2,6,0,1,5};
 	
 	private int maxDepth = 11;
-	private int time = 10000;
 
 	public MaxMinMoveFinder(int maxDepth) {
 		this.maxDepth = maxDepth;
 	}
 	
 	public void updateMaxDepth (int round, int time) {
-		this.time = time;
 		if (time < 1000) {
 			maxDepth = 8;
-		} else if (round < 18 && time > 8000){
+		} else if (round < 10 || time < 8000){
+			maxDepth = 11;
+		} else if (round < 18){
 			maxDepth = 13;
-		} else if (round >= 18 && time > 8000){
-			maxDepth = 42;
 		} else {
-			maxDepth = 11; // default
+			maxDepth = 42;
 		}
 		System.err.println("Round " + round + " (" + time + "s):  depth = " + maxDepth);
 	}
 
 	public BestMove findBestMove (PlayField myField) {
-		long deadline = System.currentTimeMillis() + time - 500;
 		int bestScore = Integer.MIN_VALUE;
 		int alpha = Integer.MIN_VALUE;
 		int bestMove = -1;
@@ -47,23 +44,15 @@ public class MaxMinMoveFinder {
 					return new BestMove(move, 10000);
 				}
 				int score = findMiniMax(myField, 1, alpha, Integer.MAX_VALUE, OTHER);
+				myField.removeDisc(move);
 				if (score > alpha) {
 					alpha = score;
 				}
-				if (score == 0) {
-					int[] features = myField.countThrees();
-					score = features[0] - features[1];
-				}
-				myField.removeDisc(move);
 				if (score > bestScore) {
 					bestScore = score;
 					bestMove = move;
 				}
-			}
-			if (System.currentTimeMillis() > deadline) {
-				maxDepth = 2;
-				deadline = deadline + 500;
-				System.err.println("Time emergency, reducing depth to 2");
+//				System.out.println("move " + move + ": " + score);
 			}
 		}
 		if (bestScore > 9900) {
@@ -99,7 +88,7 @@ public class MaxMinMoveFinder {
 			int bestScore = Integer.MAX_VALUE;
 			for (int move: ALT_ORDER) {
 				if (myField.addDisc(move, player)) {
-					int score = computeMiniMaxScore(myField,searchDepth, alpha, beta, player);
+					int score = computeMiniMaxScore(myField, searchDepth, alpha, beta, player);
 					myField.removeDisc(move);
 					if (score < bestScore) {
 						bestScore = score;
@@ -120,10 +109,7 @@ public class MaxMinMoveFinder {
 		if (myField.hasPlayerWon(player)) {
 			return player == ME ? 10000-depth : -(10000-depth);
 		}
-		if (myField.isFull()) {
-			return 0;
-		}
-		if (depth == maxDepth) {
+		if (myField.isFull() || depth == maxDepth) {
 			return 0;
 		}
 		return findMiniMax(myField, depth+1, alpha, beta, player == ME ? OTHER : ME);		
