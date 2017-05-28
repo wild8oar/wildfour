@@ -41,6 +41,7 @@ public class MaxMinMoveFinder {
 		for (int move: DEFAULT_ORDER) {
 			if (myField.addDisc(move, ME)) {
 				if (myField.hasPlayerWon(ME)) {
+					myField.removeDisc(move);
 					return new BestMove(move, 10000);
 				}
 				int score = findMiniMax(myField, 1, alpha, Integer.MAX_VALUE, OTHER);
