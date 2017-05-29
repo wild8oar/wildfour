@@ -1,6 +1,5 @@
 package wildfour;
-import static wildfour.MappedEvaluator.encodeField;
-import static wildfour.MappedEvaluator.encodeMirroredField;
+import static wildfour.MapMoveFinder.encodeField;
 import static wildfour.PlayField.ME;
 import static wildfour.PlayField.OTHER;
 
@@ -14,13 +13,16 @@ import java.util.Optional;
 
 public class PrecomputeMoves {
 	
-	private static final int MAX_ROUNDS = 18;
-	private static final int MAX_DEPTH = 13;
+	private static final int MAX_ROUNDS = 3;
+	private static final int MAX_DEPTH = 20;
 	
 	private static final int ENTRIES_PER_CLASS = 4000;
 	
 	private static final MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
-	private static Map<String, Integer> map = new HashMap<>();
+	private static final Map<String, Integer> map = TheMap.MAP; //new HashMap<>();
+	private static final MapMoveFinder mapFinder = new MapMoveFinder(map);;
+	private static final Map<String, Integer> quickMap = new HashMap<>();
+	private static final MapMoveFinder quickFinder = new MapMoveFinder(quickMap);
 	
 	private static int nComputed = 0;
 	private static int nStored = 0;
@@ -28,7 +30,7 @@ public class PrecomputeMoves {
 	
 	private static int[] nEval = new int[MAX_ROUNDS+1];
 	private static long[] timeSum = new long[MAX_ROUNDS+1];
-	
+		
 	private static void precomputeForPlayer1 (PlayField field, int round) {
 		int move = findBestMove(field, round);
 		field.addDisc(move, ME);
@@ -78,9 +80,13 @@ public class PrecomputeMoves {
 	
 	private static int findBestMove (PlayField field, int round) {
 		nComputed++;
-		Optional<Integer> stored = fromMap(field);
+		Optional<Integer> stored = mapFinder.findMove(field);
 		if (stored.isPresent()) {
 			return stored.get();
+		}
+		Optional<Integer> quick = quickFinder.findMove(field);
+		if (quick.isPresent()) {
+			return quick.get();
 		}
 		nEval[round]++;
 		long start = System.currentTimeMillis();
@@ -90,11 +96,12 @@ public class PrecomputeMoves {
 		if (move == -1) {
 			throw new IllegalStateException("Illegal move: -1");
 		}
+		String key = encodeField(field);
 		if (time < 500) {
 			nQuick++;
+			quickMap.put(key, move);
 			return move;
 		}
-		String key = encodeField(field);
 		map.put(key, move);
 		nStored++;
 		if (nStored % 10 == 0) {
@@ -106,21 +113,10 @@ public class PrecomputeMoves {
 		return move;
 	}
 	
-	private static Optional<Integer> fromMap (PlayField field) {
-		String key = encodeField(field);
-		Integer direct = map.get(key);
-		if (direct != null) {
-			return Optional.of(direct);
-		}
-		String mirror = encodeMirroredField(field);
-		Integer fromMirror = map.get(mirror);
-		if (fromMirror != null) {
-			return Optional.of(6-fromMirror);
-		}
-		return Optional.empty();
-	}
-	
 	private static void saveMap() throws FileNotFoundException {
+		if (map.isEmpty()) {
+			return;
+		}
 		File path = new File("/home/adrian/aigames/wildfour/src/wildfour/");
 		if (!path.exists()) {
 			path = new File("/home/adrian/git/wildfour/src/wildfour/");
@@ -177,12 +173,11 @@ public class PrecomputeMoves {
 	}
 
 	public static void main (String[] args) throws Exception {
-		map = TheMap.MAP;
 		nComputed = nStored = 0;
 		long start = System.currentTimeMillis();
 		PlayField field = PlayField.emptyField();
 		precomputeForPlayer1(field, 1);
-		System.out.println("Finished player 1 in:   " + (System.currentTimeMillis() - start) + "ms");
+		System.out.println("Finished player 1 in:   " + (System.currentTimeMillis() - start)/1000 + "s");
 		precomputeForPlayer2(field, 1);
 		saveMap();
 		System.out.println("Moves computed:           " + nComputed);
@@ -192,7 +187,7 @@ public class PrecomputeMoves {
 		System.out.println("Timing stats:");
 		for (int i=1; i<=MAX_ROUNDS; i++) {
 			if (nEval[i] > 0) {
-				System.out.println(String.format("Round %2d: %6d evals, avg %dms", i, nEval[i], timeSum[i]/nEval[i]));
+				System.out.println(String.format("Round %2d: %6d evals, avg %5dms", i, nEval[i], timeSum[i]/nEval[i]));
 			}
 		}
 	}

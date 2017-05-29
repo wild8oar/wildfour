@@ -2,18 +2,25 @@ package wildfour;
 
 import static wildfour.PlayField.ME;
 
+import java.util.Map;
 import java.util.Optional;
 
-public class MappedEvaluator {
+public class MapMoveFinder {
 	
-	public static Optional<Integer> findMove (PlayField field) {
+	private final Map<String, Integer> map;
+	
+	public MapMoveFinder(Map<String, Integer> map) {
+		this.map = map;
+	}
+
+	public Optional<Integer> findMove (PlayField field) {
 		String key = encodeField(field);
-		Integer direct = TheMap.MAP.get(key);
+		Integer direct = map.get(key);
 		if (direct != null) {
 			return Optional.of(direct);
 		}
 		String mirror = encodeMirroredField(field);
-		Integer fromMirror = TheMap.MAP.get(mirror);
+		Integer fromMirror = map.get(mirror);
 		if (fromMirror != null) {
 			return Optional.of(6-fromMirror);
 		}
@@ -32,7 +39,7 @@ public class MappedEvaluator {
 		return new String(enc);
 	}
 	
-	public static String encodeMirroredField (PlayField field) {
+	private static String encodeMirroredField (PlayField field) {
 		char[] enc = new char[14];
 		int p = 0;
 		for (int x=PlayField.WIDTH-1; x >=0; x--) {
