@@ -139,12 +139,7 @@ public class PrecomputeMoves {
 				classNum++;
 				String mapName = String.format("Map%02d", classNum);
 				writer = new PrintWriter(new File(mapsPath, mapName + ".java"));
-				writeClassHeader(writer, "wildfour.maps");
-				writer.println("public class " + mapName + " {");
-				writer.println();
-				writer.println("public static final Map<String, Integer> MAP = new HashMap<>();");
-				writer.println();
-				writer.println("static {");
+				writeClassHeader(writer, "wildfour.maps", mapName);
 			}
 			writer.println("MAP.put(\"" + k + "\"," + map.get(k) + ");");
 			n++;
@@ -153,12 +148,7 @@ public class PrecomputeMoves {
 		writer.println("}");
 		writer.close();
 		writer = new PrintWriter(new File(path, "TheMap.java"));
-		writeClassHeader(writer, "wildfour");
-		writer.println("public class TheMap {");
-		writer.println();
-		writer.println("public static final Map<String, Integer> MAP = new HashMap<>();");
-		writer.println();
-		writer.println("static {");
+		writeClassHeader(writer, "wildfour", "TheMap");
 		for (int i=1; i<=classNum; i++) {
 			String mapName = String.format("wildfour.maps.Map%02d", classNum);
 			writer.println("MAP.putAll(" + mapName + ".MAP);");
@@ -168,7 +158,7 @@ public class PrecomputeMoves {
 		writer.close();
 	}
 	
-	private static void writeClassHeader (PrintWriter writer, String packName) {
+	private static void writeClassHeader (PrintWriter writer, String packName, String className) {
 		writer.println("package " + packName + ";");
 		writer.println("/**");	
 		writer.println(" * Generated on " + new Date());
@@ -179,6 +169,11 @@ public class PrecomputeMoves {
 		writer.println("import java.util.HashMap;");
 		writer.println("import java.util.Map;");
 		writer.println();
+		writer.println("public class " + className + " {");
+		writer.println();
+		writer.println("public static final Map<String, Integer> MAP = new HashMap<>();");
+		writer.println();
+		writer.println("static {");
 	}
 
 	public static void main (String[] args) throws Exception {
