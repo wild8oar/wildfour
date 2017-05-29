@@ -24,7 +24,7 @@ public class MaxMinMoveFinder {
 	public void updateMaxDepth (int round, int time) {
 		if (time < 1000) {
 			maxDepth = 8;
-		} else if (round < 10 || time < 8000){
+		} else if (time < 8000){
 			maxDepth = 11;
 		} else if (round < 18){
 			maxDepth = 13;

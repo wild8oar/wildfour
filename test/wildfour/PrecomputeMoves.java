@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class PrecomputeMoves {
 	
-	private static final int MAX_ROUNDS = 11;
+	private static final int MAX_ROUNDS = 18;
 	private static final int MAX_DEPTH = 13;
 	
 	private static final int ENTRIES_PER_CLASS = 4000;
