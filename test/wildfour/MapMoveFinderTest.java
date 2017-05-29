@@ -5,9 +5,10 @@ import org.junit.Test;
 
 import bot.Field;
 
-public class MappedEvaluatorTest {
+public class MapMoveFinderTest {
 	
-		
+	private MapMoveFinder finder = new MapMoveFinder(TheMap.MAP);
+	
 	@Test
 	public void shouldFindWinForPlayer1 () {
 		Field field = new Field(7,6);
@@ -18,7 +19,7 @@ public class MappedEvaluatorTest {
 		field.addDisc(5, 2);
 		field.addDisc(5, 2);
 		
-		int best = MappedEvaluator.findMove(PlayField.fromBotField(field, 1)).get();
+		int best = finder.findMove(PlayField.fromBotField(field, 1)).get();
 		Assert.assertEquals(3, best);
 	}
 	
@@ -33,7 +34,7 @@ public class MappedEvaluatorTest {
 		field.addDisc(3, 2);
 		field.addDisc(3, 2);
 		
-		int best = MappedEvaluator.findMove(PlayField.fromBotField(field, 2)).get();
+		int best = finder.findMove(PlayField.fromBotField(field, 2)).get();
 		Assert.assertEquals(3, best);
 	}
 	
@@ -58,7 +59,7 @@ public class MappedEvaluatorTest {
 	}
 	
 	private int findMove(PlayField field) {
-		return MappedEvaluator.findMove(field).get();
+		return finder.findMove(field).get();
 	}
 
 }
