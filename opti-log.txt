@@ -1,0 +1,10 @@
+With depth = 16:
+Round  1:      1 evals, avg 18.077s
+Round  2:      4 evals, avg 11.062s
+Round  3:      4 evals, avg 85.707s
+Round  4:     19 evals, avg 32.966s
+Round  5:     19 evals, avg 25.192s
+With depth = 18:
+Round  6:     79 evals, avg 172.130s
+Round  7:    262 evals, avg 15.315s
+
