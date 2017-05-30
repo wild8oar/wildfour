@@ -11,16 +11,13 @@ import bot.Field;
  */
 public class Wildfour {	
 
-	private final MaxMinMoveFinder moveFinder;
-
-	Field field;
-	int myId;
-	int round;
-	int time;
-
-	public Wildfour (Evaluator evaluator) {
-		this.moveFinder = new MaxMinMoveFinder(11);
-	}
+	private final MapMoveFinder mapFinder = new MapMoveFinder(TheMap.MAP);
+	private final MaxMinMoveFinder moveFinder = new MaxMinMoveFinder(13);
+	
+	private Field field;
+	private int myId;
+	private int round;
+	private int time;
 
 	public void setField(Field f) {
 		field = f;
@@ -45,7 +42,7 @@ public class Wildfour {
 	 */
 	public int makeTurn() {
 		PlayField field = PlayField.fromBotField(this.field, myId);
-		Optional<Integer> precomputed = MappedEvaluator.findMove(field);
+		Optional<Integer> precomputed = mapFinder.findMove(field);
 		if (precomputed.isPresent()) {
 			System.err.println("Round " + round + ": using precomputed move");
 			return precomputed.get();
@@ -65,7 +62,7 @@ public class Wildfour {
 //			network = Learn01.getNetwork(0, 0);
 //		}
 		//BotParser parser = new BotParser(new Wildfour(new RandomizedNetworkEvaluator(network)));
-		BotParser parser = new BotParser(new Wildfour(new EqualEvaluator()));
+		BotParser parser = new BotParser(new Wildfour());
 		parser.run();
 	}
 
