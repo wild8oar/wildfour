@@ -1,8 +1,8 @@
 package wildfour;
 /**
- * Generated on Mon May 29 11:35:57 CEST 2017
- * Max. rounds 11
- * Max. depth 13
+ * Generated on Tue May 30 08:53:36 CEST 2017
+ * Max. rounds 5
+ * Max. depth 16
 **/
 
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package wildfour.maps;
+package wildfour;
 /**
  * Generated on Tue May 30 08:53:36 CEST 2017
  * Max. rounds 5
@@ -8,7 +8,7 @@ package wildfour.maps;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Map01 {
+public class MapR05D16 {
 
 public static final Map<String, Integer> MAP = new HashMap<>();
 
