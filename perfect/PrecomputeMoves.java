@@ -8,14 +8,13 @@ import java.util.Optional;
 
 public class PrecomputeMoves {
 	
-	private static final int MAX_ROUNDS = 1;
-	private static final int MAX_DEPTH = 42;
+	private static final int MAX_ROUNDS = 2;
+	private static final int MAX_DEPTH = 20;
 	
 	private static final int ENTRIES_PER_CLASS = 4000;
 	
 	private static final MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
-	//private static final Map<String, Integer> map = TheMap.MAP; //new HashMap<>();
-	private static final Map<String, Integer> map = new HashMap<>();
+	private static final Map<String, Integer> map = TheMap.MAP; //new HashMap<>();
 	private static final MapMoveFinder mapFinder = new MapMoveFinder(map);;
 	private static final Map<String, Integer> quickMap = new HashMap<>();
 	private static final MapMoveFinder quickFinder = new MapMoveFinder(quickMap);

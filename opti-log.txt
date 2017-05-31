@@ -7,4 +7,6 @@ Round  5:     19 evals, avg 25.192s
 With depth = 18:
 Round  6:     79 evals, avg 172.130s
 Round  7:    262 evals, avg 15.315s
+Round  8:    316 evals, avg 70.243s
+Round  9:    171 evals, avg 18.754s
 

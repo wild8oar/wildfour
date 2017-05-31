@@ -1,14 +1,14 @@
-package wildfour.maps;
+package wildfour;
 /**
  * Generated on Tue May 30 20:57:32 CEST 2017
  * Max. rounds 9
- * Max. depth 18
+ * Max. depth 18 (for rounds 1-5: depth=16)
 **/
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Map01 {
+public class MapR09D18 {
 
 public static final Map<String, Integer> MAP = new HashMap<>();
 

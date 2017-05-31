@@ -1,8 +1,8 @@
 package maps;
 /**
- * Generated on Tue May 30 14:59:47 CEST 2017
- * Max. rounds 1
- * Max. depth 18
+ * Generated on Wed May 31 12:05:43 CEST 2017
+ * Max. rounds 2
+ * Max. depth 20
 **/
 
 import java.util.HashMap;
@@ -14,5 +14,9 @@ public static final Map<String, Integer> MAP = new HashMap<>();
 
 static {
 MAP.put("00000000000000",3);
+MAP.put("00000B00000000",3);
+MAP.put("0000000B000000",3);
+MAP.put("0B000000000000",3);
+MAP.put("000B0000000000",3);
 }
 }
