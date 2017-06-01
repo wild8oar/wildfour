@@ -22,7 +22,7 @@ public class MaxMinMoveFinder {
 	}
 	
 	public void updateMaxDepth (int round, int time) {
-		if (round < 12) {
+		if (round < 14) {
 			maxDepth = 18; // precomputed
 		} else if (time < 1000) {
 			maxDepth = 8;

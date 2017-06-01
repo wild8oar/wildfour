@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class PrecomputeMoves {
 	
-	private static final int MAX_ROUNDS = 3;
+	private static final int MAX_ROUNDS = 4;
 	private static final int MAX_DEPTH = 20;
 	
 	private static final int ENTRIES_PER_CLASS = 4000;
@@ -136,7 +136,7 @@ public class PrecomputeMoves {
 		writer = new PrintWriter(new File(path, "TheMap.java"));
 		writeClassHeader(writer, null, "TheMap");
 		for (int i=1; i<=classNum; i++) {
-			String mapName = String.format("maps.Map%02d", classNum);
+			String mapName = String.format("maps.Map%02d", i);
 			writer.println("MAP.putAll(" + mapName + ".MAP);");
 		}
 		writer.println("}");
