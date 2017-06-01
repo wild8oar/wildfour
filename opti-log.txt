@@ -9,4 +9,9 @@ Round  6:     79 evals, avg 172.130s
 Round  7:    262 evals, avg 15.315s
 Round  8:    316 evals, avg 70.243s
 Round  9:    171 evals, avg 18.754s
+Round 10:    890 evals, avg 20.589s
+Round 11:    570 evals, avg  9.735s
+Round 12:   2575 evals, avg  7.678s
+Round 13:   2088 evals, avg  4.333s
+
 

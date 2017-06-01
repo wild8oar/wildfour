@@ -1,4 +1,4 @@
-package wildfour;
+package maps;
 /**
  * Generated on Tue May 30 08:53:36 CEST 2017
  * Max. rounds 5
