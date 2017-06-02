@@ -13,5 +13,8 @@ Round 10:    890 evals, avg 20.589s
 Round 11:    570 evals, avg  9.735s
 Round 12:   2575 evals, avg  7.678s
 Round 13:   2088 evals, avg  4.333s
+Round 14:   8449 evals, avg  3.080s
+Round 15:   7387 evals, avg  1.226s
+
 
 
