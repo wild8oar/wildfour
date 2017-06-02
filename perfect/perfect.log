@@ -3,3 +3,5 @@ round	depth	moves	evals	stored	totT	avgT
 2	20	8	4	4	 1.0h	 918s
 3	20	15	4	4	 7.4h	6673s
 4	20	64	19	19	11.8h	2236s
+5	20	113	19	19	 6.7h	1276s
+
