@@ -9,7 +9,6 @@ public class Move implements Comparable<Move> {
 	private final PlayField field;
 	private final int round;
 	private final int move;
-	private final boolean flipped;
 	private List<Move> previous = new ArrayList<>();
 	private boolean hasNext;
 	
@@ -17,14 +16,7 @@ public class Move implements Comparable<Move> {
 		this.encoded = enc;
 		field = MapMoveFinder.decodeField(enc);
 		this.round = field.rounds()+1;
-		if (!MapMoveFinder.encodeField(field).equals(enc)) {
-			this.move = 6 - move;
-			flipped = true;
-		} else {
-			this.move = move;
-			flipped = false;
-		}
-		
+		this.move = move;
 	}
 
 	public PlayField getField() {
@@ -67,9 +59,4 @@ public class Move implements Comparable<Move> {
 	public String getEncoded() {
 		return encoded;
 	}
-
-	public boolean isFlipped() {
-		return flipped;
-	}
-
 }

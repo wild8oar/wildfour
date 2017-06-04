@@ -58,7 +58,9 @@ public class MapWriter {
 			writeClassHeader(writer, name);
 			for (int i=from; i<=to; i++) {
 				String key = keys.get(i);
-				writer.println("MAP.put(\"" + key + "\"," + map.get(key) + ");");
+				String norm = MapMoveFinder.normalize(key);
+				int move = norm.equals(key) ? map.get(key) : 6-map.get(key);
+				writer.println("MAP.put(\"" + norm + "\"," + move + ");");
 			}
 			writer.println("}");
 			writer.println("}");

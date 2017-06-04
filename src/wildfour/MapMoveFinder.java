@@ -75,12 +75,16 @@ public class MapMoveFinder {
 			field.print();
 			throw new IllegalStateException("failed to decode");
 		}
-		// normalize
+		return field;
+	}
+	
+	public static String normalize (String enc) {
+		PlayField field = decodeField(enc);
 		String mirrored = encodeMirroredField(field);
 		if (enc.compareTo(mirrored) > 0) {
-			return decodeField(mirrored);
+			return mirrored;
 		}
-		return field;
+		return enc;
 	}
 	
 	private static void add (PlayField field, int col, char[] decs) {

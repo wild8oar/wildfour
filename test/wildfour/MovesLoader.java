@@ -12,7 +12,9 @@ public class MovesLoader {
 	public static List<Move> loadMoves (Map<String, Integer> map) {
 		List<Move> moves = new ArrayList<>();
 		for (String enc: map.keySet()) {
-			moves.add(new Move(enc, map.get(enc)));
+			String norm = MapMoveFinder.normalize(enc);
+			int move = norm.equals(enc) ? map.get(enc) : 6-map.get(enc);
+			moves.add(new Move(norm, move));
 		}
 		Collections.sort(moves);
 		findOrder(moves);

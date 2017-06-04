@@ -18,7 +18,7 @@ public class AnalyzeMap {
 	private static final File KNOWN_LOSSES = new File("known_losses.txt");
 	
 	private static final Map<String, Integer> map = MapR16D18.MAP;
-	private static final MaxMinMoveFinder analyzer = new MaxMinMoveFinder(20);
+	private static final MaxMinMoveFinder analyzer = new MaxMinMoveFinder(11);
 	
 	private static final Set<String> wins = new HashSet<>();
 	private static final Set<String> losses = new HashSet<>();
