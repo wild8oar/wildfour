@@ -1,6 +1,6 @@
 package maps;
 /**
- * Written on Sat Jun 03 17:11:53 CEST 2017
+ * Written on Sat Jun 03 19:21:00 CEST 2017
 **/
 
 import java.util.HashMap;
@@ -11,6 +11,15 @@ public class KnownWins_02 {
 public static final Map<String, Integer> MAP = new HashMap<>();
 
 static {
+MAP.put("0H000<?F0B099J",2);
+MAP.put("0H000<?F0E0H0?",4);
+MAP.put("0H000<?F0G0?0B",2);
+MAP.put("0H000<?F0I090H",2);
+MAP.put("0H000<?F9J0B09",5);
+MAP.put("0H000<@>0?0B0B",5);
+MAP.put("0H000<@>0?0B0H",1);
+MAP.put("0H000<@>0?0H0B",5);
+MAP.put("0H000<@@0B000H",2);
 MAP.put("0H000<@F0B009J",5);
 MAP.put("0H000<@F0B090J",6);
 MAP.put("0H000<@F0J0B09",2);

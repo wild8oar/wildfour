@@ -18,21 +18,23 @@ public class MapWriter {
 		List<String> keys = new ArrayList<>();
 		keys.addAll(map.keySet());
 		Collections.sort(keys);
-		if (keys.size() <= ENTRIES_PER_CLASS) {
-			writeMap(mapName, map, keys, 0, keys.size()-1);
+		int nKeys = keys.size();
+		if (nKeys <= ENTRIES_PER_CLASS) {
+			writeMap(mapName, map, keys, 0, nKeys-1);
 			return;
 		}
 		// have to split
 		int num = 0;
-		for (int i=0; i<keys.size(); i+=ENTRIES_PER_CLASS) {
+		for (int i=0; i<nKeys; i+=ENTRIES_PER_CLASS) {
 			num++;
 			int to = i+ENTRIES_PER_CLASS-1;
-			if (to >= keys.size()) {
-				to = keys.size()-1;
+			if (to >= nKeys) {
+				to = nKeys-1;
 			}
 			writeMap(mapName(mapName, num), map, keys, i, to);
 		}
 		writeSummary(mapName, num);
+		System.out.println("Written " + nKeys + " entries to map " + mapName);
 	}
 	
 	private static String mapName (String name, int idx) {

@@ -1,6 +1,6 @@
 package maps;
 /**
- * Written on Sat Jun 03 17:11:53 CEST 2017
+ * Written on Sat Jun 03 19:21:00 CEST 2017
 **/
 
 import java.util.HashMap;
@@ -14,22 +14,31 @@ static {
 MAP.put("00000?G@090B00",1);
 MAP.put("00000?G@0?0000",5);
 MAP.put("00000AG@090000",5);
+MAP.put("00000E>G09000H",4);
+MAP.put("00000E>G090B0B",4);
 MAP.put("00000E>G0=0J0B",4);
 MAP.put("00000E@@0H0000",2);
+MAP.put("00000EGF0?000B",2);
+MAP.put("00000EGF0?0B00",2);
 MAP.put("00000F>>0E0H0B",5);
 MAP.put("00000F>G0900?J",2);
 MAP.put("00000F>G090B9J",4);
 MAP.put("00000F>G0<0H0H",4);
 MAP.put("00000F>G0?009J",2);
 MAP.put("00000F@@0E000J",6);
+MAP.put("00000FG@000H00",2);
+MAP.put("00000FG@0B000B",2);
+MAP.put("00000FG@0B0B00",2);
 MAP.put("00000FG@0H0000",2);
 MAP.put("00000FGF0@000J",6);
 MAP.put("00000FGF9A0B0B",1);
 MAP.put("00000G>>0E0B00",5);
+MAP.put("00000G>G09000B",4);
 MAP.put("00000G>G0<0B0B",5);
 MAP.put("00000G>G0>000B",4);
 MAP.put("00000I=>9J000B",2);
 MAP.put("00000I=G0?009J",2);
+MAP.put("00000I>>0B000B",2);
 MAP.put("00000I>@0B0B00",2);
 MAP.put("00000I@@0B0000",2);
 MAP.put("00000I@@0B0B00",4);
@@ -4002,14 +4011,5 @@ MAP.put("0H000<>G090I0B",2);
 MAP.put("0H000<>G0B0@0B",4);
 MAP.put("0H000<?F0<0H0H",2);
 MAP.put("0H000<?F0@0B0H",2);
-MAP.put("0H000<?F0B099J",2);
-MAP.put("0H000<?F0E0H0?",4);
-MAP.put("0H000<?F0G0?0B",2);
-MAP.put("0H000<?F0I090H",2);
-MAP.put("0H000<?F9J0B09",5);
-MAP.put("0H000<@>0?0B0B",5);
-MAP.put("0H000<@>0?0B0H",1);
-MAP.put("0H000<@>0?0H0B",5);
-MAP.put("0H000<@@0B000H",2);
 }
 }

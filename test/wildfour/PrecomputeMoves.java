@@ -3,23 +3,20 @@ import static wildfour.MapMoveFinder.encodeField;
 import static wildfour.PlayField.ME;
 import static wildfour.PlayField.OTHER;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import maps.MapR16D18;
 
 public class PrecomputeMoves {
 	
 	private static final int MAX_ROUNDS = 18;
 	private static final int MAX_DEPTH = 18;
-	
-	private static final int ENTRIES_PER_CLASS = 4000;
-	
+		
 	private static final MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
-	private static final Map<String, Integer> map = TheMap.MAP; //new HashMap<>();
+	private static final Map<String, Integer> map = MapR16D18.MAP; // new HashMap<>();
 	private static final MapMoveFinder mapFinder = new MapMoveFinder(map);;
 	private static final Map<String, Integer> quickMap = new HashMap<>();
 	private static final MapMoveFinder quickFinder = new MapMoveFinder(quickMap);
@@ -117,59 +114,7 @@ public class PrecomputeMoves {
 		if (map.isEmpty()) {
 			return;
 		}
-		File path = new File("/home/adrian/aigames/wildfour/src/wildfour/");
-		if (!path.exists()) {
-			path = new File("/home/adrian/git/wildfour/src/wildfour/");
-		}
-		File mapsPath = new File(path, "maps");
-		PrintWriter writer = null;
-		int classNum = 0;
-		int n = 0;
-		for (String k: map.keySet()) {
-			if (n % ENTRIES_PER_CLASS == 0) {
-				if (classNum > 0) {
-					writer.println("}");
-					writer.println("}");
-					writer.close();
-				}
-				classNum++;
-				String mapName = String.format("Map%02d", classNum);
-				writer = new PrintWriter(new File(mapsPath, mapName + ".java"));
-				writeClassHeader(writer, "wildfour.maps", mapName);
-			}
-			writer.println("MAP.put(\"" + k + "\"," + map.get(k) + ");");
-			n++;
-		}
-		writer.println("}");
-		writer.println("}");
-		writer.close();
-		writer = new PrintWriter(new File(path, "TheMap.java"));
-		writeClassHeader(writer, "wildfour", "TheMap");
-		for (int i=1; i<=classNum; i++) {
-			String mapName = String.format("wildfour.maps.Map%02d", i);
-			writer.println("MAP.putAll(" + mapName + ".MAP);");
-		}
-		writer.println("}");
-		writer.println("}");
-		writer.close();
-	}
-	
-	private static void writeClassHeader (PrintWriter writer, String packName, String className) {
-		writer.println("package " + packName + ";");
-		writer.println("/**");	
-		writer.println(" * Generated on " + new Date());
-		writer.println(" * Max. rounds " + MAX_ROUNDS);
-		writer.println(" * Max. depth " + MAX_DEPTH);
-		writer.println("**/");	
-		writer.println();
-		writer.println("import java.util.HashMap;");
-		writer.println("import java.util.Map;");
-		writer.println();
-		writer.println("public class " + className + " {");
-		writer.println();
-		writer.println("public static final Map<String, Integer> MAP = new HashMap<>();");
-		writer.println();
-		writer.println("static {");
+		MapWriter.writeMap(String.format("MapR%02dD%02d", MAX_ROUNDS, MAX_DEPTH), map);
 	}
 
 	public static void main (String[] args) throws Exception {
