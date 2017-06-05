@@ -9,15 +9,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import maps.KnownWins;
-import maps.MapR16D18;
+import maps.MapR16D18X;
 import wildfour.MoveFinder.BestMove;
 
 public class OptimizeMap {
 	
 	private static final Map<String, Integer> KNOWN_WINS = KnownWins.MAP;
-	private static final Map<String, Integer> MAP = MapR16D18.MAP;
+	private static final Map<String, Integer> MAP = MapR16D18X.MAP;
 	private static final String OUTPUT_MAP = "MapR16D18X";
 	private static final int LOSS_DEPTH = 18;
 	
@@ -49,6 +50,7 @@ public class OptimizeMap {
 	public static void optimizeLosses (List<Move> moves) throws IOException {
 		losses.addAll(Files.readAllLines(new File("known_losses.txt").toPath(), Charset.defaultCharset()));
 		int n = 0;
+		long last = System.currentTimeMillis();
 		for (Move move: moves) {
 			if (!move.hasNext() && losses.contains(move.getEncoded())) {
 				MaxMinMoveFinder finder = new MaxMinMoveFinder(LOSS_DEPTH);
@@ -59,6 +61,11 @@ public class OptimizeMap {
 				}
 				removeLoss(move, LOSS_DEPTH, "");
 				n++;
+				if (System.currentTimeMillis()-last > TimeUnit.MINUTES.toMillis(10)) {
+					System.out.println("Saving temp. map after " + n + " removed losses");
+					MapWriter.writeMap(OUTPUT_MAP, MAP);
+					last = System.currentTimeMillis();
+				}
 			}
 		}
 		System.out.println("Removed " + n + " positions that lead to loss");
