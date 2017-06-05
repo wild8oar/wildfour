@@ -19,10 +19,9 @@ public class OptimizeMap {
 	private static final Map<String, Integer> KNOWN_WINS = KnownWins.MAP;
 	private static final Map<String, Integer> MAP = MapR16D18.MAP;
 	private static final String OUTPUT_MAP = "MapR16D18X";
-	private static final int LOSS_DEPTH = 11;
+	private static final int LOSS_DEPTH = 16;
 	
 	private static final Set<String> losses = new HashSet<>();
-	
 
 	public static void optimizeWins (List<Move> moves) throws FileNotFoundException {
 		int nChg = 0;
@@ -37,6 +36,7 @@ public class OptimizeMap {
 //						System.out.println("Old move: " + move.getMove());
 //						System.out.println("Win move: " + win);
 //					}
+					removeMove(move);
 					MAP.put(move.getEncoded(), win);
 					nChg++;
 				}
@@ -46,6 +46,11 @@ public class OptimizeMap {
 		if (nChg > 0) {
 			MapWriter.writeMap(OUTPUT_MAP, MAP);
 		}
+	}
+	
+	private static void removeMove (Move move) {
+		MAP.remove(move.getEncoded());
+		MAP.remove(MapMoveFinder.mirror(move.getEncoded()));
 	}
 	
 	public static void optimizeLosses (List<Move> moves) throws IOException {
@@ -72,7 +77,7 @@ public class OptimizeMap {
 	
 	private static void removeLoss (Move move, int lossDepth, String indent) {
 		System.out.println(indent + "Removing round " + move.getRound() + " position because it leads to loss");
-		MAP.remove(move.getEncoded());
+		removeMove(move);
 		System.out.println(indent + "Analyzing " + move.getPrevious().size() + " previous positions...");
 		MaxMinMoveFinder finder = new MaxMinMoveFinder(lossDepth + 2);
 		for (Move prev: move.getPrevious()) {
@@ -80,9 +85,14 @@ public class OptimizeMap {
 			if (best.score < -9900) {
 				removeLoss(prev, lossDepth+2, indent + "  ");
 			} else if (best.move == prev.getMove()) {
-				throw new IllegalStateException("Previous move must also be loss or must change!");
+				System.out.println("Move:");
+				move.getField().print();
+				System.out.println("Previous:");
+				prev.getField().print();
+				System.out.println("Previous move should also be loss or change!");
 			} else {
 				System.out.println(indent + "Changing previous move");
+				removeMove(prev);
 				MAP.put(prev.getEncoded(), best.move);
 			}
 		}

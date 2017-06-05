@@ -78,9 +78,13 @@ public class MapMoveFinder {
 		return field;
 	}
 	
-	public static String normalize (String enc) {
+	public static String mirror (String enc) {
 		PlayField field = decodeField(enc);
-		String mirrored = encodeMirroredField(field);
+		return encodeMirroredField(field);
+	}
+	
+	public static String normalize (String enc) {
+		String mirrored = mirror(enc);
 		if (enc.compareTo(mirrored) > 0) {
 			return mirrored;
 		}

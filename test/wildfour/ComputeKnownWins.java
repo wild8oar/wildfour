@@ -15,7 +15,7 @@ public class ComputeKnownWins {
 	
 	private static final Map<String, Integer> KNOWN_WINS = KnownWins.MAP;
 	private static final Set<String> WINS = new HashSet<>();
-	private static final MaxMinMoveFinder optimizer = new MaxMinMoveFinder(11);
+	private static final MaxMinMoveFinder optimizer = new MaxMinMoveFinder(18);
 
 	public static void main(String[] args) throws IOException {
 		WINS.addAll(Files.readAllLines(new File("known_wins.txt").toPath(), Charset.defaultCharset()));
