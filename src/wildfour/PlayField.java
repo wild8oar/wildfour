@@ -246,5 +246,9 @@ public final class PlayField {
 	public char[] getField() {
 		return field;
 	}
+	
+	public PlayField copy () {
+		return new PlayField(Arrays.copyOf(field, field.length));
+	}
 
 }

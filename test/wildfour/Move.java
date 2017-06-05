@@ -59,8 +59,5 @@ public class Move implements Comparable<Move> {
 	public String getEncoded() {
 		return encoded;
 	}
-	
-	public Move mirrored () {
-		return new Move(MapMoveFinder.mirror(encoded), 6-move);
-	}
+
 }

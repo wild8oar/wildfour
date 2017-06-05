@@ -19,7 +19,7 @@ public class OptimizeMap {
 	private static final Map<String, Integer> KNOWN_WINS = KnownWins.MAP;
 	private static final Map<String, Integer> MAP = MapR16D18.MAP;
 	private static final String OUTPUT_MAP = "MapR16D18X";
-	private static final int LOSS_DEPTH = 16;
+	private static final int LOSS_DEPTH = 18;
 	
 	private static final Set<String> losses = new HashSet<>();
 
@@ -29,13 +29,6 @@ public class OptimizeMap {
 			if (!move.hasNext() && KNOWN_WINS.containsKey(move.getEncoded())) {
 				int win = KNOWN_WINS.get(move.getEncoded());
 				if (win != move.getMove()) {
-//					System.out.println("Changed move from " + move.getMove()
-//					+ " to " + win + " (round " + move.getRound() + ", flipped=" + move.isFlipped() + ")");
-//					if (!move.isFlipped()) {
-//						move.getField().print();
-//						System.out.println("Old move: " + move.getMove());
-//						System.out.println("Win move: " + win);
-//					}
 					removeMove(move);
 					MAP.put(move.getEncoded(), win);
 					nChg++;
@@ -85,11 +78,12 @@ public class OptimizeMap {
 			if (best.score < -9900) {
 				removeLoss(prev, lossDepth+2, indent + "  ");
 			} else if (best.move == prev.getMove()) {
-				System.out.println("Move:");
+				System.out.println("Current:" + prev.getEncoded() + " or " + MapMoveFinder.mirror(prev.getEncoded()));
 				move.getField().print();
-				System.out.println("Previous:");
+				System.out.println("Previous:" + prev.getEncoded() 
+				+ " or " + MapMoveFinder.mirror(prev.getEncoded()) + ": " + prev.getMove());
 				prev.getField().print();
-				System.out.println("Previous move should also be loss or change!");
+				throw new IllegalStateException("Previous move must also be loss or change!");
 			} else {
 				System.out.println(indent + "Changing previous move");
 				removeMove(prev);
