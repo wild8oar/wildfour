@@ -12,7 +12,7 @@ import java.util.Map;
 public class MapWriter {
 	
 	private static final File PATH = new File("test/maps");
-	private static final int ENTRIES_PER_CLASS = 4000;
+	private static final int ENTRIES_PER_CLASS = 3950;
 	
 	public static void writeMap (String mapName, Map<String, Integer> map) throws FileNotFoundException {
 		List<String> keys = new ArrayList<>();
