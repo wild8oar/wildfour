@@ -232,5 +232,23 @@ public final class PlayField {
 	public void printCounts () {
 		System.out.println(Arrays.toString(counts));
 	}
+	
+	public int rounds () {
+		int r = 0;
+		for (int i=0; i<field.length; i++) {
+			if (field[i] != EMPTY) {
+				r++;
+			}
+		}
+		return r;
+	}
+
+	public char[] getField() {
+		return field;
+	}
+	
+	public PlayField copy () {
+		return new PlayField(Arrays.copyOf(field, field.length));
+	}
 
 }

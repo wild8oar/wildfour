@@ -2,8 +2,6 @@ package wildfour;
 import static wildfour.PlayField.ME;
 import static wildfour.PlayField.OTHER;
 
-import java.util.Arrays;
-
 import org.junit.Assert;
 import org.junit.Test;
 
