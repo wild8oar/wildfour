@@ -1,4 +1,4 @@
-package wildfour.maps;
+package maps.r18d18;
 /**
  * Generated on Sat Jun 03 01:03:11 CEST 2017
  * Max. rounds 18

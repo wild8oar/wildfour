@@ -1,6 +1,6 @@
 /**
- * Generated on Fri Jun 02 15:56:27 CEST 2017
- * Max. rounds 5
+ * Generated on Sat Jun 03 16:41:57 CEST 2017
+ * Max. rounds 6
  * Max. depth 20
 **/
 

@@ -4,4 +4,5 @@ round	depth	moves	evals	stored	totT	avgT	FacD16
 3	20	15	4	4	 7.4h	6673s	x78
 4	20	64	19	19	11.8h	2236s	x68
 5	20	113	19	19	 6.7h	1276s	x51
+6	20	456	79	79	24.5h	1115s
 

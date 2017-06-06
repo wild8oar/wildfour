@@ -8,7 +8,7 @@ package maps;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Map01 {
+public class MapR06D20 {
 
 public static final Map<String, Integer> MAP = new HashMap<>();
 
