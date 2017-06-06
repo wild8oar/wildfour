@@ -1,4 +1,4 @@
-package maps;
+package maps.r16d18;
 /**
  * Generated on Fri Jun 02 15:55:31 CEST 2017
  * Max. rounds 16
