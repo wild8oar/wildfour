@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import maps.MapR16D18;
+import maps.MapR18D18;
 import wildfour.MoveFinder.BestMove;
 
 public class AnalyzeMap {
@@ -17,8 +17,8 @@ public class AnalyzeMap {
 	private static final File KNOWN_WINS = new File("known_wins.txt");
 	private static final File KNOWN_LOSSES = new File("known_losses.txt");
 	
-	private static final Map<String, Integer> map = MapR16D18.MAP;
-	private static final MaxMinMoveFinder analyzer = new MaxMinMoveFinder(11);
+	private static final Map<String, Integer> map = MapR18D18.MAP;
+	private static final MaxMinMoveFinder analyzer = new MaxMinMoveFinder(24);
 	
 	private static final Set<String> wins = new HashSet<>();
 	private static final Set<String> losses = new HashSet<>();

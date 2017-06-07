@@ -12,15 +12,16 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import maps.KnownWins;
-import maps.MapR16D18X;
+import maps.MapR18D18X;
 import wildfour.MoveFinder.BestMove;
 
 public class OptimizeMap {
 	
 	private static final Map<String, Integer> KNOWN_WINS = KnownWins.MAP;
-	private static final Map<String, Integer> MAP = MapR16D18X.MAP;
-	private static final String OUTPUT_MAP = "MapR16D18X";
+	private static final Map<String, Integer> MAP = MapR18D18X.MAP;
+	private static final String OUTPUT_MAP = "MapR18D18X";
 	private static final int LOSS_DEPTH = 18;
+	private static final int MIN_ROUND = 11; // don't go earlier than that to recompute losses
 	
 	private static final Set<String> losses = new HashSet<>();
 
@@ -78,6 +79,10 @@ public class OptimizeMap {
 	private static void removeLoss (Move move, int lossDepth, String indent) {
 		System.out.println(indent + "Removing round " + move.getRound() + " position because it leads to loss");
 		removeMove(move);
+		if (move.getRound() < MIN_ROUND) {
+			System.out.println("Skipping further analysis because round<" + MIN_ROUND);
+			return;
+		}
 		System.out.println(indent + "Analyzing " + move.getPrevious().size() + " previous positions...");
 		MaxMinMoveFinder finder = new MaxMinMoveFinder(lossDepth + 2);
 		for (Move prev: move.getPrevious()) {
