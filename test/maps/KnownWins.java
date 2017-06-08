@@ -1,6 +1,6 @@
 package maps;
 /**
- * Written on Tue Jun 06 15:07:14 CEST 2017
+ * Written on Wed Jun 07 23:59:24 CEST 2017
 **/
 
 import java.util.HashMap;
@@ -16,5 +16,6 @@ MAP.putAll(KnownWins_02.MAP);
 MAP.putAll(KnownWins_03.MAP);
 MAP.putAll(KnownWins_04.MAP);
 MAP.putAll(KnownWins_05.MAP);
+MAP.putAll(KnownWins_06.MAP);
 }
 }

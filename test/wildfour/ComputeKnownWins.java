@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import maps.KnownWins;
 import wildfour.MoveFinder.BestMove;
@@ -15,12 +16,13 @@ public class ComputeKnownWins {
 	
 	private static final Map<String, Integer> KNOWN_WINS = KnownWins.MAP;
 	private static final Set<String> WINS = new HashSet<>();
-	private static final MaxMinMoveFinder optimizer = new MaxMinMoveFinder(18);
+	private static final MaxMinMoveFinder optimizer = new MaxMinMoveFinder(24);
 
 	public static void main(String[] args) throws IOException {
 		WINS.addAll(Files.readAllLines(new File("known_wins.txt").toPath(), Charset.defaultCharset()));
 		int nComp = 0;
 		int nFound = 0;
+		long last = System.currentTimeMillis();
 		for (String win: WINS) {
 			if (!KNOWN_WINS.containsKey(win)) {
 				BestMove best = optimizer.findBestMove(MapMoveFinder.decodeField(win));
@@ -31,6 +33,10 @@ public class ComputeKnownWins {
 				}
 				nFound++;
 				KNOWN_WINS.put(win, best.move);
+				if (System.currentTimeMillis()-last > TimeUnit.MINUTES.toMillis(10)) {
+					MapWriter.writeMap("KnownWins", KNOWN_WINS);
+					last = System.currentTimeMillis();
+				}
 			}
 		}
 		System.out.println("Computed " + nComp + " moves, found " + nFound + " wins.");

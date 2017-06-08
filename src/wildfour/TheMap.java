@@ -1,27 +1,40 @@
 package wildfour;
-/**
- * Generated on Sat Jun 03 01:03:11 CEST 2017
- * Max. rounds 18
- * Max. depth 18
-**/
+
+/*
+ * R18D18, optimized some losses, recomputed moves to depth 18.
+ * Optimized wins to depth 24.
+ */
 
 import java.util.HashMap;
 import java.util.Map;
+
+import wildfour.maps.MapR18D18Z_01;
+import wildfour.maps.MapR18D18Z_02;
+import wildfour.maps.MapR18D18Z_03;
+import wildfour.maps.MapR18D18Z_04;
+import wildfour.maps.MapR18D18Z_05;
+import wildfour.maps.MapR18D18Z_06;
+import wildfour.maps.MapR18D18Z_07;
+import wildfour.maps.MapR18D18Z_08;
+import wildfour.maps.MapR18D18Z_09;
+import wildfour.maps.MapR18D18Z_10;
+import wildfour.maps.MapR18D18Z_11;
 
 public class TheMap {
 
 public static final Map<String, Integer> MAP = new HashMap<>();
 
 static {
-MAP.putAll(wildfour.maps.Map01.MAP);
-MAP.putAll(wildfour.maps.Map02.MAP);
-MAP.putAll(wildfour.maps.Map03.MAP);
-MAP.putAll(wildfour.maps.Map04.MAP);
-MAP.putAll(wildfour.maps.Map05.MAP);
-MAP.putAll(wildfour.maps.Map06.MAP);
-MAP.putAll(wildfour.maps.Map07.MAP);
-MAP.putAll(wildfour.maps.Map08.MAP);
-MAP.putAll(wildfour.maps.Map09.MAP);
-MAP.putAll(wildfour.maps.Map10.MAP);
+MAP.putAll(MapR18D18Z_01.MAP);
+MAP.putAll(MapR18D18Z_02.MAP);
+MAP.putAll(MapR18D18Z_03.MAP);
+MAP.putAll(MapR18D18Z_04.MAP);
+MAP.putAll(MapR18D18Z_05.MAP);
+MAP.putAll(MapR18D18Z_06.MAP);
+MAP.putAll(MapR18D18Z_07.MAP);
+MAP.putAll(MapR18D18Z_08.MAP);
+MAP.putAll(MapR18D18Z_09.MAP);
+MAP.putAll(MapR18D18Z_10.MAP);
+MAP.putAll(MapR18D18Z_11.MAP);
 }
 }
