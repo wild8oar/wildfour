@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +16,14 @@ public class MapWriter {
 	private static final int ENTRIES_PER_CLASS = 3950;
 	
 	public static void writeMap (String mapName, Map<String, Integer> map) throws FileNotFoundException {
+		Map<String, Integer> norm = normalizeMap(map);
 		List<String> keys = new ArrayList<>();
-		keys.addAll(map.keySet());
+		keys.addAll(norm.keySet());
 		Collections.sort(keys);
 		int nKeys = keys.size();
 		if (nKeys <= ENTRIES_PER_CLASS) {
-			writeMap(mapName, map, keys, 0, nKeys-1);
+			writeMap(mapName, norm, keys, 0, nKeys-1);
+			System.out.println("Written " + nKeys + " entries to map " + mapName);
 			return;
 		}
 		// have to split
@@ -31,12 +34,28 @@ public class MapWriter {
 			if (to >= nKeys) {
 				to = nKeys-1;
 			}
-			writeMap(mapName(mapName, num), map, keys, i, to);
+			writeMap(mapName(mapName, num), norm, keys, i, to);
 		}
 		writeSummary(mapName, num);
-		System.out.println("Written " + nKeys + " entries to map " + mapName);
+		System.out.println("Written " + nKeys + " entries to " + num + " maps " + mapName);
 	}
 	
+	private static Map<String, Integer> normalizeMap (Map<String, Integer> map) {
+		Map<String, Integer> norm = new HashMap<>();
+		for (String key: map.keySet()) {
+			String normkey = MapMoveFinder.normalize(key);
+			int move;
+			if (map.containsKey(normkey)) {
+				move = map.get(normkey);
+			} else {
+				move = normkey.equals(key) ? map.get(key) : 6-map.get(key);
+			}
+			norm.put(normkey, move);
+		}
+		System.out.println("Normalized map from " + map.keySet().size() + " to " + norm.keySet().size() + " keys");
+		return norm;
+	}
+
 	private static String mapName (String name, int idx) {
 		return String.format("%s_%02d", name, idx);
 	}
@@ -58,9 +77,7 @@ public class MapWriter {
 			writeClassHeader(writer, name);
 			for (int i=from; i<=to; i++) {
 				String key = keys.get(i);
-				String norm = MapMoveFinder.normalize(key);
-				int move = norm.equals(key) ? map.get(key) : 6-map.get(key);
-				writer.println("MAP.put(\"" + norm + "\"," + move + ");");
+				writer.println("MAP.put(\"" + key + "\"," + map.get(key) + ");");
 			}
 			writer.println("}");
 			writer.println("}");

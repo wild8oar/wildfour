@@ -20,19 +20,22 @@ public class ComputeKnownWins {
 
 	public static void main(String[] args) throws IOException {
 		WINS.addAll(Files.readAllLines(new File("known_wins.txt").toPath(), Charset.defaultCharset()));
+		System.out.println("Analyzing " + WINS.size() + " known wins");
+		System.out.println("Map already contains " + KNOWN_WINS.keySet().size() + " entries");
 		int nComp = 0;
 		int nFound = 0;
 		long last = System.currentTimeMillis();
 		for (String win: WINS) {
-			if (!KNOWN_WINS.containsKey(win)) {
-				BestMove best = optimizer.findBestMove(MapMoveFinder.decodeField(win));
+			String norm = MapMoveFinder.normalize(win);
+			if (!KNOWN_WINS.containsKey(norm)) {
+				BestMove best = optimizer.findBestMove(MapMoveFinder.decodeField(norm));
 				nComp++;
 				if (best.score < 9900) {
 					System.out.println("WARNING: no win found, incease search depth");
 					continue;
 				}
 				nFound++;
-				KNOWN_WINS.put(win, best.move);
+				KNOWN_WINS.put(norm, best.move);
 				if (System.currentTimeMillis()-last > TimeUnit.MINUTES.toMillis(10)) {
 					MapWriter.writeMap("KnownWins", KNOWN_WINS);
 					last = System.currentTimeMillis();

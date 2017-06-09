@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import maps.MapR16D18;
+import maps.MapR18D18X;
 
 public class PrecomputeMoves {
 	
@@ -16,13 +16,15 @@ public class PrecomputeMoves {
 	private static final int MAX_DEPTH = 18;
 		
 	private static final MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
-	private static final Map<String, Integer> map = MapR16D18.MAP; // new HashMap<>();
-	private static final MapMoveFinder mapFinder = new MapMoveFinder(map);;
+	private static final Map<String, Integer> inmap = MapR18D18X.MAP;
+	private static final MapMoveFinder mapFinder = new MapMoveFinder(inmap);
+	private static final Map<String, Integer> newmap = new HashMap<>();
 	private static final Map<String, Integer> quickMap = new HashMap<>();
 	private static final MapMoveFinder quickFinder = new MapMoveFinder(quickMap);
 	
 	private static int nComputed = 0;
 	private static int nStored = 0;
+	private static int nKept = 0;
 	private static int nQuick = 0;
 	
 	private static int[] nEval = new int[MAX_ROUNDS+1];
@@ -79,6 +81,11 @@ public class PrecomputeMoves {
 		nComputed++;
 		Optional<Integer> stored = mapFinder.findMove(field);
 		if (stored.isPresent()) {
+			String key = encodeField(field);
+			if (!newmap.containsKey(key)) {
+				newmap.put(encodeField(field), stored.get());
+				nKept++;
+			}
 			return stored.get();
 		}
 		Optional<Integer> quick = quickFinder.findMove(field);
@@ -99,7 +106,7 @@ public class PrecomputeMoves {
 			quickMap.put(key, move);
 			return move;
 		}
-		map.put(key, move);
+		newmap.put(key, move);
 		nStored++;
 		if (nStored % 10 == 0) {
 			System.out.println(nComputed + " / " + nStored);
@@ -111,10 +118,10 @@ public class PrecomputeMoves {
 	}
 	
 	private static void saveMap() throws FileNotFoundException {
-		if (map.isEmpty()) {
+		if (newmap.isEmpty()) {
 			return;
 		}
-		MapWriter.writeMap(String.format("MapR%02dD%02d", MAX_ROUNDS, MAX_DEPTH), map);
+		MapWriter.writeMap(String.format("MapR%02dD%02dY", MAX_ROUNDS, MAX_DEPTH), newmap);
 	}
 
 	public static void main (String[] args) throws Exception {
@@ -126,7 +133,8 @@ public class PrecomputeMoves {
 		precomputeForPlayer2(field, 1);
 		saveMap();
 		System.out.println("Moves computed:           " + nComputed);
-		System.out.println("Moves stored:             " + nStored);
+		System.out.println("New moves stored:         " + nStored);
+		System.out.println("Moves kept from input:    " + nKept);
 		System.out.println("Quick finds not stored:   " + nQuick);
 		System.out.println("Completed in:             " + (System.currentTimeMillis() - start)/1000 + "s");
 		System.out.println("Timing stats:");
