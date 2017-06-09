@@ -12,13 +12,14 @@ import maps.MapR18D18X;
 
 public class PrecomputeMoves {
 	
-	private static final int MAX_ROUNDS = 18;
-	private static final int MAX_DEPTH = 18;
+	private static final int MAX_ROUNDS = 19;
+	private static final int MAX_DEPTH = 24;
 		
 	private static final MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 	private static final Map<String, Integer> inmap = MapR18D18X.MAP;
 	private static final MapMoveFinder mapFinder = new MapMoveFinder(inmap);
-	private static final Map<String, Integer> newmap = new HashMap<>();
+	private static final Map<String, Integer> newMap = new HashMap<>();
+	private static final MapMoveFinder newFinder = new MapMoveFinder(newMap);
 	private static final Map<String, Integer> quickMap = new HashMap<>();
 	private static final MapMoveFinder quickFinder = new MapMoveFinder(quickMap);
 	
@@ -79,18 +80,22 @@ public class PrecomputeMoves {
 	
 	private static int findBestMove (PlayField field, int round) {
 		nComputed++;
-		Optional<Integer> stored = mapFinder.findMove(field);
+		Optional<Integer> stored = newFinder.findMove(field);
 		if (stored.isPresent()) {
-			String key = encodeField(field);
-			if (!newmap.containsKey(key)) {
-				newmap.put(encodeField(field), stored.get());
-				nKept++;
-			}
 			return stored.get();
 		}
 		Optional<Integer> quick = quickFinder.findMove(field);
 		if (quick.isPresent()) {
 			return quick.get();
+		}
+		Optional<Integer> existing = mapFinder.findMove(field);
+		if (existing.isPresent()) {
+			String key = encodeField(field);
+			if (!newMap.containsKey(key)) {
+				newMap.put(encodeField(field), existing.get());
+				nKept++;
+			}
+			return existing.get();
 		}
 		nEval[round]++;
 		long start = System.currentTimeMillis();
@@ -106,7 +111,7 @@ public class PrecomputeMoves {
 			quickMap.put(key, move);
 			return move;
 		}
-		newmap.put(key, move);
+		newMap.put(key, move);
 		nStored++;
 		if (nStored % 10 == 0) {
 			System.out.println(nComputed + " / " + nStored);
@@ -118,10 +123,10 @@ public class PrecomputeMoves {
 	}
 	
 	private static void saveMap() throws FileNotFoundException {
-		if (newmap.isEmpty()) {
+		if (newMap.isEmpty()) {
 			return;
 		}
-		MapWriter.writeMap(String.format("MapR%02dD%02dY", MAX_ROUNDS, MAX_DEPTH), newmap);
+		MapWriter.writeMap(String.format("MapR%02dD%02dY", MAX_ROUNDS, MAX_DEPTH), newMap);
 	}
 
 	public static void main (String[] args) throws Exception {

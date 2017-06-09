@@ -1,8 +1,6 @@
 package maps;
 /**
- * Written on Fri Jun 09 08:20:47 CEST 2017
- * 
- * R18D18 after optimizing wins to 24 and losses to 18.
+ * Written on Fri Jun 09 16:28:34 CEST 2017
 **/
 
 import java.util.HashMap;
