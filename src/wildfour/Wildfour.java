@@ -44,7 +44,7 @@ public class Wildfour {
 		PlayField field = PlayField.fromBotField(this.field, myId);
 		Optional<Integer> precomputed = mapFinder.findMove(field);
 		if (precomputed.isPresent()) {
-			System.err.println("Round " + round + ": using precomputed move");
+			System.err.println("Round " + round + ": using precomputed move for " + MapMoveFinder.encodeField(field));
 			return precomputed.get();
 		}
 		moveFinder.updateMaxDepth(round, time);

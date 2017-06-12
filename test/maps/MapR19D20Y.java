@@ -1,6 +1,10 @@
 package maps;
 /**
  * Written on Sat Jun 10 16:48:12 CEST 2017
+ * 
+ * Precomputed moves to round 19 with depth 20, based on a
+ * partially optimized R18D18 map.
+ * 
 **/
 
 import java.util.HashMap;
