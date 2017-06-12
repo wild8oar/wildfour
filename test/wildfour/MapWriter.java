@@ -22,7 +22,7 @@ public class MapWriter {
 		Collections.sort(keys);
 		int nKeys = keys.size();
 		if (nKeys <= ENTRIES_PER_CLASS) {
-			writeMap(mapName, norm, keys, 0, nKeys-1);
+			writeSummary(mapName, 0, norm, keys);
 			System.out.println("Written " + nKeys + " entries to map " + mapName);
 			return;
 		}
@@ -36,8 +36,8 @@ public class MapWriter {
 			}
 			writeMap(mapName(mapName, num), norm, keys, i, to);
 		}
-		writeSummary(mapName, num);
-		System.out.println("Written " + nKeys + " entries to " + num + " maps " + mapName);
+		writeSummary(mapName, num, norm, keys);
+		System.out.println("Written " + nKeys + " entries to map in " + num + " files " + mapName);
 	}
 	
 	private static Map<String, Integer> normalizeMap (Map<String, Integer> map) {
@@ -60,13 +60,24 @@ public class MapWriter {
 		return String.format("%s_%02d", name, idx);
 	}
 	
-	private static void writeSummary(String name, int num) throws FileNotFoundException {
+	private static void writeSummary(String name, int num, Map<String, Integer> map, List<String> keys) throws FileNotFoundException {
 		try (PrintWriter writer = new PrintWriter(new File(PATH, name + ".java"))) {
 			writeClassHeader(writer, name);
-			for (int i=1; i<=num; i++) {
-				writer.println("MAP.putAll(" + mapName(name, i) + ".MAP);");
+			writer.println("public static final Map<String, Integer> MAP = new java.util.HashMap<>();");
+			writer.println();
+			writer.println("static {");
+			if (num == 0) {
+				writer.println("addToMap(MAP);");
+			} else {
+				for (int i=1; i<=num; i++) {
+					writer.println(mapName(name, i) + ".addToMap(MAP);");
+				}
 			}
 			writer.println("}");
+			if (num == 0) {
+				writer.println();
+				writeAddMethod(writer, map, keys, 0, keys.size()-1);
+			}
 			writer.println("}");
 			writer.close();
 		}
@@ -75,11 +86,7 @@ public class MapWriter {
 	private static void writeMap (String name, Map<String, Integer> map, List<String> keys, int from, int to) throws FileNotFoundException {
 		try (PrintWriter writer = new PrintWriter(new File(PATH, name + ".java"))) {
 			writeClassHeader(writer, name);
-			for (int i=from; i<=to; i++) {
-				String key = keys.get(i);
-				writer.println("MAP.put(\"" + key + "\"," + map.get(key) + ");");
-			}
-			writer.println("}");
+			writeAddMethod(writer, map, keys, from, to);
 			writer.println("}");
 			writer.close();
 		}
@@ -91,14 +98,19 @@ public class MapWriter {
 		writer.println(" * Written on " + new Date());
 		writer.println("**/");	
 		writer.println();
-		writer.println("import java.util.HashMap;");
 		writer.println("import java.util.Map;");
 		writer.println();
 		writer.println("public class " + className + " {");
 		writer.println();
-		writer.println("public static final Map<String, Integer> MAP = new HashMap<>();");
-		writer.println();
-		writer.println("static {");
+	}
+	
+	private static void writeAddMethod (PrintWriter writer, Map<String, Integer> map, List<String> keys, int from, int to) {
+		writer.println("public static void addToMap (Map<String, Integer> map) {");
+		for (int i=from; i<=to; i++) {
+			String key = keys.get(i);
+			writer.println("map.put(\"" + key + "\"," + map.get(key) + ");");
+		}
+		writer.println("}");
 	}
 
 
