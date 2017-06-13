@@ -1,26 +1,26 @@
 package maps;
 /**
- * Written on Mon Jun 12 15:36:39 CEST 2017
+ * Written on Tue Jun 13 12:58:03 CEST 2017
 **/
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class KnownWins {
 
-public static final Map<String, Integer> MAP = new HashMap<>();
+public static final Map<String, Integer> MAP = new java.util.HashMap<>();
 
 static {
-MAP.putAll(KnownWins_01.MAP);
-MAP.putAll(KnownWins_02.MAP);
-MAP.putAll(KnownWins_03.MAP);
-MAP.putAll(KnownWins_04.MAP);
-MAP.putAll(KnownWins_05.MAP);
-MAP.putAll(KnownWins_06.MAP);
-MAP.putAll(KnownWins_07.MAP);
-MAP.putAll(KnownWins_08.MAP);
-MAP.putAll(KnownWins_09.MAP);
-MAP.putAll(KnownWins_10.MAP);
-MAP.putAll(KnownWins_11.MAP);
+KnownWins_01.addToMap(MAP);
+KnownWins_02.addToMap(MAP);
+KnownWins_03.addToMap(MAP);
+KnownWins_04.addToMap(MAP);
+KnownWins_05.addToMap(MAP);
+KnownWins_06.addToMap(MAP);
+KnownWins_07.addToMap(MAP);
+KnownWins_08.addToMap(MAP);
+KnownWins_09.addToMap(MAP);
+KnownWins_10.addToMap(MAP);
+KnownWins_11.addToMap(MAP);
+KnownWins_12.addToMap(MAP);
 }
 }

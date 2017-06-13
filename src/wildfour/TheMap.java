@@ -1,52 +1,49 @@
 package wildfour;
 /**
- * Written on Sat Jun 10 16:48:12 CEST 2017
+ * Written on Tue Jun 13 12:59:14 CEST 2017
 **/
 
-import java.util.HashMap;
 import java.util.Map;
 
-import wildfour.maps.MapR19D20Y_01;
-import wildfour.maps.MapR19D20Y_02;
-import wildfour.maps.MapR19D20Y_03;
-import wildfour.maps.MapR19D20Y_04;
-import wildfour.maps.MapR19D20Y_05;
-import wildfour.maps.MapR19D20Y_06;
-import wildfour.maps.MapR19D20Y_07;
-import wildfour.maps.MapR19D20Y_08;
-import wildfour.maps.MapR19D20Y_09;
-import wildfour.maps.MapR19D20Y_10;
-import wildfour.maps.MapR19D20Y_11;
-import wildfour.maps.MapR19D20Y_12;
-import wildfour.maps.MapR19D20Y_13;
-import wildfour.maps.MapR19D20Y_14;
-import wildfour.maps.MapR19D20Y_15;
-import wildfour.maps.MapR19D20Y_16;
-import wildfour.maps.MapR19D20Y_17;
-
-
+import wildfour.maps.MapR19D20Z_01;
+import wildfour.maps.MapR19D20Z_02;
+import wildfour.maps.MapR19D20Z_03;
+import wildfour.maps.MapR19D20Z_04;
+import wildfour.maps.MapR19D20Z_05;
+import wildfour.maps.MapR19D20Z_06;
+import wildfour.maps.MapR19D20Z_07;
+import wildfour.maps.MapR19D20Z_08;
+import wildfour.maps.MapR19D20Z_09;
+import wildfour.maps.MapR19D20Z_10;
+import wildfour.maps.MapR19D20Z_11;
+import wildfour.maps.MapR19D20Z_12;
+import wildfour.maps.MapR19D20Z_13;
+import wildfour.maps.MapR19D20Z_14;
+import wildfour.maps.MapR19D20Z_15;
+import wildfour.maps.MapR19D20Z_16;
+import wildfour.maps.MapR19D20Z_17;
 
 public class TheMap {
 
-public static final Map<String, Integer> MAP = new HashMap<>();
+public static final Map<String, Integer> MAP = new java.util.HashMap<>();
 
 static {
-MAP.putAll(MapR19D20Y_01.MAP);
-MAP.putAll(MapR19D20Y_02.MAP);
-MAP.putAll(MapR19D20Y_03.MAP);
-MAP.putAll(MapR19D20Y_04.MAP);
-MAP.putAll(MapR19D20Y_05.MAP);
-MAP.putAll(MapR19D20Y_06.MAP);
-MAP.putAll(MapR19D20Y_07.MAP);
-MAP.putAll(MapR19D20Y_08.MAP);
-MAP.putAll(MapR19D20Y_09.MAP);
-MAP.putAll(MapR19D20Y_10.MAP);
-MAP.putAll(MapR19D20Y_11.MAP);
-MAP.putAll(MapR19D20Y_12.MAP);
-MAP.putAll(MapR19D20Y_13.MAP);
-MAP.putAll(MapR19D20Y_14.MAP);
-MAP.putAll(MapR19D20Y_15.MAP);
-MAP.putAll(MapR19D20Y_16.MAP);
-MAP.putAll(MapR19D20Y_17.MAP);
+MapR19D20Z_01.addToMap(MAP);
+MapR19D20Z_02.addToMap(MAP);
+MapR19D20Z_03.addToMap(MAP);
+MapR19D20Z_04.addToMap(MAP);
+MapR19D20Z_05.addToMap(MAP);
+MapR19D20Z_06.addToMap(MAP);
+MapR19D20Z_07.addToMap(MAP);
+MapR19D20Z_08.addToMap(MAP);
+MapR19D20Z_09.addToMap(MAP);
+MapR19D20Z_10.addToMap(MAP);
+MapR19D20Z_11.addToMap(MAP);
+MapR19D20Z_12.addToMap(MAP);
+MapR19D20Z_13.addToMap(MAP);
+MapR19D20Z_14.addToMap(MAP);
+MapR19D20Z_15.addToMap(MAP);
+MapR19D20Z_16.addToMap(MAP);
+MapR19D20Z_17.addToMap(MAP);
 }
 }
