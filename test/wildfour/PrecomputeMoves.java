@@ -111,14 +111,14 @@ public class PrecomputeMoves {
 			quickMap.put(key, move);
 			return move;
 		}
+		if (time > 10000) {
+			System.out.println("Evaluating round " + round + " move took " + (time/1000) + "s");
+		}
 		newMap.put(key, move);
 		nStored++;
 		if (nStored % 10 == 0) {
 			System.out.println(nComputed + " / " + nStored);
 		}
-//		System.out.println("== Store move ==");
-//		field.print();
-//		System.out.println("Move: " + move);
 		return move;
 	}
 	
