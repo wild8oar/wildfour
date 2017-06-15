@@ -15,7 +15,7 @@ public class MaxMinMoveFinder {
 	private static final int[] DEFAULT_ORDER = new int[] {3,2,4,5,1,0,6};
 	private static final int[] ALT_ORDER = new int[] {3,4,2,6,0,1,5};
 	
-	private int maxDepth = 20;
+	private int maxDepth = 24;
 
 	public MaxMinMoveFinder (int maxDepth) {
 		this.maxDepth = maxDepth;
@@ -23,7 +23,7 @@ public class MaxMinMoveFinder {
 	
 	public void updateMaxDepth (int round, int time) {
 		if (round < 20) {
-			maxDepth = 20; // precomputed
+			maxDepth = 24; // precomputed
 		} else if (time < 1000) {
 			maxDepth = 8;
 		} else if (time < 7000){
