@@ -1,6 +1,6 @@
 package maps;
 /**
- * Written on Thu Jun 15 11:47:05 CEST 2017
+ * Written on Fri Jun 16 12:30:26 CEST 2017
 **/
 
 import java.util.Map;
@@ -1271,6 +1271,7 @@ map.put("000000G=<G0HBA",6);
 map.put("000000G=<G0IBA",6);
 map.put("000000G=<G0J0?",5);
 map.put("000000G=<G0J0A",5);
+map.put("000000G=<G?J0?",4);
 map.put("000000G=<GBG0H",5);
 map.put("000000G=<J0H0?",1);
 map.put("000000G=<J9J0?",5);
@@ -2175,6 +2176,7 @@ map.put("000009FF0B0??J",2);
 map.put("000009FF0B0A0H",5);
 map.put("000009FF0B0A9J",5);
 map.put("000009FF0B9A0J",6);
+map.put("000009FF0BEA0H",2);
 map.put("000009FF0H0?9J",4);
 map.put("000009FF0HEA0B",4);
 map.put("000009FF0I0?0J",6);
@@ -3425,12 +3427,14 @@ map.put("00000@F=AJ0B00",5);
 map.put("00000@F=AJ0B0B",5);
 map.put("00000@F@0F9J0H",2);
 map.put("00000@F@0F?J0B",5);
+map.put("00000@F@0G9J0?",1);
 map.put("00000@F@>J000H",6);
 map.put("00000@F@>J0B0B",5);
 map.put("00000@F@@J0B0B",5);
 map.put("00000@F@BF0B0J",6);
 map.put("00000@F@BF0H0H",5);
 map.put("00000@F@BF9J0B",4);
+map.put("00000@F@BG9J09",4);
 map.put("00000@F@GI000H",0);
 map.put("00000@F@GI0B0B",5);
 map.put("00000@F@HF0B0H",2);
@@ -3448,6 +3452,7 @@ map.put("00000@FFBI0B0A",5);
 map.put("00000@FFHI0A00",5);
 map.put("00000@G=0I0G0B",5);
 map.put("00000@G=0I0G0H",5);
+map.put("00000@G=>G000J",6);
 map.put("00000@G=>G0B0H",5);
 map.put("00000@G=>J000A",1);
 map.put("00000@G=>J000B",2);
@@ -3625,6 +3630,7 @@ map.put("00000AF=AJ0E00",5);
 map.put("00000AF@0F0B0H",4);
 map.put("00000AF@0F0B9J",4);
 map.put("00000AF@0F9J00",5);
+map.put("00000AF@0F<J0B",0);
 map.put("00000AF@0F?J00",4);
 map.put("00000AF@9G0E0H",5);
 map.put("00000AF@9G0H09",5);
@@ -3653,6 +3659,7 @@ map.put("00000AFFBI0I09",5);
 map.put("00000AFFEI0B0?",2);
 map.put("00000AG=0F000H",2);
 map.put("00000AG=0I0E0I",5);
+map.put("00000AG=>J0E09",2);
 map.put("00000AG=BF0E0H",5);
 map.put("00000AGF0B0I0<",6);
 map.put("00000AGF0E090B",2);
@@ -3951,12 +3958,5 @@ map.put("00000B>>B>0E0B",2);
 map.put("00000B>>B@009J",6);
 map.put("00000B>>BF0I00",2);
 map.put("00000B>>BF9J00",2);
-map.put("00000B>>E@0B9J",6);
-map.put("00000B>>E@9J00",2);
-map.put("00000B>>EF0B0H",2);
-map.put("00000B>>EI0000",2);
-map.put("00000B>>EI0B00",2);
-map.put("00000B>>FI000B",2);
-map.put("00000B>>FI000H",2);
 }
 }
