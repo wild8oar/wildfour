@@ -8,15 +8,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import maps.MapR18D18X;
+import maps.MapR19D24Y;
 
 public class PrecomputeMoves {
 	
-	private static final int MAX_ROUNDS = 19;
-	private static final int MAX_DEPTH = 24;
+	private static final int MAX_ROUNDS = 18;
+	private static final int MAX_DEPTH = 18;
 		
 	private static final MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
-	private static final Map<String, Integer> inmap = MapR18D18X.MAP;
+	private static final Map<String, Integer> inmap = MapR19D24Y.MAP;
 	private static final MapMoveFinder mapFinder = new MapMoveFinder(inmap);
 	private static final Map<String, Integer> newMap = new HashMap<>();
 	private static final MapMoveFinder newFinder = new MapMoveFinder(newMap);
@@ -58,21 +58,8 @@ public class PrecomputeMoves {
 			return;
 		}
 		for (int i=0; i<PlayField.WIDTH; i++) {
-			if (field.addDisc(i, ME)) {
-				if (field.hasPlayerWon(ME)) {
-					throw new IllegalStateException("Other player must not win!");
-				}
-				if (field.isFull()) {
-					field.removeDisc(i);
-					return;
-				}
-				PlayField inv = field.getInverted();
-				int move = findBestMove(inv, round+1);
-				field.addDisc(move, OTHER);
-				if (!field.hasPlayerWon(OTHER) && !field.isFull()) {
-					precomputeForPlayer2(field, round+2);
-				}
-				field.removeDisc(move);
+			if (field.addDisc(i, OTHER)) {
+				precomputeForPlayer1(field, round+1);
 				field.removeDisc(i);
 			}			
 		}

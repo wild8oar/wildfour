@@ -22,8 +22,8 @@ public class OptimizeMap {
 	private static final Map<String, Integer> KNOWN_WINS = KnownWins.MAP;
 	private static final Map<String, Integer> MAP = MapR19D24Z.MAP;
 	private static final String OUTPUT_MAP = "MapR19D24Z";
-	private static final int LOSS_DEPTH = 16;
-	private static final int MIN_ROUND = 8; // don't go earlier than that to recompute losses
+	private static final int LOSS_DEPTH = 18;
+	private static final int MIN_ROUND = 6; // don't go earlier than that to recompute losses
 	
 	private static final Set<String> losses = new HashSet<>();
 	private static final Map<String, Pair<Integer, BestMove>> cache = new HashMap<>();
@@ -66,13 +66,13 @@ public class OptimizeMap {
 				removeLoss(move, LOSS_DEPTH, "");
 				n++;
 				if (System.currentTimeMillis()-last > TimeUnit.MINUTES.toMillis(10)) {
-					System.out.println(String.format("Saving temp. map after %d removed losses. %d%% complete", n, (100*i/moves.size()) ));
+					System.out.println(String.format("Saving temp. map after %d optimized losses. %d%% complete", n, (100*i/moves.size()) ));
 					MapWriter.writeMap(OUTPUT_MAP, MAP);
 					last = System.currentTimeMillis();
 				}
 			}
 		}
-		System.out.println("Removed " + n + " positions that lead to loss");
+		System.out.println("Optimized " + n + " positions that lead to loss");
 		if (n > 0) {
 			MapWriter.writeMap(OUTPUT_MAP, MAP);
 		}
