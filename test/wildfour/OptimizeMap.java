@@ -14,13 +14,13 @@ import java.util.concurrent.TimeUnit;
 
 import javafx.util.Pair;
 import maps.KnownWins;
-import maps.MapR19D24A;
+import maps.MapR19D24Z;
 import wildfour.MoveFinder.BestMove;
 
 public class OptimizeMap {
 	
 	private static final Map<String, Integer> KNOWN_WINS = KnownWins.MAP;
-	private static final Map<String, Integer> MAP = MapR19D24A.MAP;
+	private static final Map<String, Integer> MAP = MapR19D24Z.MAP;
 	private static final String OUTPUT_MAP = "MapR19D24Z";
 	private static final int LOSS_DEPTH = 16;
 	private static final int MIN_ROUND = 8; // don't go earlier than that to recompute losses

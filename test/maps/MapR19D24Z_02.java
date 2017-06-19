@@ -1,6 +1,6 @@
 package maps;
 /**
- * Written on Fri Jun 16 12:33:23 CEST 2017
+ * Written on Sat Jun 17 18:40:54 CEST 2017
 **/
 
 import java.util.Map;
@@ -8,16 +8,6 @@ import java.util.Map;
 public class MapR19D24Z_02 {
 
 public static void addToMap (Map<String, Integer> map) {
-map.put("000009>G9G0@0J",6);
-map.put("000009>G9G0A0B",4);
-map.put("000009>G9G0B0A",2);
-map.put("000009>G9G0H0?",5);
-map.put("000009>G9G0I0A",4);
-map.put("000009>G9G0J09",5);
-map.put("000009>G9G9J0?",6);
-map.put("000009>G9G?J09",4);
-map.put("000009>G9GB@0H",4);
-map.put("000009>G9GBI0?",4);
 map.put("000009>G9I090J",6);
 map.put("000009>G9I0?0H",4);
 map.put("000009>G9I0H0?",2);
@@ -1547,7 +1537,7 @@ map.put("00000?<G0B0B00",6);
 map.put("00000?<G0B0B0?",3);
 map.put("00000?<G0B0H09",2);
 map.put("00000?<G0B9J09",3);
-map.put("00000?<G0H0000",3);
+map.put("00000?<G0H0000",4);
 map.put("00000?<G0H090B",3);
 map.put("00000?<G0H0B09",4);
 map.put("00000?<G0I0?0B",4);
@@ -1638,7 +1628,6 @@ map.put("00000?=G0H000B",5);
 map.put("00000?=G0H090H",4);
 map.put("00000?=G0H099J",4);
 map.put("00000?=G0H0?0B",4);
-map.put("00000?=G0H0B00",6);
 map.put("00000?=G0H0B0?",4);
 map.put("00000?=G0H0H09",4);
 map.put("00000?=G0I090J",6);
@@ -2993,7 +2982,7 @@ map.put("00000AFF0B090H",4);
 map.put("00000AFF0B099J",2);
 map.put("00000AFF0B0?0B",2);
 map.put("00000AFF0B0B0?",4);
-map.put("00000AFF0B0H09",4);
+map.put("00000AFF0B0H09",2);
 map.put("00000AFF0B9J09",2);
 map.put("00000AFF0E0B0A",4);
 map.put("00000AFF0E0H0?",4);
@@ -3002,7 +2991,6 @@ map.put("00000AFF0F0BBA",6);
 map.put("00000AFF0F0H0A",2);
 map.put("00000AFF0G090H",2);
 map.put("00000AFF0G0B0?",4);
-map.put("00000AFF0G0H09",4);
 map.put("00000AFF0G9J09",6);
 map.put("00000AFF0H0B09",4);
 map.put("00000AFF0I090H",2);
@@ -3010,7 +2998,6 @@ map.put("00000AFF0I099J",2);
 map.put("00000AFF0I0B0?",2);
 map.put("00000AFF9G0B0A",2);
 map.put("00000AFF9G0H0?",4);
-map.put("00000AFF9G0J09",5);
 map.put("00000AFF9J0<0H",2);
 map.put("00000AFF9J0>0B",2);
 map.put("00000AFF9J0B09",4);
@@ -3018,7 +3005,6 @@ map.put("00000AFF<J0B0?",2);
 map.put("00000AFF<J0H09",5);
 map.put("00000AFF>J0B09",2);
 map.put("00000AFF?G0B0?",2);
-map.put("00000AFF?G0H09",4);
 map.put("00000AFFBF0H0?",5);
 map.put("00000AFFBI0@0B",5);
 map.put("00000AFFBI0B09",2);
@@ -3171,7 +3157,7 @@ map.put("00000B<G090B0B",3);
 map.put("00000B<G090H00",3);
 map.put("00000B<G099J00",3);
 map.put("00000B<G0?000B",3);
-map.put("00000B<G0?0B00",3);
+map.put("00000B<G0?0B00",2);
 map.put("00000B<G0@0H00",3);
 map.put("00000B<G0@9J00",4);
 map.put("00000B<G0B090B",1);
@@ -3958,5 +3944,19 @@ map.put("00000B>@G@009J",2);
 map.put("00000B>@G@0E0H",2);
 map.put("00000B>@GF0B0B",2);
 map.put("00000B>@GI0000",2);
+map.put("00000B>@H=0I0G",6);
+map.put("00000B>@HF0E00",6);
+map.put("00000B>@HF0F0G",6);
+map.put("00000B>@HF0I0>",6);
+map.put("00000B>G09000B",2);
+map.put("00000B>G090B00",4);
+map.put("00000B>G0<000H",4);
+map.put("00000B>G0<009J",4);
+map.put("00000B>G0<0B0B",5);
+map.put("00000B>G0<0H00",4);
+map.put("00000B>G0<9J00",4);
+map.put("00000B>G0>0B00",4);
+map.put("00000B>G0>0E0B",2);
+map.put("00000B>G0@000B",4);
 }
 }

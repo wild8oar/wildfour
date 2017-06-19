@@ -1,6 +1,8 @@
 package maps;
 /**
- * Written on Fri Jun 16 12:33:23 CEST 2017
+ * Written on Sat Jun 17 18:40:54 CEST 2017
+ * 
+ * Removing losses with depth=16.
 **/
 
 import java.util.Map;

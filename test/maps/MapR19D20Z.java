@@ -1,12 +1,27 @@
 package maps;
 /**
- * Written on Wed Jun 14 12:24:08 CEST 2017
- * 
- * Optimized wins and losses to max depth 16).
- * 
+ * Written on Thu Jun 15 09:39:27 CEST 2017
 **/
 
 import java.util.Map;
+
+import maps.r19d20.MapR19D20Z_01;
+import maps.r19d20.MapR19D20Z_02;
+import maps.r19d20.MapR19D20Z_03;
+import maps.r19d20.MapR19D20Z_04;
+import maps.r19d20.MapR19D20Z_05;
+import maps.r19d20.MapR19D20Z_06;
+import maps.r19d20.MapR19D20Z_07;
+import maps.r19d20.MapR19D20Z_08;
+import maps.r19d20.MapR19D20Z_09;
+import maps.r19d20.MapR19D20Z_10;
+import maps.r19d20.MapR19D20Z_11;
+import maps.r19d20.MapR19D20Z_12;
+import maps.r19d20.MapR19D20Z_13;
+import maps.r19d20.MapR19D20Z_14;
+import maps.r19d20.MapR19D20Z_15;
+import maps.r19d20.MapR19D20Z_16;
+import maps.r19d20.MapR19D20Z_17;
 
 public class MapR19D20Z {
 
