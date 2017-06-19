@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import maps.MapR19D24Y;
+import maps.MapR11D18;
 import wildfour.MoveFinder.BestMove;
 
 public class AnalyzeMap {
@@ -17,8 +17,8 @@ public class AnalyzeMap {
 	private static final File KNOWN_WINS = new File("known_wins.txt");
 	private static final File KNOWN_LOSSES = new File("known_losses.txt");
 	
-	private static final Map<String, Integer> map = MapR19D24Y.MAP;
-	private static final MaxMinMoveFinder analyzer = new MaxMinMoveFinder(42);
+	private static final Map<String, Integer> map = MapR11D18.MAP;
+	private static final MaxMinMoveFinder analyzer = new MaxMinMoveFinder(18);
 	
 	private static final Set<String> wins = new HashSet<>();
 	private static final Set<String> losses = new HashSet<>();
@@ -59,7 +59,12 @@ public class AnalyzeMap {
 					nLoss++;
 					continue;
 				}
+				long mstart = System.currentTimeMillis();
 				BestMove best = analyzer.findBestMove(move.getField());
+				long time = System.currentTimeMillis()-mstart;
+				if (time > 10000) {
+					System.out.println("Analyzing round " + move.getRound() + " move took " + (time/1000) + "s");
+				}
 				if (best.score > 9900) {
 					win[r]++;
 					nWin++;
