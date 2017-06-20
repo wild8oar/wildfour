@@ -60,7 +60,12 @@ public class AnalyzeMap {
 				nLoss++;
 				continue;
 			}
+			long mstart = System.currentTimeMillis();
 			BestMove best = analyzer.findBestMove(move.getField());
+			long time = System.currentTimeMillis()-mstart;
+			if (time > 10000) {
+				System.out.println("Analyzing round " + move.getRound() + " move took " + (time/1000) + "s");
+			}
 			if (best.score > 9900) {
 				win[r]++;
 				nWin++;
