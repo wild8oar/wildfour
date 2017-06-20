@@ -8,8 +8,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import maps.MapR19D24Y;
+import maps.MapR19D24Z;
 import wildfour.MoveFinder.BestMove;
 
 public class AnalyzeMap {
@@ -17,14 +18,13 @@ public class AnalyzeMap {
 	private static final File KNOWN_WINS = new File("known_wins.txt");
 	private static final File KNOWN_LOSSES = new File("known_losses.txt");
 	
-	private static final Map<String, Integer> map = MapR19D24Y.MAP;
-	private static final MaxMinMoveFinder analyzer = new MaxMinMoveFinder(42);
+	private static final Map<String, Integer> map = MapR19D24Z.MAP;
+	private static final MaxMinMoveFinder analyzer = new MaxMinMoveFinder(16);
 	
 	private static final Set<String> wins = new HashSet<>();
 	private static final Set<String> losses = new HashSet<>();
 	
 	private static void showSimpleStats(List<Move> moves) throws IOException {
-		long start = System.currentTimeMillis();
 		int maxRound = 0;
 		for (Move move: moves) {
 			if (move.getRound() > maxRound) {
@@ -41,42 +41,42 @@ public class AnalyzeMap {
 		int nLoss = 0;
 		int nDiff = 0;
 		int n = 0;
+		List<Move> terminals = moves.stream().filter(m -> !m.hasNext()).collect(Collectors.toList());
+		nTerm = terminals.size();
+		long start = System.currentTimeMillis();
 		long last = System.currentTimeMillis();
-		for (Move move: moves) {
+		for (Move move: terminals) {
 			int r = move.getRound()-1;
 			nums[r]++;
 			n++;
-			if (!move.hasNext()) {
-				term[r]++;
-				nTerm++;
-				if (wins.contains(move.getEncoded())) {
-					win[r]++;
-					nWin++;
-					continue;
-				}
-				if (losses.contains(move.getEncoded())) {
-					loss[r]++;
-					nLoss++;
-					continue;
-				}
-				BestMove best = analyzer.findBestMove(move.getField());
-				if (best.score > 9900) {
-					win[r]++;
-					nWin++;
-					addWin(move.getEncoded());
-				} else if (best.score < -9900) {
-					loss[r]++;
-					nLoss++;
-					addLoss(move.getEncoded());
-				}
-				if (best.move != move.getMove()) {
-					diff[r]++;
-					nDiff++;
-				}
+			term[r]++;
+			if (wins.contains(move.getEncoded())) {
+				win[r]++;
+				nWin++;
+				continue;
+			}
+			if (losses.contains(move.getEncoded())) {
+				loss[r]++;
+				nLoss++;
+				continue;
+			}
+			BestMove best = analyzer.findBestMove(move.getField());
+			if (best.score > 9900) {
+				win[r]++;
+				nWin++;
+				addWin(move.getEncoded());
+			} else if (best.score < -9900) {
+				loss[r]++;
+				nLoss++;
+				addLoss(move.getEncoded());
+			}
+			if (best.move != move.getMove()) {
+				diff[r]++;
+				nDiff++;
 			}
 			if (System.currentTimeMillis() - last > 10000) {
-				long rem = (System.currentTimeMillis() - start) / n * (moves.size() - n);
-				System.out.println(n + "/" + moves.size() + " done, " + rem/1000 + "s remaining");
+				long rem = (System.currentTimeMillis() - start) / n * (nTerm - n);
+				System.out.println(n + "/" + nTerm + " done, " + rem/1000 + "s remaining");
 				last = System.currentTimeMillis();
 			}
 		}
