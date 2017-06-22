@@ -8,15 +8,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import maps.MapR19D24Y;
+import maps.MapR19D24Z;
 
 public class PrecomputeMoves {
 	
 	private static final int MAX_ROUNDS = 18;
 	private static final int MAX_DEPTH = 18;
-		
 	private static final MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
-	private static final Map<String, Integer> inmap = MapR19D24Y.MAP;
+	private static final Map<String, Integer> inmap = MapR19D24Z.MAP; // new HashMap<>();
+	
 	private static final MapMoveFinder mapFinder = new MapMoveFinder(inmap);
 	private static final Map<String, Integer> newMap = new HashMap<>();
 	private static final MapMoveFinder newFinder = new MapMoveFinder(newMap);
@@ -44,7 +44,7 @@ public class PrecomputeMoves {
 				if (field.hasPlayerWon(OTHER)) {
 					throw new IllegalStateException("Other player must not win!");
 				}
-				if (!field.isFull()) {
+				if (!field.isFull() && !alreadyEvaluated(field)) {
 					precomputeForPlayer1(field, round+1);
 				}
 				field.removeDisc(i);
@@ -54,7 +54,7 @@ public class PrecomputeMoves {
 	}
 	
 	private static void precomputeForPlayer2 (PlayField field, int round) {
-		if (round >= MAX_ROUNDS) {
+		if (round > MAX_ROUNDS) {
 			return;
 		}
 		for (int i=0; i<PlayField.WIDTH; i++) {
@@ -63,6 +63,10 @@ public class PrecomputeMoves {
 				field.removeDisc(i);
 			}			
 		}
+	}
+	
+	private static boolean alreadyEvaluated (PlayField field) {
+		return newFinder.findMove(field).isPresent();
 	}
 	
 	private static int findBestMove (PlayField field, int round) {
@@ -79,7 +83,7 @@ public class PrecomputeMoves {
 		if (existing.isPresent()) {
 			String key = encodeField(field);
 			if (!newMap.containsKey(key)) {
-				newMap.put(encodeField(field), existing.get());
+				newMap.put(key, existing.get());
 				nKept++;
 			}
 			return existing.get();
