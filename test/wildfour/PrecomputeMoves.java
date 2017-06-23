@@ -5,33 +5,39 @@ import static wildfour.PlayField.OTHER;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import maps.MapR19D24Z;
 
 public class PrecomputeMoves {
 	
-	private static final int MAX_ROUNDS = 18;
+	private static final int MAX_ROUNDS = 19;
 	private static final int MAX_DEPTH = 18;
 	private static final MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
 	private static final Map<String, Integer> inmap = MapR19D24Z.MAP; // new HashMap<>();
+	private static final String LETTER = "A";
 	
 	private static final MapMoveFinder mapFinder = new MapMoveFinder(inmap);
 	private static final Map<String, Integer> newMap = new HashMap<>();
-	private static final MapMoveFinder newFinder = new MapMoveFinder(newMap);
-	private static final Map<String, Integer> quickMap = new HashMap<>();
-	private static final MapMoveFinder quickFinder = new MapMoveFinder(quickMap);
+
+	private static final Set<String> SEEN = new HashSet<>();
 	
 	private static int nComputed = 0;
 	private static int nStored = 0;
 	private static int nKept = 0;
 	private static int nQuick = 0;
+	private static String current = "started";
 	
 	private static int[] nEval = new int[MAX_ROUNDS+1];
 	private static long[] timeSum = new long[MAX_ROUNDS+1];
 	
 	private static void precomputeForPlayer1 (PlayField field, int round) {
+		if (alreadyEvaluated(field)) {
+			return;
+		}
 		int move = findBestMove(field, round);
 		field.addDisc(move, ME);
 		round++;
@@ -41,10 +47,13 @@ public class PrecomputeMoves {
 		}
 		for (int i=0; i<PlayField.WIDTH; i++) {
 			if (field.addDisc(i, OTHER)) {
+				if (round == 2) {
+					current = "Player 1, move " + i;
+				}
 				if (field.hasPlayerWon(OTHER)) {
 					throw new IllegalStateException("Other player must not win!");
 				}
-				if (!field.isFull() && !alreadyEvaluated(field)) {
+				if (!field.isFull()) {
 					precomputeForPlayer1(field, round+1);
 				}
 				field.removeDisc(i);
@@ -59,6 +68,7 @@ public class PrecomputeMoves {
 		}
 		for (int i=0; i<PlayField.WIDTH; i++) {
 			if (field.addDisc(i, OTHER)) {
+				current = "Player 2, move " + i;
 				precomputeForPlayer1(field, round+1);
 				field.removeDisc(i);
 			}			
@@ -66,19 +76,12 @@ public class PrecomputeMoves {
 	}
 	
 	private static boolean alreadyEvaluated (PlayField field) {
-		return newFinder.findMove(field).isPresent();
+		String norm = MapMoveFinder.encodeNormalized(field);
+		return !SEEN.add(norm);
 	}
 	
 	private static int findBestMove (PlayField field, int round) {
 		nComputed++;
-		Optional<Integer> stored = newFinder.findMove(field);
-		if (stored.isPresent()) {
-			return stored.get();
-		}
-		Optional<Integer> quick = quickFinder.findMove(field);
-		if (quick.isPresent()) {
-			return quick.get();
-		}
 		Optional<Integer> existing = mapFinder.findMove(field);
 		if (existing.isPresent()) {
 			String key = encodeField(field);
@@ -99,7 +102,6 @@ public class PrecomputeMoves {
 		String key = encodeField(field);
 		if (time < 500) {
 			nQuick++;
-			quickMap.put(key, move);
 			return move;
 		}
 		if (time > 10000) {
@@ -108,7 +110,7 @@ public class PrecomputeMoves {
 		newMap.put(key, move);
 		nStored++;
 		if (nStored % 10 == 0) {
-			System.out.println(nComputed + " / " + nStored);
+			System.out.println(nComputed + " / " + nStored + " (current: " + current + ")");
 		}
 		return move;
 	}
@@ -117,7 +119,7 @@ public class PrecomputeMoves {
 		if (newMap.isEmpty()) {
 			return;
 		}
-		MapWriter.writeMap(String.format("MapR%02dD%02dY", MAX_ROUNDS, MAX_DEPTH), newMap);
+		MapWriter.writeMap(String.format("MapR%02dD%02d%s", MAX_ROUNDS, MAX_DEPTH, LETTER), newMap);
 	}
 
 	public static void main (String[] args) throws Exception {

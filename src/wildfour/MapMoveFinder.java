@@ -91,6 +91,15 @@ public class MapMoveFinder {
 		return enc;
 	}
 	
+	public static String encodeNormalized (PlayField field) {
+		String enc1 = encodeField(field);
+		String enc2 = encodeMirroredField(field);
+		if (enc1.compareTo(enc2) > 0) {
+			return enc2;
+		}
+		return enc1;
+	}
+	
 	private static void add (PlayField field, int col, char[] decs) {
 		for (int i = 2; i>=0; i--) {
 			if (decs[i] != EMPTY) {
