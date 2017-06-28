@@ -72,9 +72,9 @@ public class TrainNetworkFromLogs {
      double expected = 0.5*Math.pow(DECAY, line.getMovesToEnd());
      expected = line.getWinner() == player ? 0.5+expected : 0.5-expected;
      double[] encoded;
-     if (NUM_INPUT == 8) {
+     if (network.getInputCount() == 8) {
     	 encoded = field.encodeFeaturesAsNetworkInput();
-     } else if (NUM_INPUT == 84) {
+     } else if (network.getInputCount() == 84) {
     	 encoded = field.encodeFieldAsNetworkInput();
     	 
      } else {

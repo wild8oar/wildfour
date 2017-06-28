@@ -1,7 +1,5 @@
 package wildfour;
 
-import java.util.Random;
-
 public class CentralEvaluator implements Evaluator {
 
 	@Override
