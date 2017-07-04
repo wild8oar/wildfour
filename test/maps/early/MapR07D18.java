@@ -1,4 +1,4 @@
-package maps;
+package maps.early;
 /**
  * Generated on Tue May 30 13:48:50 CEST 2017
  * Max. rounds 7

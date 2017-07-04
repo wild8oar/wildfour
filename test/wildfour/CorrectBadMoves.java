@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import maps.MapR19D24Y;
+import maps.MapR19D24T;
 import wildfour.MoveFinder.BestMove;
 
 public class CorrectBadMoves {
 	
-	private static final Map<String, Integer> MAP = MapR19D24Y.MAP;
-	private static final String OUTPUT_MAP = "MapR19D24A";
-	private static final MaxMinMoveFinder FINDER = new MaxMinMoveFinder(24);
-	private static final MaxMinMoveFinder OPTIMIZER = new MaxMinMoveFinder(26);
+	private static final Map<String, Integer> MAP = MapR19D24T.MAP;
+	private static final String OUTPUT_MAP = "MapR19D24T";
+	private static final MaxMinMoveFinder FINDER = new MaxMinMoveFinder(26);
+	private static final MaxMinMoveFinder OPTIMIZER = new MaxMinMoveFinder(28);
 	
 	private static final Set<String> WINS = new HashSet<>();
 	private static final Set<String> LOSSES = new HashSet<>();
@@ -46,6 +46,8 @@ public class CorrectBadMoves {
 					MAP.put(move.getEncoded(), instead.move);
 					nChg++;
 				}
+			}
+			if (nComp % 10 == 0) {
 				System.out.println("Changed " + nChg + " of " + nComp + " moves");
 			}
 		}

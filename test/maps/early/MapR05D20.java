@@ -1,14 +1,14 @@
-package maps;
+package maps.early;
 /**
- * Generated on Tue May 30 08:53:36 CEST 2017
+ * Generated on Fri Jun 02 15:56:27 CEST 2017
  * Max. rounds 5
- * Max. depth 16
+ * Max. depth 20
 **/
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapR05D16 {
+public class MapR05D20 {
 
 public static final Map<String, Integer> MAP = new HashMap<>();
 
