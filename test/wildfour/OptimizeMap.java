@@ -14,15 +14,15 @@ import java.util.concurrent.TimeUnit;
 
 import javafx.util.Pair;
 import maps.KnownWins;
-import maps.MapR19D24Z;
+import maps.MapR19D24T;
 import wildfour.MoveFinder.BestMove;
 
 public class OptimizeMap {
 	
 	private static final Map<String, Integer> KNOWN_WINS = KnownWins.MAP;
-	private static final Map<String, Integer> MAP = MapR19D24Z.MAP;
-	private static final String OUTPUT_MAP = "MapR19D24Z";
-	private static final int LOSS_DEPTH = 18;
+	private static final Map<String, Integer> MAP = MapR19D24T.MAP;
+	private static final String OUTPUT_MAP = "MapR19D24TT";
+	private static final int LOSS_DEPTH = 17;
 	private static final int MIN_ROUND = 6; // don't go earlier than that to recompute losses
 	
 	private static final Set<String> losses = new HashSet<>();
@@ -58,7 +58,7 @@ public class OptimizeMap {
 		for (int i=0; i<moves.size(); i++) {
 			Move move = moves.get(i);
 			if (!move.hasNext() && losses.contains(move.getEncoded())) {
-				BestMove best = findBestMove(move, LOSS_DEPTH);
+				BestMove best = findBestMove(move, LOSS_DEPTH, "");
 				if (best.score > -9900) {
 					System.out.println("Loss detection level not enough, cannot remove certain loss");
 					continue;
@@ -79,13 +79,19 @@ public class OptimizeMap {
 		System.out.println();
 	}
 	
-	private static BestMove findBestMove (Move move, int depth) {
+	private static BestMove findBestMove (Move move, int depth, String indent) {
 		Pair<Integer, BestMove> cached = cache.get(move.getEncoded());
 		if (cached != null && (cached.getKey() >= depth || cached.getValue().score > 9900 || cached.getValue().score < -9900)) {
 			return cached.getValue();
 		}
 		MaxMinMoveFinder finder = new MaxMinMoveFinder(depth);
+		long start = System.currentTimeMillis();
 		BestMove best = finder.findBestMove(move.getField());
+		long time = System.currentTimeMillis()-start;
+		if (time > TimeUnit.MINUTES.toMillis(5)) {
+			System.out.println(indent + "Analyzing round " + move.getRound() + " move with depth " + 
+					+ depth + "took " + TimeUnit.MILLISECONDS.toMinutes(time) + "mins");
+		}
 		cache.put(move.getEncoded(), new Pair<Integer, BestMove>(depth, best));
 		return best;
 	}
@@ -99,7 +105,7 @@ public class OptimizeMap {
 		}
 		System.out.println(indent + "Analyzing " + move.getPrevious().size() + " previous positions...");
 		for (Move prev: move.getPrevious()) {
-			BestMove best = findBestMove(prev, lossDepth + 2);
+			BestMove best = findBestMove(prev, lossDepth + 2, indent);
 			if (best.score < -9900) {
 				removeLoss(prev, lossDepth+2, indent + "  ");
 			} else if (best.move == prev.getMove()) {
