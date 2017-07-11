@@ -14,16 +14,16 @@ import java.util.concurrent.TimeUnit;
 
 import javafx.util.Pair;
 import maps.KnownWins;
-import maps.MapR19D24T;
+import maps.MapR19D24TT;
 import wildfour.MoveFinder.BestMove;
 
 public class OptimizeMap {
 	
 	private static final Map<String, Integer> KNOWN_WINS = KnownWins.MAP;
-	private static final Map<String, Integer> MAP = MapR19D24T.MAP;
-	private static final String OUTPUT_MAP = "MapR19D24TT";
+	private static final Map<String, Integer> MAP = MapR19D24TT.MAP;
+	private static final String OUTPUT_MAP = "MapR19D24S";
 	private static final int LOSS_DEPTH = 17;
-	private static final int MIN_ROUND = 6; // don't go earlier than that to recompute losses
+	private static final int MIN_ROUND = 1; // don't go earlier than that to recompute losses
 	
 	private static final Set<String> losses = new HashSet<>();
 	private static final Map<String, Pair<Integer, BestMove>> cache = new HashMap<>();
@@ -84,13 +84,19 @@ public class OptimizeMap {
 		if (cached != null && (cached.getKey() >= depth || cached.getValue().score > 9900 || cached.getValue().score < -9900)) {
 			return cached.getValue();
 		}
+		if (move.getRound() < 8) {
+			System.out.println(indent + "Analyzing round " + move.getRound() + " move with depth " + 
+					+ depth + ": " + move.getEncoded());
+			move.getField().print();
+			System.out.println("Original move: " + move.getMove());
+		}
 		MaxMinMoveFinder finder = new MaxMinMoveFinder(depth);
 		long start = System.currentTimeMillis();
 		BestMove best = finder.findBestMove(move.getField());
 		long time = System.currentTimeMillis()-start;
 		if (time > TimeUnit.MINUTES.toMillis(5)) {
 			System.out.println(indent + "Analyzing round " + move.getRound() + " move with depth " + 
-					+ depth + "took " + TimeUnit.MILLISECONDS.toMinutes(time) + "mins");
+					+ depth + " took " + TimeUnit.MILLISECONDS.toMinutes(time) + "mins");
 		}
 		cache.put(move.getEncoded(), new Pair<Integer, BestMove>(depth, best));
 		return best;
