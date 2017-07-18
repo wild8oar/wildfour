@@ -8,29 +8,29 @@ package maps;
 
 import java.util.Map;
 
-import maps.r19d24.MapR19D24Y_01;
-import maps.r19d24.MapR19D24Y_02;
-import maps.r19d24.MapR19D24Y_03;
-import maps.r19d24.MapR19D24Y_04;
-import maps.r19d24.MapR19D24Y_05;
-import maps.r19d24.MapR19D24Y_06;
-import maps.r19d24.MapR19D24Y_07;
-import maps.r19d24.MapR19D24Y_08;
-import maps.r19d24.MapR19D24Y_09;
-import maps.r19d24.MapR19D24Y_10;
-import maps.r19d24.MapR19D24Y_11;
-import maps.r19d24.MapR19D24Y_12;
-import maps.r19d24.MapR19D24Y_13;
-import maps.r19d24.MapR19D24Y_14;
-import maps.r19d24.MapR19D24Y_15;
-import maps.r19d24.MapR19D24Y_16;
-import maps.r19d24.MapR19D24Y_17;
-import maps.r19d24.MapR19D24Y_18;
-import maps.r19d24.MapR19D24Y_19;
-import maps.r19d24.MapR19D24Y_20;
-import maps.r19d24.MapR19D24Y_21;
-import maps.r19d24.MapR19D24Y_22;
-import maps.r19d24.MapR19D24Y_23;
+import maps.r19d24y.MapR19D24Y_01;
+import maps.r19d24y.MapR19D24Y_02;
+import maps.r19d24y.MapR19D24Y_03;
+import maps.r19d24y.MapR19D24Y_04;
+import maps.r19d24y.MapR19D24Y_05;
+import maps.r19d24y.MapR19D24Y_06;
+import maps.r19d24y.MapR19D24Y_07;
+import maps.r19d24y.MapR19D24Y_08;
+import maps.r19d24y.MapR19D24Y_09;
+import maps.r19d24y.MapR19D24Y_10;
+import maps.r19d24y.MapR19D24Y_11;
+import maps.r19d24y.MapR19D24Y_12;
+import maps.r19d24y.MapR19D24Y_13;
+import maps.r19d24y.MapR19D24Y_14;
+import maps.r19d24y.MapR19D24Y_15;
+import maps.r19d24y.MapR19D24Y_16;
+import maps.r19d24y.MapR19D24Y_17;
+import maps.r19d24y.MapR19D24Y_18;
+import maps.r19d24y.MapR19D24Y_19;
+import maps.r19d24y.MapR19D24Y_20;
+import maps.r19d24y.MapR19D24Y_21;
+import maps.r19d24y.MapR19D24Y_22;
+import maps.r19d24y.MapR19D24Y_23;
 
 public class MapR19D24Y {
 

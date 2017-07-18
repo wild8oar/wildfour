@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import maps.MapR19D24Z;
+import maps.MapR19D24AP1;
 import wildfour.MoveFinder.BestMove;
 
 public class AnalyzeMap {
@@ -18,8 +18,8 @@ public class AnalyzeMap {
 	private static final File KNOWN_WINS = new File("known_wins.txt");
 	private static final File KNOWN_LOSSES = new File("known_losses.txt");
 	
-	private static final Map<String, Integer> map = MapR19D24Z.MAP;
-	private static final MaxMinMoveFinder analyzer = new MaxMinMoveFinder(16);
+	private static final Map<String, Integer> map = MapR19D24AP1.MAP;
+	private static final MaxMinMoveFinder analyzer = new MaxMinMoveFinder(42);
 	
 	private static final Set<String> wins = new HashSet<>();
 	private static final Set<String> losses = new HashSet<>();
@@ -41,13 +41,16 @@ public class AnalyzeMap {
 		int nLoss = 0;
 		int nDiff = 0;
 		int n = 0;
+		for (Move move: moves) {
+			int r = move.getRound()-1;
+			nums[r]++;
+		}
 		List<Move> terminals = moves.stream().filter(m -> !m.hasNext()).collect(Collectors.toList());
 		nTerm = terminals.size();
 		long start = System.currentTimeMillis();
 		long last = System.currentTimeMillis();
 		for (Move move: terminals) {
 			int r = move.getRound()-1;
-			nums[r]++;
 			n++;
 			term[r]++;
 			if (wins.contains(move.getEncoded())) {
