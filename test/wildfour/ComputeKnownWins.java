@@ -16,7 +16,7 @@ public class ComputeKnownWins {
 	
 	private static final Map<String, Integer> KNOWN_WINS = KnownWins.MAP;
 	private static final Set<String> WINS = new HashSet<>();
-	private static final MaxMinMoveFinder optimizer = new MaxMinMoveFinder(24);
+	private static final MaxMinMoveFinder optimizer = new MaxMinMoveFinder(42);
 
 	public static void main(String[] args) throws IOException {
 		WINS.addAll(Files.readAllLines(new File("known_wins.txt").toPath(), Charset.defaultCharset()));
@@ -31,7 +31,7 @@ public class ComputeKnownWins {
 				BestMove best = optimizer.findBestMove(MapMoveFinder.decodeField(norm));
 				nComp++;
 				if (best.score < 9900) {
-					System.out.println("WARNING: no win found, incease search depth");
+					System.out.println("WARNING: no win found, increase search depth");
 					continue;
 				}
 				nFound++;

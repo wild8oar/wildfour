@@ -1,14 +1,14 @@
 package wildfour;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import maps.MapR19D24AP1;
+import maps.MapR19D24AP2;
 
 public class CombineMaps {
 	
 	private static final Map<String, Integer> MAP1 = MapR19D24AP1.MAP;
-	private static final Map<String, Integer> MAP2 = new HashMap<>();
+	private static final Map<String, Integer> MAP2 = MapR19D24AP2.MAP;
 	private static final String OUTPUT_MAP = "MapA";
 
 	public static void main(String[] args) throws Exception {

@@ -22,14 +22,12 @@ public class MaxMinMoveFinder {
 	}
 	
 	public void updateMaxDepth (int round, int time) {
-		if (round < 20) {
-			maxDepth = 24; // precomputed
-		} else if (time < 1000) {
+		if (time < 1000) {
 			maxDepth = 8;
 		} else if (time < 7000){
 			maxDepth = 11;
 		} else {
-			maxDepth = 42;
+			maxDepth = 24; // default
 		}
 		System.err.println("Round " + round + " (" + time + "s):  depth = " + maxDepth);
 	}
