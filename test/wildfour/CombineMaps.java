@@ -2,14 +2,14 @@ package wildfour;
 
 import java.util.Map;
 
-import maps.MapR19D24AP1;
-import maps.MapR19D24AP2;
+import maps.MapAP1X;
+import maps.MapAP2X;
 
 public class CombineMaps {
 	
-	private static final Map<String, Integer> MAP1 = MapR19D24AP1.MAP;
-	private static final Map<String, Integer> MAP2 = MapR19D24AP2.MAP;
-	private static final String OUTPUT_MAP = "MapA";
+	private static final Map<String, Integer> MAP1 = MapAP1X.MAP;
+	private static final Map<String, Integer> MAP2 = MapAP2X.MAP;
+	private static final String OUTPUT_MAP = "MapAX";
 
 	public static void main(String[] args) throws Exception {
 		int s1 = MAP1.size();

@@ -12,8 +12,8 @@ public class AvoidLosingMove {
 	private static final String MOVE = "000000B@000B00";
 	private static final int DEPTH = 29;
 	private static final MaxMinMoveFinder FINDER = new MaxMinMoveFinder(DEPTH-2);
-	private static final int[] ORDER1 = new int[] {4,2,5,1,3,0,6};
-	private static final int[] ORDER2 = ORDER1; //new int[] {6,0,3,1,5,2,4}; 
+	private static final int[] ORDER1 = new int[] {2};
+	private static final int[] ORDER2 = new int[] {4,3,5,2,1,6,0}; 
 	
 	public static void main(String[] args) {
 		System.out.println("Trying to avoid loss for move " + MOVE + " with depth " + DEPTH + "...");
