@@ -1,6 +1,6 @@
 package maps;
 /**
- * Written on Tue Aug 22 10:28:39 CEST 2017
+ * Written on Mon Oct 23 13:04:03 CEST 2017
 **/
 
 import java.util.Map;
@@ -2546,6 +2546,7 @@ map.put("000009F@09?JBG",1);
 map.put("000009F@09AJ0E",1);
 map.put("000009F@09AJ0G",1);
 map.put("000009F@0>BG0H",1);
+map.put("000009F@0>JF0H",1);
 map.put("000009F@0?00?J",5);
 map.put("000009F@0?00AJ",5);
 map.put("000009F@0?0H0G",1);
@@ -2780,6 +2781,7 @@ map.put("000009G@9ABG00",1);
 map.put("000009G@9G0E9J",5);
 map.put("000009G@9G9J0?",2);
 map.put("000009G@9G?J09",1);
+map.put("000009G@9GBF0B",6);
 map.put("000009G@9GHF0?",1);
 map.put("000009G@>G0G0B",1);
 map.put("000009G@?>BG0B",1);
@@ -3956,7 +3958,5 @@ map.put("00000?F@>J0E0B",5);
 map.put("00000?F@>J0G00",2);
 map.put("00000?F@?F0H0B",5);
 map.put("00000?F@?F?J00",2);
-map.put("00000?F@?G0E0H",5);
-map.put("00000?F@?G0F0H",2);
 }
 }

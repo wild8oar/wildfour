@@ -1,5 +1,7 @@
 package wildfour;
 
+import static java.util.stream.Collectors.toList;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -9,20 +11,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import maps.MapR19D24Z;
+import maps.MapB;
 import wildfour.MoveFinder.BestMove;
 
 public class CheckMove {
 	
-	private static final String MOVE = "090B0H=G0?0B0?";
+	private static final String MOVE = "000000?>000H00";
 	
-	private static final MapMoveFinder FINDER = new MapMoveFinder(MapR19D24Z.MAP);
-	private static final MaxMinMoveFinder ANALYZER = new MaxMinMoveFinder(24);
+	private static final MapMoveFinder FINDER = new MapMoveFinder(MapB.MAP);
+	private static final MaxMinMoveFinder ANALYZER = new MaxMinMoveFinder(18);
 	
 	private static final Set<String> LOSSES = new HashSet<>();
 	
 	private static Move loadMove () {
-		List<Move> moves = MovesLoader.loadMoves(MapR19D24Z.MAP);
+		List<Move> moves = MovesLoader.loadMoves(MapB.MAP);
 		String norm = MapMoveFinder.normalize(MOVE);
 		for (Move m: moves) {
 			if (m.getEncoded().equals(norm)) {
@@ -47,13 +49,14 @@ public class CheckMove {
 		if (found.isPresent()) {
 			System.out.println("Known move: " + found.get());
 		}
-		BestMove pos = ANALYZER.findBestMove(field);
-		System.out.println("Analysis of position: best=" + pos.move + " (score " + pos.score + ")" );
-		BestMove normA = ANALYZER.findBestMove(MapMoveFinder.decodeField(MapMoveFinder.mirror(MOVE)));
-		System.out.println("Analysis of mirrored position: best=" + normA.move + " (score " + normA.score + ")" );
+		BestMove best = ANALYZER.findBestMove(field);
+		System.out.println("Analysis of position: best=" + best.move + " (score " + best.score + ")" );
+		BestMove mirrorBest = ANALYZER.findBestMove(MapMoveFinder.decodeField(MapMoveFinder.mirror(MOVE)));
+		System.out.println("Analysis of mirrored position: best=" + mirrorBest.move + " (score " + mirrorBest.score + ")" );
 		Move loaded = loadMove();
 		System.out.println("Move has next moves: " + loaded.hasNext());
-		System.out.println("Previous moves: " + loaded.getPrevious().size());
+		System.out.println("Previous moves (" + loaded.getPrevious().size() + "): " + 
+				loaded.getPrevious().stream().map(Move::getEncoded).collect(toList()));
 	}
 
 }

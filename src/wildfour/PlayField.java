@@ -251,4 +251,24 @@ public final class PlayField {
 		return new PlayField(Arrays.copyOf(field, field.length));
 	}
 
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(field);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PlayField other = (PlayField) obj;
+		if (!Arrays.equals(field, other.field))
+			return false;
+		return true;
+	}
+	
+
 }
