@@ -52,16 +52,6 @@ public class Wildfour {
 	}
 
 	public static void main(String[] args) throws Exception {
-//		Network network;
-//		if (args.length > 0) {
-//			System.out.println("Loading " + args[0]);
-//			Class<?> nwclass = Class.forName("neural1.networks." + args[0]);
-//			Method m = nwclass.getDeclaredMethod("getNetwork", Double.TYPE, Double.TYPE);
-//			network = (Network) m.invoke(null, 0, 0);
-//		} else {
-//			network = Learn01.getNetwork(0, 0);
-//		}
-		//BotParser parser = new BotParser(new Wildfour(new RandomizedNetworkEvaluator(network)));
 		BotParser parser = new BotParser(new Wildfour());
 		parser.run();
 	}
