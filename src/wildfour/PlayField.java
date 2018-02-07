@@ -74,6 +74,25 @@ public final class PlayField {
 		return new PlayField(grid);
 	}
 	
+	public static PlayField fromBotField (riddlesbot.Field botfield) {
+		int myId = botfield.getMyId() + 1;
+		final int otherId = 3 - myId;
+		char[] grid = new char[SIZE];
+		for (int x=0; x<WIDTH; x++) {
+			for (int y=0; y<HEIGHT; y++) {
+				int disc = botfield.getDisc(x, y);
+				if (disc == myId) {
+					grid[idx(x,y)] = ME;
+				} else if (disc == otherId) {
+					grid[idx(x,y)] = OTHER;
+				} else {
+					grid[idx(x,y)] = EMPTY;
+				}
+			}
+		}
+		return new PlayField(grid);
+	}
+	
 	public static PlayField emptyField () {
 		char[] grid = new char[SIZE];
 		for (int i=0; i<SIZE; i++) {
@@ -172,11 +191,6 @@ public final class PlayField {
 		}
 		return input;
 	}	
-	
-	@Deprecated
-	public double[] encodeFeaturesAsNetworkInput() {
-		return null;
-	}
 
 	public int[] countThrees () {
 		int t1 = 0;

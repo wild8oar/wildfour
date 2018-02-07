@@ -38,7 +38,6 @@ public class BotParser {
     
     public void run() {
         mField = new Field(0, 0);
-        bot.setField(mField);
         while(scan.hasNextLine()) {
             String line = scan.nextLine();
 
@@ -72,6 +71,7 @@ public class BotParser {
                 if (parts[1].equals("move")) { /* move requested */
                 	int time = Integer.parseInt(parts[2]);
                     bot.setTime(time);
+                    bot.setField(mField);
                     int column = bot.makeTurn();
                     System.out.println("place_disc " + column);
                 }

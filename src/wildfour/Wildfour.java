@@ -2,7 +2,7 @@ package wildfour;
 
 import java.util.Optional;
 
-import bot.BotParser;
+import riddlesbot.BotParser;
 import bot.Field;
 
 /**
@@ -14,13 +14,17 @@ public class Wildfour {
 	private final MapMoveFinder mapFinder = new MapMoveFinder(TheMap.MAP);
 	private final MaxMinMoveFinder moveFinder = new MaxMinMoveFinder(13);
 	
-	private Field field;
+	private PlayField field;
 	private int myId;
 	private int round;
 	private int time;
 
 	public void setField(Field f) {
-		field = f;
+		field = PlayField.fromBotField(f, myId);
+	}
+	
+	public void setField(riddlesbot.Field riddlesfield) {
+		field = PlayField.fromBotField(riddlesfield);
 	}
 
 	public void setBotId (int id) {
@@ -41,7 +45,6 @@ public class Wildfour {
 	 * @return The column where the turn was made.
 	 */
 	public int makeTurn() {
-		PlayField field = PlayField.fromBotField(this.field, myId);
 		Optional<Integer> precomputed = mapFinder.findMove(field);
 		if (precomputed.isPresent()) {
 			System.err.println("Round " + round + ": using precomputed move for " + MapMoveFinder.encodeField(field));
