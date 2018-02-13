@@ -10,15 +10,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import maps.MapR19D24Z;
+import maps.MapDXP2;
 
 public class PrecomputeMoves {
 	
 	private static final int MAX_ROUNDS = 19;
-	private static final int MAX_DEPTH = 18;
+	private static final int MAX_DEPTH = 24;
 	private static final MaxMinMoveFinder finder = new MaxMinMoveFinder(MAX_DEPTH);
-	private static final Map<String, Integer> inmap = MapR19D24Z.MAP; // new HashMap<>();
-	private static final String LETTER = "A";
+	private static final Map<String, Integer> inmap = MapDXP2.MAP; // new HashMap<>();
+	private static final String LETTER = "EP2";
 	
 	private static final MapMoveFinder mapFinder = new MapMoveFinder(inmap);
 	private static final Map<String, Integer> newMap = new HashMap<>();
@@ -126,8 +126,8 @@ public class PrecomputeMoves {
 		nComputed = nStored = 0;
 		long start = System.currentTimeMillis();
 		PlayField field = PlayField.emptyField();
-		precomputeForPlayer1(field, 1);
-		System.out.println("Finished player 1 in:   " + (System.currentTimeMillis() - start)/1000 + "s");
+		//precomputeForPlayer1(field, 1);
+		//System.out.println("Finished player 1 in:   " + (System.currentTimeMillis() - start)/1000 + "s");
 		precomputeForPlayer2(field, 1);
 		saveMap();
 		System.out.println("Moves computed:           " + nComputed);

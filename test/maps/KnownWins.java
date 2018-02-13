@@ -1,6 +1,6 @@
 package maps;
 /**
- * Written on Fri Feb 09 09:48:36 CET 2018
+ * Written on Mon Feb 12 13:30:33 CET 2018
 **/
 
 import java.util.Map;
@@ -42,5 +42,8 @@ KnownWins_29.addToMap(MAP);
 KnownWins_30.addToMap(MAP);
 KnownWins_31.addToMap(MAP);
 KnownWins_32.addToMap(MAP);
+KnownWins_33.addToMap(MAP);
+KnownWins_34.addToMap(MAP);
+KnownWins_35.addToMap(MAP);
 }
 }

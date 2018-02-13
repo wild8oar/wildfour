@@ -14,14 +14,14 @@ import java.util.concurrent.TimeUnit;
 
 import javafx.util.Pair;
 import maps.KnownWins;
-import maps.MapR19D24TT;
+import maps.MapE;
 import wildfour.MoveFinder.BestMove;
 
 public class OptimizeMap {
 	
 	private static final Map<String, Integer> KNOWN_WINS = KnownWins.MAP;
-	private static final Map<String, Integer> MAP = MapR19D24TT.MAP;
-	private static final String OUTPUT_MAP = "MapR19D24S";
+	private static final Map<String, Integer> MAP = MapE.MAP;
+	private static final String OUTPUT_MAP = "MapE";
 	private static final int LOSS_DEPTH = 17;
 	private static final int MIN_ROUND = 1; // don't go earlier than that to recompute losses
 	
@@ -84,7 +84,7 @@ public class OptimizeMap {
 		if (cached != null && (cached.getKey() >= depth || cached.getValue().score > 9900 || cached.getValue().score < -9900)) {
 			return cached.getValue();
 		}
-		if (move.getRound() < 8) {
+		if (move.getRound() < 8 || depth > 27) {
 			System.out.println(indent + "Analyzing round " + move.getRound() + " move with depth " + 
 					+ depth + ": " + move.getEncoded());
 			move.getField().print();
@@ -122,7 +122,7 @@ public class OptimizeMap {
 				prev.getField().print();
 				throw new IllegalStateException("Previous move must also be loss or change!");
 			} else {
-				System.out.println(indent + "Changing previous move");
+				System.out.println(indent + "Changing previous move - put(\"" + prev.getEncoded() + "\", " + best.move + ")");
 				removeMove(prev);
 				MAP.put(prev.getEncoded(), best.move);
 			}
@@ -130,8 +130,20 @@ public class OptimizeMap {
 	}
 
 	public static void main (String[] args) throws IOException {
+		//correctMap1();
+		//correctMap2();
 		List<Move> moves = MovesLoader.loadMoves(MAP);
 		optimizeWins(moves);
-		optimizeLosses(moves);
+		//optimizeLosses(moves);
+		MapWriter.writeMap(OUTPUT_MAP, MAP);
+	}
+	
+	private static void correctMap1 () {
+	
+	}
+	
+	private static void correctMap2 () {
+	
 	}
 }
+
